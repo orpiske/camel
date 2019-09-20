@@ -24,6 +24,7 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
@@ -333,9 +334,13 @@ public class SqsEndpoint extends ScheduledPollEndpoint implements HeaderFilterSt
                 clientBuilder = AmazonSQSClientBuilder.standard().withClientConfiguration(clientConfiguration);
             }
         }
-        if (ObjectHelper.isNotEmpty(configuration.getRegion())) {
-            clientBuilder = clientBuilder.withRegion(Regions.valueOf(configuration.getRegion()));
-        }
+
+        final String host = configuration.getAmazonAWSHost();
+        final String region = Regions.valueOf(configuration.getRegion()).name();
+
+        log.debug("Creating endpoint for host {} on region {}", host, region);
+        clientBuilder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(host, region));
+
         client = clientBuilder.build();
         return client;
     }

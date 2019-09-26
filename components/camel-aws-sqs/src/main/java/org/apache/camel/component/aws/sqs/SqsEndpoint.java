@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.amazonaws.ClientConfiguration;
+import com.amazonaws.Protocol;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -128,7 +129,10 @@ public class SqsEndpoint extends ScheduledPollEndpoint implements HeaderFilterSt
             if (configuration.getRegion() != null && configuration.getQueueOwnerAWSAccountId() != null) {
                 String host = configuration.getAmazonAWSHost();
                 host = FileUtil.stripTrailingSeparator(host);
-                queueUrl = "https://sqs." + Regions.valueOf(configuration.getRegion()).getName() + "." + host + "/" + configuration.getQueueOwnerAWSAccountId() + "/"
+
+                String protocol = configuration.getProtocol();
+
+                queueUrl = protocol + "://sqs." + Regions.valueOf(configuration.getRegion()).getName() + "." + host + "/" + configuration.getQueueOwnerAWSAccountId() + "/"
                            + configuration.getQueueName();
             } else if (configuration.getQueueOwnerAWSAccountId() != null) {
                 GetQueueUrlRequest getQueueUrlRequest = new GetQueueUrlRequest();
@@ -319,6 +323,19 @@ public class SqsEndpoint extends ScheduledPollEndpoint implements HeaderFilterSt
             clientConfiguration.setProxyPort(configuration.getProxyPort());
             isClientConfigFound = true;
         }
+
+        final String protocol = configuration.getProtocol(); 
+
+        if (protocol.equals("http")) {
+            log.trace("Configuring AWS-SQS for HTTP protocol");
+            if (isClientConfigFound) {
+                clientConfiguration = clientConfiguration.withProtocol(Protocol.HTTP);
+            } else {
+                clientConfiguration = new ClientConfiguration().withProtocol(Protocol.HTTP);
+                isClientConfigFound = true;
+            }
+        }
+
         if (configuration.getAccessKey() != null && configuration.getSecretKey() != null) {
             AWSCredentials credentials = new BasicAWSCredentials(configuration.getAccessKey(), configuration.getSecretKey());
             AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);

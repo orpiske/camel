@@ -413,6 +413,18 @@ public class SubscriptionHelper extends ServiceSupport {
 
                         Exception failure = getFailure(message);
                         String msg = String.format("Error subscribing to %s: %s", topicName, failure != null ? failure.getMessage() : error);
+
+                        if (failure != null) {
+                            if (failure.getCause() != null) {
+                                LOG.error("Reported cause: {}", failure.getCause().getMessage(), failure.getCause());
+                            }
+                            else {
+                                LOG.error("Unreported cause");
+                            }
+
+                        }
+
+                        LOG.error("Reported error: {}", error);
                         boolean abort = true;
 
                         if (isTemporaryError(message)) {

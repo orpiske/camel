@@ -408,6 +408,17 @@ public class SubscriptionHelper extends ServiceSupport {
                 LOG.debug("[CHANNEL:META_SUBSCRIBE]: {}", message);
                 LOG.debug("[CHANNEL:META_SUBSCRIBE#dataMap]: {}", message.getDataAsMap());
                 LOG.debug("[CHANNEL:META_SUBSCRIBE#data]: {}", message.getData());
+                LOG.debug("[CHANNEL:META_SUBSCRIBE#getExt]: {}", message.getExt());
+
+                if (message.getExt() != null) {
+                    for (Map.Entry<String, Object> extData : message.getExt().entrySet()) {
+                        LOG.debug("[CHANNEL:META_SUBSCRIBE#getExt (entry)]: {}={}", extData.getKey(), extData.getValue());
+                    }
+                }
+                else {
+                    LOG.debug("[CHANNEL:META_SUBSCRIBE#getExt]: is null");
+                }
+
 
                 final String subscribedChannelName = message.get(SUBSCRIPTION_FIELD).toString();
                 if (channelName.equals(subscribedChannelName)) {
@@ -486,6 +497,8 @@ public class SubscriptionHelper extends ServiceSupport {
 
     private static boolean isTemporaryError(Message message) {
         String failureReason = getFailureReason(message);
+        LOG.error("Failed with reason {}", failureReason);
+
         return failureReason != null && failureReason.startsWith(SERVER_TOO_BUSY_ERROR);
     }
 
@@ -493,6 +506,7 @@ public class SubscriptionHelper extends ServiceSupport {
         String failureReason = null;
         if (message.getExt() != null) {
             Map<String, Object> sfdcFields = (Map<String, Object>) message.getExt().get(SFDC_FIELD);
+
             if (sfdcFields != null) {
                 failureReason  = (String) sfdcFields.get(FAILURE_REASON_FIELD);
             }

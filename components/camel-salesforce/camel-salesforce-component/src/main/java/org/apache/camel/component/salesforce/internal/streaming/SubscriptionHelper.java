@@ -390,6 +390,10 @@ public class SubscriptionHelper extends ServiceSupport {
             @Override
             public void onMessage(ClientSessionChannel channel, Message message) {
                 LOG.debug("Received Message: {}", message);
+
+                LOG.debug("[CHANNEL:NORMAL#dataMap]: {}", message.getDataAsMap());
+                LOG.debug("[CHANNEL:NORMAL#data]: {}", message.getData());
+
                 // convert CometD message to Camel Message
                 consumer.processMessage(channel, message);
             }

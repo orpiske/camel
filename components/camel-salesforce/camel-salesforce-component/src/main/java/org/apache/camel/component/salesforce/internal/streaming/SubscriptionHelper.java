@@ -402,6 +402,9 @@ public class SubscriptionHelper extends ServiceSupport {
         final ClientSessionChannel.MessageListener subscriptionListener = new ClientSessionChannel.MessageListener() {
             public void onMessage(ClientSessionChannel channel, Message message) {
                 LOG.debug("[CHANNEL:META_SUBSCRIBE]: {}", message);
+                LOG.debug("[CHANNEL:META_SUBSCRIBE#dataMap]: {}", message.getDataAsMap());
+                LOG.debug("[CHANNEL:META_SUBSCRIBE#data]: {}", message.getData());
+
                 final String subscribedChannelName = message.get(SUBSCRIPTION_FIELD).toString();
                 if (channelName.equals(subscribedChannelName)) {
 

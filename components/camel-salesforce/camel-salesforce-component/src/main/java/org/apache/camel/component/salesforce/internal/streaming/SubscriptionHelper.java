@@ -499,6 +499,10 @@ public class SubscriptionHelper extends ServiceSupport {
         String failureReason = getFailureReason(message);
         LOG.error("Failed with reason {}", failureReason);
 
+        if (failureReason == null) {
+            return true;
+        }
+
         return failureReason != null && failureReason.startsWith(SERVER_TOO_BUSY_ERROR);
     }
 

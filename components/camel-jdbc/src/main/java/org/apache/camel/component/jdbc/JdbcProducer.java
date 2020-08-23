@@ -174,9 +174,9 @@ public class JdbcProducer extends DefaultProducer {
             } else {
                 int updateCount = ps.getUpdateCount();
                 // preserve headers
-                exchange.getOut().getHeaders().putAll(exchange.getIn().getHeaders());
+                exchange.getMessage().getHeaders().putAll(exchange.getIn().getHeaders());
                 // and then set the new header
-                exchange.getOut().setHeader(JdbcConstants.JDBC_UPDATE_COUNT, updateCount);
+                exchange.getMessage().setHeader(JdbcConstants.JDBC_UPDATE_COUNT, updateCount);
             }
 
             if (shouldRetrieveGeneratedKeys) {
@@ -233,9 +233,9 @@ public class JdbcProducer extends DefaultProducer {
             } else {
                 int updateCount = stmt.getUpdateCount();
                 // preserve headers
-                exchange.getOut().getHeaders().putAll(exchange.getIn().getHeaders());
+                exchange.getMessage().getHeaders().putAll(exchange.getIn().getHeaders());
                 // and then set the new header
-                exchange.getOut().setHeader(JdbcConstants.JDBC_UPDATE_COUNT, updateCount);
+                exchange.getMessage().setHeader(JdbcConstants.JDBC_UPDATE_COUNT, updateCount);
             }
 
             if (shouldRetrieveGeneratedKeys) {
@@ -311,8 +311,8 @@ public class JdbcProducer extends DefaultProducer {
                     getEndpoint().isUseGetBytesForBlob());
             List<Map<String, Object>> data = extractRows(iterator);
 
-            exchange.getOut().setHeader(JdbcConstants.JDBC_GENERATED_KEYS_ROW_COUNT, data.size());
-            exchange.getOut().setHeader(JdbcConstants.JDBC_GENERATED_KEYS_DATA, data);
+            exchange.getMessage().setHeader(JdbcConstants.JDBC_GENERATED_KEYS_ROW_COUNT, data.size());
+            exchange.getMessage().setHeader(JdbcConstants.JDBC_GENERATED_KEYS_DATA, data);
         }
     }
 
@@ -328,12 +328,12 @@ public class JdbcProducer extends DefaultProducer {
                 conn, rs, getEndpoint().isUseJDBC4ColumnNameAndLabelSemantics(), getEndpoint().isUseGetBytesForBlob());
 
         // preserve headers
-        exchange.getOut().getHeaders().putAll(exchange.getIn().getHeaders());
+        exchange.getMessage().getHeaders().putAll(exchange.getIn().getHeaders());
 
         JdbcOutputType outputType = getEndpoint().getOutputType();
-        exchange.getOut().setHeader(JdbcConstants.JDBC_COLUMN_NAMES, iterator.getColumnNames());
+        exchange.getMessage().setHeader(JdbcConstants.JDBC_COLUMN_NAMES, iterator.getColumnNames());
         if (outputType == JdbcOutputType.StreamList) {
-            exchange.getOut()
+            exchange.getMessage()
                     .setBody(new StreamListIterator(
                             getEndpoint().getCamelContext(), getEndpoint().getOutputClass(), getEndpoint().getBeanRowMapper(),
                             iterator));
@@ -342,10 +342,10 @@ public class JdbcProducer extends DefaultProducer {
             answer = false;
         } else if (outputType == JdbcOutputType.SelectList) {
             List<?> list = extractRows(iterator);
-            exchange.getOut().setHeader(JdbcConstants.JDBC_ROW_COUNT, list.size());
-            exchange.getOut().setBody(list);
+            exchange.getMessage().setHeader(JdbcConstants.JDBC_ROW_COUNT, list.size());
+            exchange.getMessage().setBody(list);
         } else if (outputType == JdbcOutputType.SelectOne) {
-            exchange.getOut().setBody(extractSingleRow(iterator));
+            exchange.getMessage().setBody(extractSingleRow(iterator));
         }
 
         return answer;

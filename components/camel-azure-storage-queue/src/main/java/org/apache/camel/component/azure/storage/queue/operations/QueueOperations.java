@@ -28,11 +28,14 @@ import org.apache.camel.component.azure.storage.queue.QueueConstants;
 import org.apache.camel.component.azure.storage.queue.QueueExchangeHeaders;
 import org.apache.camel.component.azure.storage.queue.client.QueueClientWrapper;
 import org.apache.camel.util.ObjectHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * All operations related to {@link com.azure.storage.queue.QueueClient}. This is at the queue level
  */
 public class QueueOperations {
+    private static final Logger LOG = LoggerFactory.getLogger(QueueOperations.class);
 
     private final QueueConfiguration configuration;
     private final QueueClientWrapper client;
@@ -88,6 +91,12 @@ public class QueueOperations {
         final Duration visibilityTimeout = getVisibilityTimeout(exchange);
         final Duration timeToLive = getTimeToLive(exchange);
         final Duration timeout = getTimeout(exchange);
+
+        if (text == null || text.isEmpty()) {
+            LOG.warn("Trying to send an empty message could cause Azure to report an error");
+        } else {
+            LOG.info("Sending the following text to Azure: {}", text);
+        }
 
         return buildResponseWithEmptyBody(client.sendMessage(text, visibilityTimeout, timeToLive, timeout));
     }

@@ -18,10 +18,21 @@ package org.apache.camel.component.couchbase;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.test.infra.common.SharedNameGenerator;
+import org.apache.camel.test.infra.common.TestEntityNameGenerator;
+import org.apache.camel.test.infra.couchbase.services.CouchbaseService;
+import org.apache.camel.test.infra.couchbase.services.CouchbaseServiceFactory;
 import org.apache.camel.test.junit5.CamelTestSupport;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class ProduceMessagesWithAutoIDIntegrationTest extends CamelTestSupport {
+
+    @RegisterExtension
+    public static final CouchbaseService service = CouchbaseServiceFactory.getService();
+
+    @RegisterExtension
+    public static final SharedNameGenerator nameGenerator = new TestEntityNameGenerator();
 
     @Test
     public void testInsert() throws Exception {
@@ -37,13 +48,14 @@ public class ProduceMessagesWithAutoIDIntegrationTest extends CamelTestSupport {
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
+        String bucketName = nameGenerator.getName();
+
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-
-                // need couchbase installed on localhost
-                from("direct:start").to(
-                        "couchbase:http://localhost/test?username=root&password=123456&autoStartIdForInserts=true&startingIdForInsertsFrom=1000")
+                from("direct:start")
+                        .toF("couchbase:http://%s:%d/mybucket/mybucket?username=%s&password=%s&autoStartIdForInserts=true&startingIdForInsertsFrom=1000",
+                                service.getHostname(), service.getPort(), service.getUsername(), service.getPassword())
                         .to("mock:result");
             }
         };

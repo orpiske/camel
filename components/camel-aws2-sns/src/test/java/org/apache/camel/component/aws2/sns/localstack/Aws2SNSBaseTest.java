@@ -57,10 +57,12 @@ public class Aws2SNSBaseTest extends ContainerAwareTestSupport {
     }
 
     public SnsClient getSNSClient() {
+        System.setProperty("aws.url", getS3Url());
+
         SnsClient snsClient = SnsClient
                 .builder()
                 .endpointOverride(URI.create("http://" + getS3Url()))
-                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("xxx", "yyy")))
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("accesskey", "secretkey")))
                 .region(Region.EU_WEST_1)
                 .build();
         return snsClient;

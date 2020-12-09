@@ -75,7 +75,7 @@ public class FromFtpDirectoryToBinaryFilesTest extends FtpServerTestSupport {
         resultEndpoint.expectedMessageCount(2);
         resultEndpoint.assertIsSatisfied();
 
-        Exchange ex = resultEndpoint.getExchanges().get(0);
+        Exchange ex = resultEndpoint.getExchanges().get(1);
         byte[] bytes = ex.getIn().getBody(byte[].class);
         assertTrue(bytes.length > 10000, "Logo size is only: " + bytes.length
                                          + " but should have been bigger than 10000");

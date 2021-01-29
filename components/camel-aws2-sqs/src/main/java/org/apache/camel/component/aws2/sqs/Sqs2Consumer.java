@@ -336,9 +336,9 @@ public class Sqs2Consumer extends ScheduledBatchPollingConsumer {
             } catch (MessageNotInflightException e) {
                 // Ignore.
             } catch (Exception e) {
-                LOG.warn("Extending visibility window failed for exchange " + exchange
-                         + ". Will not attempt to extend visibility further. This exception will be ignored.",
-                        e);
+                LOG.warn("Extending visibility window failed for exchange {}. Will not attempt to extend visibility "
+                         + "further. This exception will be ignored.",
+                        exchange, e);
             }
         }
     }

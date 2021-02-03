@@ -30,6 +30,7 @@ import org.apache.camel.test.infra.infinispan.services.InfinispanServiceFactory;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ import static org.apache.camel.component.infinispan.remote.cluster.InfinispanRem
 import static org.apache.camel.component.infinispan.remote.cluster.InfinispanRemoteClusteredTestSupport.createConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class AbstractInfinispanRemoteClusteredTest {
     @RegisterExtension
     public static InfinispanService service = InfinispanServiceFactory.createService();

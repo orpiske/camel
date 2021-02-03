@@ -28,10 +28,12 @@ import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.marshall.MarshallerUtil;
 import org.infinispan.query.remote.client.impl.MarshallerRegistration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class SpringInfinispanRemoteIdempotentRepositoryTestSupport extends CamelSpringTestSupport {
     @RegisterExtension
     public static InfinispanService service = InfinispanServiceFactory.createService();

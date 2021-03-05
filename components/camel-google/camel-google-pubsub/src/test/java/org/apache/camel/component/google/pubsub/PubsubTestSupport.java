@@ -19,11 +19,13 @@ package org.apache.camel.component.google.pubsub;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import com.google.api.gax.core.CredentialsProvider;
 import com.google.api.gax.core.NoCredentialsProvider;
 import com.google.api.gax.grpc.GrpcTransportChannel;
 import com.google.api.gax.rpc.FixedTransportChannelProvider;
+import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
 import com.google.cloud.pubsub.v1.TopicAdminClient;
@@ -40,6 +42,8 @@ import org.apache.camel.test.infra.google.pubsub.services.GooglePubSubService;
 import org.apache.camel.test.infra.google.pubsub.services.GooglePubSubServiceFactory;
 import org.apache.camel.test.junit5.CamelTestSupport;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PubsubTestSupport extends CamelTestSupport {
     @RegisterExtension
@@ -51,6 +55,8 @@ public class PubsubTestSupport extends CamelTestSupport {
         Properties testProperties = loadProperties();
         PROJECT_ID = testProperties.getProperty("project.id");
     }
+
+    private static final Logger LOG = LoggerFactory.getLogger(PubsubTestSupport.class);
 
     private static Properties loadProperties() {
         Properties testProperties = new Properties();
@@ -114,34 +120,71 @@ public class PubsubTestSupport extends CamelTestSupport {
     }
 
     public void createTopic(Topic topic) {
-        TopicAdminClient topicAdminClient = createTopicAdminClient();
-
-        topicAdminClient.createTopic(topic);
-
-        topicAdminClient.shutdown();
-    }
-
-    public void createSubscription(Subscription subscription) {
-        SubscriptionAdminClient subscriptionAdminClient = createSubscriptionAdminClient();
-
-        subscriptionAdminClient.createSubscription(subscription);
-
-        subscriptionAdminClient.shutdown();
-    }
-
-    private FixedTransportChannelProvider createChannelProvider() {
         ManagedChannel channel = ManagedChannelBuilder
                 .forTarget(String.format(service.getServiceAddress()))
                 .usePlaintext()
                 .build();
 
-        return FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
-    }
+        FixedTransportChannelProvider channelProvider
+                = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
 
-    private TopicAdminClient createTopicAdminClient() {
-        FixedTransportChannelProvider channelProvider = createChannelProvider();
         CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
 
+        try (TopicAdminClient topicAdminClient = createTopicAdminClient(channelProvider, credentialsProvider)) {
+            topicAdminClient.createTopic(topic);
+
+            topicAdminClient.shutdownNow();
+
+            if (!topicAdminClient.awaitTermination(5, TimeUnit.SECONDS)) {
+                LOG.warn("Timed out waiting for the subscription admin client to complete");
+            }
+
+            TransportChannelProvider provider = topicAdminClient.getSettings().getTransportChannelProvider();
+            provider.getTransportChannel().close();
+        } catch (InterruptedException e) {
+            LOG.warn("Interrupted while waiting for the topic admin client to complete executing", e);
+        } catch (Exception e) {
+            LOG.warn("Unhandled exception while running the topic admin client: {}", e.getMessage(), e);
+        } finally {
+            channel.shutdown();
+        }
+    }
+
+    public void createSubscription(Subscription subscription) {
+        ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(String.format(service.getServiceAddress()))
+                .usePlaintext()
+                .build();
+
+        FixedTransportChannelProvider channelProvider
+                = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+
+        CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
+
+        try (SubscriptionAdminClient subscriptionAdminClient
+                = createSubscriptionAdminClient(channelProvider, credentialsProvider)) {
+            subscriptionAdminClient.createSubscription(subscription);
+
+            subscriptionAdminClient.shutdownNow();
+
+            if (!subscriptionAdminClient.awaitTermination(5, TimeUnit.SECONDS)) {
+                LOG.warn("Timed out waiting for the subscription admin client to complete");
+            }
+
+            TransportChannelProvider provider = subscriptionAdminClient.getSettings().getTransportChannelProvider();
+            provider.getTransportChannel().close();
+        } catch (InterruptedException e) {
+            LOG.warn("Interrupted while waiting for the subscription admin client to complete executing", e);
+        } catch (Exception e) {
+            LOG.warn("Unhandled exception while running the subscription admin client: {}", e.getMessage(), e);
+        } finally {
+            channel.shutdown();
+        }
+    }
+
+    private TopicAdminClient createTopicAdminClient(
+            FixedTransportChannelProvider channelProvider,
+            CredentialsProvider credentialsProvider) {
         try {
             return TopicAdminClient.create(
                     TopicAdminSettings.newBuilder()
@@ -153,10 +196,9 @@ public class PubsubTestSupport extends CamelTestSupport {
         }
     }
 
-    private SubscriptionAdminClient createSubscriptionAdminClient() {
-        FixedTransportChannelProvider channelProvider = createChannelProvider();
-        CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
-
+    private SubscriptionAdminClient createSubscriptionAdminClient(
+            FixedTransportChannelProvider channelProvider,
+            CredentialsProvider credentialsProvider) {
         try {
             return SubscriptionAdminClient.create(
                     SubscriptionAdminSettings.newBuilder()

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import com.google.api.core.AbstractApiService;
+import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
@@ -122,11 +123,16 @@ public class GooglePubsubConsumer extends DefaultConsumer {
         }
 
         private void asynchronousPull(String subscriptionName) throws IOException {
+            TransportChannelProvider channelProvider = null;
+            if (endpoint.getComponent().requiresCustomTransportChannel()) {
+                channelProvider = endpoint.getComponent().getCustomTransportChannel();
+            }
+
             while (isRunAllowed() && !isSuspendingOrSuspended()) {
                 MessageReceiver messageReceiver = new CamelMessageReceiver(GooglePubsubConsumer.this, endpoint, processor);
 
                 Subscriber subscriber = endpoint.getComponent().getSubscriber(subscriptionName, messageReceiver,
-                        endpoint.getServiceAccountKey());
+                        endpoint.getServiceAccountKey(), channelProvider);
                 try {
                     subscribers.add(subscriber);
                     subscriber.startAsync().awaitRunning();
@@ -138,11 +144,25 @@ public class GooglePubsubConsumer extends DefaultConsumer {
                     subscriber.stopAsync();
                 }
             }
+
+            if (channelProvider != null) {
+                try {
+                    channelProvider.getTransportChannel().close();
+                } catch (Exception e) {
+                    localLog.warn("Error while closing the transport channel: {}", e.getMessage());
+                }
+            }
         }
 
         private void synchronousPull(String subscriptionName) {
+            TransportChannelProvider channelProvider = null;
+            if (endpoint.getComponent().requiresCustomTransportChannel()) {
+                channelProvider = endpoint.getComponent().getCustomTransportChannel();
+            }
+
             while (isRunAllowed() && !isSuspendingOrSuspended()) {
-                try (SubscriberStub subscriber = endpoint.getComponent().getSubscriberStub(endpoint.getServiceAccountKey())) {
+                try (SubscriberStub subscriber
+                        = endpoint.getComponent().getSubscriberStub(endpoint.getServiceAccountKey(), channelProvider)) {
 
                     PullRequest pullRequest = PullRequest.newBuilder()
                             .setMaxMessages(endpoint.getMaxMessagesPerPoll())
@@ -179,6 +199,15 @@ public class GooglePubsubConsumer extends DefaultConsumer {
                     localLog.error("Failure getting messages from PubSub", e);
                 }
             }
+
+            if (channelProvider != null) {
+                try {
+                    channelProvider.getTransportChannel().close();
+                } catch (Exception e) {
+                    localLog.warn("Error while closing the transport channel: {}", e.getMessage());
+                }
+            }
+
         }
     }
 }

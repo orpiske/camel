@@ -131,20 +131,23 @@ public class GooglePubsubComponent extends DefaultComponent {
         super.doShutdown();
     }
 
-    public Publisher getPublisher(String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey)
+    public Publisher getPublisher(
+            String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey,
+            TransportChannelProvider channelProvider)
             throws ExecutionException {
-        return cachedPublishers.get(topicName, () -> buildPublisher(topicName, googlePubsubEndpoint, serviceAccountKey));
+        return cachedPublishers.get(topicName,
+                () -> buildPublisher(topicName, googlePubsubEndpoint, serviceAccountKey, channelProvider));
     }
 
-    private Publisher buildPublisher(String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey)
+    private Publisher buildPublisher(
+            String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey,
+            TransportChannelProvider channelProvider)
             throws IOException {
         Publisher.Builder builder = Publisher.newBuilder(topicName);
-        if (StringHelper.trimToNull(endpoint) != null) {
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(endpoint).usePlaintext().build();
-            TransportChannelProvider channelProvider
-                    = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+        if (channelProvider != null) {
             builder.setChannelProvider(channelProvider);
         }
+
         CredentialsProvider credentialsProvider;
         if (ObjectHelper.isEmpty(serviceAccountKey)) {
             credentialsProvider = NoCredentialsProvider.create();
@@ -167,15 +170,16 @@ public class GooglePubsubComponent extends DefaultComponent {
         return builder.build();
     }
 
-    public Subscriber getSubscriber(String subscriptionName, MessageReceiver messageReceiver, String serviceAccountKey)
+    public Subscriber getSubscriber(
+            String subscriptionName, MessageReceiver messageReceiver, String serviceAccountKey,
+            TransportChannelProvider channelProvider)
             throws IOException {
         Subscriber.Builder builder = Subscriber.newBuilder(subscriptionName, messageReceiver);
-        if (StringHelper.trimToNull(endpoint) != null) {
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(endpoint).usePlaintext().build();
-            TransportChannelProvider channelProvider
-                    = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+
+        if (channelProvider != null) {
             builder.setChannelProvider(channelProvider);
         }
+
         CredentialsProvider credentialsProvider;
         if (ObjectHelper.isEmpty(serviceAccountKey)) {
             credentialsProvider = NoCredentialsProvider.create();
@@ -188,16 +192,19 @@ public class GooglePubsubComponent extends DefaultComponent {
         return builder.build();
     }
 
-    public SubscriberStub getSubscriberStub(String serviceAccountKey) throws IOException {
+    public boolean requiresCustomTransportChannel() {
+        return StringHelper.trimToNull(endpoint) != null;
+    }
+
+    public SubscriberStub getSubscriberStub(String serviceAccountKey, TransportChannelProvider channelProvider)
+            throws IOException {
         SubscriberStubSettings.Builder builder = SubscriberStubSettings.newBuilder().setTransportChannelProvider(
                 SubscriberStubSettings.defaultGrpcTransportProviderBuilder().build());
 
-        if (StringHelper.trimToNull(endpoint) != null) {
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(endpoint).usePlaintext().build();
-            TransportChannelProvider channelProvider
-                    = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+        if (channelProvider != null) {
             builder.setTransportChannelProvider(channelProvider);
         }
+
         CredentialsProvider credentialsProvider;
         if (ObjectHelper.isEmpty(serviceAccountKey)) {
             credentialsProvider = NoCredentialsProvider.create();
@@ -208,6 +215,11 @@ public class GooglePubsubComponent extends DefaultComponent {
         }
         builder.setCredentialsProvider(credentialsProvider);
         return builder.build().createStub();
+    }
+
+    public TransportChannelProvider getCustomTransportChannel() {
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(endpoint).usePlaintext().build();
+        return FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
     }
 
     public String getEndpoint() {

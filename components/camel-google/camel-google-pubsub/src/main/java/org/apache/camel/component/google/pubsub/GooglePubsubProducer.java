@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.google.api.client.util.Strings;
 import com.google.api.core.ApiFuture;
+import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.pubsub.v1.Publisher;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
@@ -84,7 +85,13 @@ public class GooglePubsubProducer extends DefaultProducer {
         GooglePubsubEndpoint endpoint = (GooglePubsubEndpoint) getEndpoint();
         String topicName = String.format("projects/%s/topics/%s", endpoint.getProjectId(), endpoint.getDestinationName());
 
-        Publisher publisher = endpoint.getComponent().getPublisher(topicName, endpoint, endpoint.getServiceAccountKey());
+        TransportChannelProvider channelProvider = null;
+        if (endpoint.getComponent().requiresCustomTransportChannel()) {
+            channelProvider = endpoint.getComponent().getCustomTransportChannel();
+        }
+
+        Publisher publisher = endpoint.getComponent().getPublisher(topicName, endpoint, endpoint.getServiceAccountKey(),
+                channelProvider);
 
         Object body = exchange.getIn().getBody();
         ByteString byteString;
@@ -115,5 +122,13 @@ public class GooglePubsubProducer extends DefaultProducer {
 
         ApiFuture<String> messageIdFuture = publisher.publish(message);
         exchange.getIn().setHeader(GooglePubsubConstants.MESSAGE_ID, messageIdFuture.get());
+
+        if (channelProvider != null) {
+            try {
+                channelProvider.getTransportChannel().close();
+            } catch (Exception e) {
+                logger.warn("Error while closing the transport channel: {}", e.getMessage());
+            }
+        }
     }
 }

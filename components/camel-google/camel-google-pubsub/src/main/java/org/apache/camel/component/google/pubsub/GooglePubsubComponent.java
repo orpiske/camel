@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 import com.google.api.gax.core.CredentialsProvider;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.core.NoCredentialsProvider;
-import com.google.api.gax.grpc.GrpcTransportChannel;
-import com.google.api.gax.rpc.FixedTransportChannelProvider;
 import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.pubsub.v1.MessageReceiver;
@@ -37,8 +35,6 @@ import com.google.cloud.pubsub.v1.stub.SubscriberStubSettings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import org.apache.camel.Endpoint;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.annotations.Component;
@@ -82,6 +78,8 @@ public class GooglePubsubComponent extends DefaultComponent {
               description = "How many milliseconds should a producer be allowed to terminate.")
     private int publisherTerminationTimeout = 60000;
 
+    private TransportChannelProvider channelProvider;
+
     private RemovalListener<String, Publisher> removalListener = removal -> {
         Publisher publisher = removal.getValue();
         if (publisher == null) {
@@ -119,6 +117,8 @@ public class GooglePubsubComponent extends DefaultComponent {
         pubsubEndpoint.setDestinationName(parts[1]);
         pubsubEndpoint.setServiceAccountKey(serviceAccountKey);
 
+        channelProvider = GoogleResourceUtils.getChannelProvider(pubsubEndpoint);
+
         setProperties(pubsubEndpoint, parameters);
 
         return pubsubEndpoint;
@@ -126,25 +126,25 @@ public class GooglePubsubComponent extends DefaultComponent {
 
     @Override
     protected void doShutdown() throws Exception {
+        GoogleResourceUtils.closeChannelProvider(channelProvider);
+
         cachedPublishers.cleanUp();
         cachedPublishers.invalidateAll();
         super.doShutdown();
     }
 
     public Publisher getPublisher(
-            String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey,
-            TransportChannelProvider channelProvider)
+            String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey)
             throws ExecutionException {
         return cachedPublishers.get(topicName,
-                () -> buildPublisher(topicName, googlePubsubEndpoint, serviceAccountKey, channelProvider));
+                () -> buildPublisher(topicName, googlePubsubEndpoint, serviceAccountKey));
     }
 
     private Publisher buildPublisher(
-            String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey,
-            TransportChannelProvider channelProvider)
+            String topicName, GooglePubsubEndpoint googlePubsubEndpoint, String serviceAccountKey)
             throws IOException {
         Publisher.Builder builder = Publisher.newBuilder(topicName);
-        if (channelProvider != null) {
+        if (requiresCustomTransportChannel()) {
             builder.setChannelProvider(channelProvider);
         }
 
@@ -171,12 +171,11 @@ public class GooglePubsubComponent extends DefaultComponent {
     }
 
     public Subscriber getSubscriber(
-            String subscriptionName, MessageReceiver messageReceiver, String serviceAccountKey,
-            TransportChannelProvider channelProvider)
+            String subscriptionName, MessageReceiver messageReceiver, String serviceAccountKey)
             throws IOException {
         Subscriber.Builder builder = Subscriber.newBuilder(subscriptionName, messageReceiver);
 
-        if (channelProvider != null) {
+        if (requiresCustomTransportChannel()) {
             builder.setChannelProvider(channelProvider);
         }
 
@@ -193,15 +192,15 @@ public class GooglePubsubComponent extends DefaultComponent {
     }
 
     public boolean requiresCustomTransportChannel() {
-        return StringHelper.trimToNull(endpoint) != null;
+        return channelProvider != null || StringHelper.trimToNull(endpoint) != null;
     }
 
-    public SubscriberStub getSubscriberStub(String serviceAccountKey, TransportChannelProvider channelProvider)
+    public SubscriberStub getSubscriberStub(String serviceAccountKey)
             throws IOException {
         SubscriberStubSettings.Builder builder = SubscriberStubSettings.newBuilder().setTransportChannelProvider(
                 SubscriberStubSettings.defaultGrpcTransportProviderBuilder().build());
 
-        if (channelProvider != null) {
+        if (requiresCustomTransportChannel()) {
             builder.setTransportChannelProvider(channelProvider);
         }
 
@@ -215,11 +214,6 @@ public class GooglePubsubComponent extends DefaultComponent {
         }
         builder.setCredentialsProvider(credentialsProvider);
         return builder.build().createStub();
-    }
-
-    public TransportChannelProvider getCustomTransportChannel() {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(endpoint).usePlaintext().build();
-        return FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
     }
 
     public String getEndpoint() {

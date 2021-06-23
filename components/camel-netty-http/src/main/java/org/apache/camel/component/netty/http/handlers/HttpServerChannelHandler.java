@@ -341,7 +341,7 @@ public class HttpServerChannelHandler extends ServerChannelHandler {
     }
 
     @Override
-    protected Exchange createExchange(ChannelHandlerContext ctx, Object message) throws Exception {
+    protected Exchange createExchange(ChannelHandlerContext ctx, Object message) {
         Exchange exchange = this.consumer.createExchange(false);
 
         // create a new IN message as we cannot reuse with netty

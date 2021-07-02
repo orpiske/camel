@@ -1,4 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,6 +31,8 @@
 //DEPS org.apache.logging.log4j:log4j-slf4j-impl:2.13.3
 //DEPS info.picocli:picocli:4.5.0
 
+package main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,11 +53,11 @@ import org.apache.camel.spi.Resource;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
-
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+
 
 @Command(name = "run", description = "Run a Kamelet")
 class Run implements Callable<Integer> {
@@ -101,7 +104,7 @@ class Run implements Callable<Integer> {
         }
 
         System.setProperty("camel.main.routes-include-pattern", "file:" + binding);
-        System.setProperty("camel.main.name", "CamelJBang");
+        System.setProperty("camel.main.name", "main.CamelJBang");
 
         System.out.println("Starting Camel JBang!");
         KameletMain main = new KameletMain();

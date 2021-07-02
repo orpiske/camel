@@ -2,7 +2,7 @@
 	"catalogs": {},
 	"aliases": {
 	  "CamelJBang": {
-		"script-ref": "dsl/camel-jbang/CamelJBang.java",
+		"script-ref": "dsl/camel-jbang/dist/CamelJBang.java",
 		"description": "A JBang-based Camel app for running Kamelets"
 	  }
 	}

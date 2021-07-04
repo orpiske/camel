@@ -40,8 +40,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,13 +128,40 @@ class Run implements Callable<Integer> {
     }
 }
 
-@Command(name = "search", description = "Search for a Kamelet in the Kamelet catalog")
-class Search implements Callable<Integer> {
+interface Extractor {
+    void extract(String line)
+}
 
-    @Option(names = {"--search-term"}, defaultValue = "", description = "Default debug level")
-    private String searchTerm;
+class MatchExtractor implements Extractor {
+    @Override
+    public void extract(String line) {
+        Matcher matcher = pattern.matcher(line);
 
-    private void downloadResource(File indexFile) throws Exception {
+        if (matcher.find()) {
+            String kamelet = matcher.group(3).replace(".adoc", "");
+            String description = matcher.group(5);
+
+            System.out.printf("%-35s %-45s%n", kamelet, description);
+        }
+    }
+}
+
+
+
+abstract class AbstractSearch {
+    private String resourceLocation;
+    private Pattern pattern;
+
+    // Only used for the search subcommand
+    protected AbstractSearch() {
+    }
+
+    public AbstractSearch(String resourceLocation, Pattern pattern) {
+        this.resourceLocation = resourceLocation;
+        this.pattern = pattern;
+    }
+
+    protected void downloadResource(File indexFile) throws Exception {
         KameletMain main = new KameletMain();
         main.start();
         CamelContext context = main.getCamelContext();
@@ -141,7 +169,7 @@ class Search implements Callable<Integer> {
         try (GitHubResourceResolver resolver = new GitHubResourceResolver()) {
             resolver.setCamelContext(context);
 
-            Resource resource = resolver.resolve("github:apache:camel-kamelets:docs/modules/ROOT/nav.adoc");
+            Resource resource = resolver.resolve(resourceLocation);
 
             if (!resource.exists()) {
                 throw new Exception("The resource does not exist");
@@ -161,10 +189,8 @@ class Search implements Callable<Integer> {
      *
      * xref:ROOT:mariadb-sink.adoc[image:kamelets/mariadb-sink.svg[] MariaDB Sink]
      */
-    private void checkForMatches(String line) {
-        Pattern pat = Pattern.compile("(.*):(.*):(.*)\\[(.*)\\[\\] (.*)\\]");
-
-        Matcher matcher = pat.matcher(line);
+    private void checkForMatches(String line, String searchTerm) {
+        Matcher matcher = pattern.matcher(line);
 
         if (matcher.find()) {
             String description = matcher.group(5);
@@ -176,20 +202,18 @@ class Search implements Callable<Integer> {
         }
     }
 
-    private void printAll(String line) {
-        Pattern pat = Pattern.compile("(.*):(.*):(.*)\\[(.*)\\[\\] (.*)\\]");
+//    private void printAll(String line, String searchTerm) {
+//        Matcher matcher = pattern.matcher(line);
+//
+//        if (matcher.find()) {
+//            String kamelet = matcher.group(3).replace(".adoc", "");
+//            String description = matcher.group(5);
+//
+//            System.out.printf("%-35s %-45s%n", kamelet, description);
+//        }
+//    }
 
-        Matcher matcher = pat.matcher(line);
-
-        if (matcher.find()) {
-            String kamelet = matcher.group(3).replace(".adoc", "");
-            String description = matcher.group(5);
-
-            System.out.printf("%-35s %-45s%n", kamelet, description);
-        }
-    }
-
-    private void readFileByLine(File indexFile, Consumer<String> consumer) throws IOException, FileNotFoundException {
+    private void readFileByLine(File indexFile, String searchTerm, BiConsumer<String, String> consumer) throws IOException, FileNotFoundException {
         FileReader indexFileReader = new FileReader(indexFile);
         try (BufferedReader br = new BufferedReader(indexFileReader)) {
 
@@ -201,33 +225,95 @@ class Search implements Callable<Integer> {
                     break;
                 }
 
-                consumer.accept(line);
+                consumer.accept(line, searchTerm);
 
             } while (line != null);
         }
     }
 
-    @Override
-    public Integer call() throws Exception {
+    public abstract void printHeader();
+
+    public void search(String searchTerm) throws Exception {
         File indexFile = new File("index");
         indexFile.deleteOnExit();
 
         downloadResource(indexFile);
 
-        System.out.printf("%-35s %-45s%n", "KAMELET", "DESCRIPTION");
-        System.out.printf("%-35s %-45s%n", "-------", "-----------");
+        printHeader();
         if (!searchTerm.isEmpty()) {
-            readFileByLine(indexFile, this::checkForMatches);
+            readFileByLine(indexFile, searchTerm, this::checkForMatches);
         } else {
-            readFileByLine(indexFile, this::printAll);
+            readFileByLine(indexFile, searchTerm, this::printAll);
         }
+    }
+}
+
+@Command(name = "search", description = "Search for kameletes, components and patterns (use --help)")
+class Search extends AbstractSearch implements Callable<Integer> {
+    public Search() {
+        super(null, null);
+    }
+
+    public void printHeader() {}
+
+    @Override
+    public Integer call() throws Exception {
+        CommandLine.usage(this, System.out);
 
         return 0;
     }
 }
 
+@Command(name = "kamelets", description = "Search for a Kamelet in the Kamelet catalog")
+class SearchKamelets extends AbstractSearch implements Callable<Integer>  {
+
+    @Option(names = {"--search-term"}, defaultValue = "", description = "Default debug level")
+    private String searchTerm;
+
+    SearchKamelets() {
+        super("github:apache:camel-kamelets:docs/modules/ROOT/nav.adoc",
+                Pattern.compile("(.*):(.*):(.*)\\[(.*)\\[\\] (.*)\\]"));
+    }
+
+    @Override
+    public void printHeader() {
+        System.out.printf("%-35s %-45s%n", "KAMELET", "DESCRIPTION");
+        System.out.printf("%-35s %-45s%n", "-------", "-----------");
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        search(searchTerm);
+        return null;
+    }
+}
+
+@Command(name = "components", description = "Search for Camel Core components")
+class SearchComponents extends AbstractSearch implements Callable<Integer>  {
+
+    @Option(names = {"--search-term"}, defaultValue = "", description = "Default debug level")
+    private String searchTerm;
+
+    SearchComponents() {
+        super("github:apache:camel:docs/components/modules/ROOT/nav.adoc",
+                Pattern.compile("(.*):(.*)\\[(.*)\\]"));
+    }
+
+    @Override
+    public void printHeader() {
+        System.out.printf("%-35s %-45s%n", "COMPONENT", "DESCRIPTION");
+        System.out.printf("%-35s %-45s%n", "-------", "-----------");
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        search(searchTerm);
+        return null;
+    }
+}
+
 @Command(name = "CamelJBang", mixinStandardHelpOptions = true, version = "CamelJBang ${camel.jbang.version}",
-        description = "A JBang-based Camel app for running Kamelets", subcommands = { Run.class, Search.class})
+        description = "A JBang-based Camel app for running Kamelets")
 class CamelJBang implements Callable<Integer> {
     private static CommandLine commandLine;
 
@@ -236,7 +322,11 @@ class CamelJBang implements Callable<Integer> {
     }
 
     public static void main(String... args) {
-        commandLine = new CommandLine(new CamelJBang());
+        commandLine = new CommandLine(new CamelJBang())
+                .addSubcommand("run", new Run())
+                .addSubcommand("search", new CommandLine(new Search())
+                    .addSubcommand("kamelets", new SearchKamelets())
+                    .addSubcommand("components", new SearchComponents()));
 
         int exitCode = commandLine.execute(args);
         System.exit(exitCode);

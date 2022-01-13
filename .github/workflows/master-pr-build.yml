@@ -58,8 +58,6 @@ jobs:
       - id: test
         uses: ./.github/actions/quick-test
         with:
-#          start-commit: ${{ github.event.before }}
-#          end-commit: ${{ github.event.after }}
-          start-commit: b5ac74e85a12732b0492c4cc097776af362e4b21
-          end-commit: 8b7ad5f85322b459aeae8bf9c5799b6b691323d3
+          start-commit: ${{ github.event.before }}
+          end-commit: ${{ github.event.after }}
 

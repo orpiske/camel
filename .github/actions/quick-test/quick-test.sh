@@ -30,8 +30,7 @@ function notifySuccess() {
 	local total=$2
 	local current=$3
 
-	echo "${component} test completed successfully: ${current} verified / ${errors} errored"  | tee ${logDir}/test.log
-	# notify-pushover "${component} test completed successfully: ${current} verified / ${errors} errored @ ${testHost}"
+	echo "${component} test completed successfully: ${current} verified / ${errors} errored"
 }
 
 function notifyError() {
@@ -39,8 +38,7 @@ function notifyError() {
 	local total=$2
 	local current=$3
 
-	echo "Failed ${component} test: ${current} verified / ${errors} errored"  | tee ${logDir}/test.log
-	# notify-pushover "Failed ${component}: ${current} verified / ${errors} errored @ ${testHost}"
+	echo "Failed ${component} test: ${current} verified / ${errors} errored"
 }
 
 
@@ -49,10 +47,10 @@ function runTest() {
 	local total=$2
 	local current=$3
 
-	echo "############################################################"  | tee ${logDir}/test.log
-	echo "Testing component ${current} of ${total}: ${component}"  | tee ${logDir}/test.log
-	echo "############################################################"  | tee ${logDir}/test.log
-	echo ""  | tee ${logDir}/test.log
+	echo "############################################################"
+	echo "Testing component ${current} of ${total}: ${component}"
+	echo "############################################################"
+	echo ""
 
 	echo mvn -Psourcecheck ${MVN_OPTS} verify 2>&1 >> "${logDir}/${component/\//-}.log"
 	if [[ $? -ne 0 ]] ; then
@@ -82,10 +80,9 @@ function main() {
 	local total=$(echo "${components}" | wc -l)
 
 
-	# notify-pushover "Starting to test ${total} components"
 	mkdir -p ${logDir}
-	echo "Will test the following ${total} components:" | tee ${logDir}/test.log
-	echo "${components}" | tee ${logDir}/test.log
+	echo "::set-output name=count::Will test the following ${total} components:"
+	echo "${components}"
 
 	current=0
 	mkdir -p "${logDir}"
@@ -94,13 +91,8 @@ function main() {
 		componentTest "${component}" "${total}" "${current}"
 	done
 
-	echo "Finished verification: ${total} verified / ${errors} errored"  | tee ${logDir}/test.log
-#	notify-pushover "Finished verification: ${total} verified / ${errors} errored @ ${testHost}"
+	echo "::set-output name=result::Finished verification: ${total} verified / ${errors} errored"
 }
 
-
-pwd
-echo $1
-echo $2
 main "$@"
 

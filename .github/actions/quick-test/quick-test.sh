@@ -73,7 +73,7 @@ function main() {
   local endCommit=${2:-""}
 
   echo "Searching for modified components"
-  local components=$(git diff "${startCommit}^..${endCommit}" --name-only --pretty=format:"" | grep components | cut -d / -f 1-2 | uniq | sort)
+  local components=$(git diff "${startCommit}^..${endCommit}" --name-only --pretty=format:"" | cut -d / -f 1-2 | uniq | sort)
   local total=$(echo "${components}" | wc -l)
 
   echo "::set-output name=count::It will test the following ${total} components:"

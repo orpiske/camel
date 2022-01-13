@@ -83,8 +83,6 @@ function main() {
     exit 0
   fi
 
-
-
   echo "It will test the following ${total} components:"
   echo "${components}"
   echo "::set-output name=component-count::${total}"

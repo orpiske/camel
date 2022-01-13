@@ -1,0 +1,25 @@
+name: "Quick Test Runner"
+description: "Runs a tests only for the changed components"
+inputs:
+  start-commit:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: '1'
+  end-commit: # id of input
+    description: 'Who to greet'
+    required: true
+    default: '2'
+#outputs:
+#  random-number:
+#    description: "Random number"
+#    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+#    - run: echo Hello ${{ inputs.who-to-greet }}.
+#      shell: bash
+#    - id: random-number-generator
+#      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+#      shell: bash
+    - run: ${{ github.action_path }}/quick-test.sh ${{ inputs.start-commit }} ${{ inputs.end-commit }}
+      shell: bash

@@ -76,6 +76,15 @@ function main() {
   local components=$(git diff "${startCommit}^..${endCommit}" --name-only --pretty=format:"" | grep -e '^components' | grep -v -e '^$' | cut -d / -f 1-2 | uniq | sort)
   local total=$(echo "${components}" | grep -v -e '^$' | wc -l)
 
+  if [[ ${total} -eq 0 ]]; then
+    echo "::set-output name=result:: :camel: There are (likely) no components to be tested in this PR"
+    echo "::set-output name=component-count::0"
+    echo "::set-output name=failures-count::0"
+    exit 0
+  fi
+
+
+
   echo "It will test the following ${total} components:"
   echo "${components}"
   echo "::set-output name=component-count::${total}"

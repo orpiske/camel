@@ -60,7 +60,7 @@ jobs:
         uses: ./.github/actions/quick-test
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          start-commit: ${{ github.event.pull_request.base.ref }}
+          start-commit: ${{ github.event.pull_request.base.sha }}
           end-commit: ${{ github.event.after }}
 
 

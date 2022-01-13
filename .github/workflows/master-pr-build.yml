@@ -21,7 +21,6 @@ on:
   pull_request:
     branches:
       - main
-      - test-codeql
 
 jobs:
 #  checkstyle:
@@ -61,5 +60,3 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           start-commit: ${{ github.event.pull_request.base.sha }}
           end-commit: ${{ github.event.after }}
-
-

@@ -24,20 +24,20 @@ on:
       - test-codeql
 
 jobs:
-  checkstyle:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        persist-credentials: false
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin'
-        java-version: 11
-        cache: 'maven'
-    - name: mvn checkstyle
-      run: ./mvnw -V -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --no-transfer-progress  -Dcheckstyle.failOnViolation=true checkstyle:checkstyle
+#  checkstyle:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        persist-credentials: false
+#    - name: Set up JDK
+#      uses: actions/setup-java@v2
+#      with:
+#        distribution: 'temurin'
+#        java-version: 11
+#        cache: 'maven'
+#    - name: mvn checkstyle
+#      run: ./mvnw -V -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --no-transfer-progress  -Dcheckstyle.failOnViolation=true checkstyle:checkstyle
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -56,7 +56,7 @@ jobs:
 #      - name: maven build
 #        run: ./mvnw -V -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --no-transfer-progress -Pfastinstall -Dcheckstyle.skip=true -DskipTests install
       - id: test
-        uses: ./.github/actions/quick-test@v1
+        uses: ./.github/actions/quick-test
         with:
           start-commit: ${{ github.event.before }}
           end-commit: ${{ github.event.after }}

@@ -7,6 +7,9 @@ inputs:
   end-commit: # id of input
     description: 'End commit'
     required: true
+  github-token: # id of input
+    description: 'Github hub token'
+    required: true
 outputs:
   result:
     description: "Quick test result"
@@ -28,7 +31,7 @@ runs:
         RESULT: ${{ steps.quick-test.outputs.result }}
         COUNT: ${{ steps.quick-test.outputs.count }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
+        github-token: ${{inputs.github-token}}
         script: |
           const { RESULT, COUNT } = process.env
           

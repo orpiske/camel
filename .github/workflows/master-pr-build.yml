@@ -62,13 +62,18 @@ jobs:
           start-commit: ${{ github.event.before }}
           end-commit: ${{ github.event.after }}
       - uses: actions/github-script@v5
+        env:
+          RESULT: ${{ steps.test.outputs.result }}
+          COUNT: ${{ steps.test.outputs.count }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const { RESULT, COUNT } = process.env
+            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 ' + ${{ steps.test.outputs.result }} + ' '
+              body: '👋 ${COUNT} - ${RESULT}'
             })
 

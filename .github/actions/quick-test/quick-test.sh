@@ -76,7 +76,7 @@ function main() {
   local components=$(git diff "${startCommit}^..${endCommit}" --name-only --pretty=format:"" | grep components | cut -d / -f 1-2 | uniq | sort)
   local total=$(echo "${components}" | wc -l)
 
-  echo "::set-output name=count::Will test the following ${total} components:"
+  echo "::set-output name=count::It will test the following ${total} components:"
   echo "${components}"
 
   current=0

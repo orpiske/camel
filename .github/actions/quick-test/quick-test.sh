@@ -17,7 +17,7 @@
 
 MVN_DEFAULT_OPTS="-Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2"
 MVN_OPTS=${MVN_OPTS:-$MVN_DEFAULT_OPTS}
-errors=0
+failures=0
 basedir=$(pwd)
 testDate=$(date '+%Y-%m-%d-%H%M%S')
 logDir=${basedir}/automated-build-log/${testDate}
@@ -28,7 +28,7 @@ function notifySuccess() {
   local total=$2
   local current=$3
 
-  echo "${component} test completed successfully: ${current} verified / ${errors} errored"
+  echo "${component} test completed successfully: ${current} verified / ${failures} failed"
 }
 
 function notifyError() {
@@ -36,7 +36,7 @@ function notifyError() {
   local total=$2
   local current=$3
 
-  echo "Failed ${component} test: ${current} verified / ${errors} errored"
+  echo "Failed ${component} test: ${current} verified / ${failures} failed"
 }
 
 function runTest() {
@@ -51,10 +51,10 @@ function runTest() {
 
   echo mvn -Psourcecheck ${MVN_OPTS} verify 2>&1 >>"${logDir}/${component/\//-}.log"
   if [[ $? -ne 0 ]]; then
-    ((errors++))
-    notifyError "${component} test" "${total}" "${current}" "${errors}"
+    ((failures++))
+    notifyError "${component} test" "${total}" "${current}" "${failures}"
   else
-    notifySuccess "${component}" "${total}" "${current}" "${errors}"
+    notifySuccess "${component}" "${total}" "${current}" "${failures}"
   fi
 }
 
@@ -76,8 +76,9 @@ function main() {
   local components=$(git diff "${startCommit}^..${endCommit}" --name-only --pretty=format:"" | cut -d / -f 1-2 | uniq | sort)
   local total=$(echo "${components}" | wc -l)
 
-  echo "::set-output name=count::It will test the following ${total} components:"
+  echo "It will test the following ${total} components:"
   echo "${components}"
+  echo "::set-output name=component-count::${total}"
 
   current=0
   mkdir -p "${logDir}"
@@ -86,9 +87,15 @@ function main() {
     componentTest "${component}" "${total}" "${current}"
   done
 
-  echo "::set-output name=result::Finished verification: ${total} verified / ${errors} errored"
+  if [[ ${failures} -eq 0 ]]; then
+    echo "::set-output name=result:: :heavy_check_mark: Finished verification: ${total} verified / ${failures} failed"
+  else
+    echo "::set-output name=result:: :x: Finished verification: ${total} verified / ${failures} failed"
+  fi
+
+
+  echo "::set-output name=failures-count::${failures}"
+  exit "${failures}"
 }
 
-echo "Running ..."
 main "$@"
-echo "Done ..."

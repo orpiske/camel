@@ -78,7 +78,7 @@ function main() {
 	local startCommit=${1:-""}
 	local endCommit=${2:-""}
 
-	local components=$(git show ${startCommit} ${endCommit} --name-only --pretty=format:"" | grep components | cut -d /  -f 1-2 | uniq | sort)
+	local components=$(git show ${startCommit}^..${endCommit} --name-only --pretty=format:"" | grep components | cut -d /  -f 1-2 | uniq | sort)
 	local total=$(echo "${components}" | wc -l)
 
 

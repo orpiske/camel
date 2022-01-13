@@ -75,8 +75,8 @@ function componentTest() {
 
 function main() {
 	local current=0
-	local startCommit=$1
-	local endCommit=$2
+	local startCommit=${1:-""}
+	local endCommit=${2:-""}
 
 	local components=$(git show ${startCommit} ${endCommit} --name-only --pretty=format:"" | grep components | cut -d /  -f 1-2 | uniq | sort)
 	local total=$(echo "${components}" | wc -l)
@@ -100,5 +100,7 @@ function main() {
 
 
 pwd
+echo $1
+echo $2
 main "$@"
 

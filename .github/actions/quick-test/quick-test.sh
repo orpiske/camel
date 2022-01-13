@@ -73,7 +73,7 @@ function main() {
   local endCommit=${2:-""}
 
   echo "Searching for modified components"
-  local components=$(git diff "${startCommit}^..${endCommit}" --name-only --pretty=format:"" | grep -e '^components' | grep -v -e '^$' | cut -d / -f 1-2 | uniq | sort)
+  local components=$(git diff "${startCommit}" --name-only --pretty=format:"" | grep -e '^components' | grep -v -e '^$' | cut -d / -f 1-2 | uniq | sort)
   local total=$(echo "${components}" | grep -v -e '^$' | wc -l)
 
   if [[ ${total} -eq 0 ]]; then

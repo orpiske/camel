@@ -16,10 +16,7 @@
  */
 package org.apache.camel.component.cxf.jaxws;
 
-import org.w3c.dom.Node;
-
 import org.apache.camel.Exchange;
-import org.apache.camel.ExtendedExchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -30,6 +27,7 @@ import org.apache.camel.spi.Synchronization;
 import org.apache.camel.test.junit5.CamelTestSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.w3c.dom.Node;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,7 +71,7 @@ public class CxfConsumerStreamCacheTest extends CamelTestSupport {
                         cos.close();
                         exchange.getMessage().setBody(cos.newStreamCache());
 
-                        exchange.adapt(ExtendedExchange.class).addOnCompletion(new Synchronization() {
+                        exchange.getExchangeExtension().addOnCompletion(new Synchronization() {
                             @Override
                             public void onComplete(Exchange exchange) {
                                 template.sendBody("mock:onComplete", "");

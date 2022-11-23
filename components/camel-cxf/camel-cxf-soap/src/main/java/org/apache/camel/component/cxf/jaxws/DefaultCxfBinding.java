@@ -43,15 +43,9 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.ExchangePropertyKey;
-import org.apache.camel.ExtendedExchange;
 import org.apache.camel.attachment.AttachmentMessage;
 import org.apache.camel.attachment.DefaultAttachment;
 import org.apache.camel.component.cxf.common.CxfBinding;
@@ -96,6 +90,10 @@ import org.apache.cxf.service.model.OperationInfo;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * The Default CXF binding implementation.
@@ -223,7 +221,7 @@ public class DefaultCxfBinding implements CxfBinding, HeaderFilterStrategyAware 
      * @param cxfExchange
      */
     private void addAttachmentFileCloseUoW(Exchange camelExchange, org.apache.cxf.message.Exchange cxfExchange) {
-        camelExchange.adapt(ExtendedExchange.class).addOnCompletion(new SynchronizationAdapter() {
+        camelExchange.getExchangeExtension().addOnCompletion(new SynchronizationAdapter() {
             @Override
             public void onDone(org.apache.camel.Exchange exchange) {
                 Collection<Attachment> atts = cxfExchange.getInMessage().getAttachments();

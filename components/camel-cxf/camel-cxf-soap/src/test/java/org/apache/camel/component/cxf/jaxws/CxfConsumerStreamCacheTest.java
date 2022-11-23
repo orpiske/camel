@@ -16,8 +16,6 @@
  */
 package org.apache.camel.component.cxf.jaxws;
 
-import org.w3c.dom.Node;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
@@ -29,6 +27,7 @@ import org.apache.camel.spi.Synchronization;
 import org.apache.camel.test.junit5.CamelTestSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.w3c.dom.Node;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

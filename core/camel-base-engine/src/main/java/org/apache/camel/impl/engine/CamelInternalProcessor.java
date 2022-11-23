@@ -1027,7 +1027,7 @@ public class CamelInternalProcessor extends DelegateAsyncProcessor implements In
                     boolean contains = exchange.getUnitOfWork().containsSynchronization(tracingAfterRoute);
                     if (!contains) {
                         tracer.traceBeforeRoute(routeDefinition, exchange);
-                        exchange.adapt(ExtendedExchange.class).addOnCompletion(tracingAfterRoute);
+                        exchange.getExchangeExtension().addOnCompletion(tracingAfterRoute);
                     }
                 }
                 tracer.traceBeforeNode(processorDefinition, exchange);

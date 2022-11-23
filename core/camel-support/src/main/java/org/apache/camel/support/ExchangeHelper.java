@@ -291,11 +291,10 @@ public final class ExchangeHelper {
             copy.getIn().setMessageId(null);
         }
         // do not share the unit of work
-        ExtendedExchange ce = (ExtendedExchange) copy;
-        ce.setUnitOfWork(null);
+        copy.getExchangeExtension().setUnitOfWork(null);
         if (handover) {
             // Need to hand over the completion for async invocation
-            exchange.adapt(ExtendedExchange.class).handoverCompletions(ce);
+            exchange.getExchangeExtension().handoverCompletions(copy);
         }
         // set a correlation id so we can track back the original exchange
         copy.setProperty(ExchangePropertyKey.CORRELATION_ID, id);
@@ -813,9 +812,9 @@ public final class ExchangeHelper {
     public static Exchange copyExchangeAndSetCamelContext(Exchange exchange, CamelContext context, boolean handover) {
         DefaultExchange answer = new DefaultExchange(context, exchange.getPattern());
         if (exchange.hasProperties()) {
-            answer.setProperties(safeCopyProperties(exchange.getProperties()));
+            answer.getExchangeExtension().setProperties(safeCopyProperties(exchange.getProperties()));
         }
-        exchange.adapt(ExtendedExchange.class).copyInternalProperties(answer);
+        exchange.getExchangeExtension().copyInternalProperties(answer);
         // safe copy message history using a defensive copy
         List<MessageHistory> history
                 = (List<MessageHistory>) exchange.getProperty(ExchangePropertyKey.MESSAGE_HISTORY);
@@ -826,7 +825,7 @@ public final class ExchangeHelper {
 
         if (handover) {
             // Need to hand over the completion for async invocation
-            exchange.adapt(ExtendedExchange.class).handoverCompletions(answer);
+            exchange.getExchangeExtension().handoverCompletions(answer);
         }
         answer.setIn(exchange.getIn().copy());
         if (exchange.hasOut()) {

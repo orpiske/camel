@@ -267,6 +267,11 @@ public interface Exchange {
     String XSLT_FATAL_ERROR = "CamelXsltFatalError";
     String XSLT_WARNING = "CamelXsltWarning";
 
+    /*
+     * {@link Exchange} extensions which contains the methods and APIs that are not intended for Camel end users but
+     * used internally by Camel for optimization purposes, SPI, custom components, or more advanced used-cases with
+     * Camel.
+     */
     interface ExchangeExtension {
         /**
          * If there is an existing inbound message of the given type then return it as-is, otherwise return null.
@@ -486,9 +491,12 @@ public interface Exchange {
      * <p/>
      * For example to adapt to <tt>ExtendedExchange</tt>.
      *
+     * This method is deprecated. Use the getter to {@link Exchange.ExchangeExtension}.
+     *
      * @param  type the type to adapt to
      * @return      this {@link org.apache.camel.Exchange} adapted to the given type
      */
+    @Deprecated
     <T extends Exchange> T adapt(Class<T> type);
 
     /**

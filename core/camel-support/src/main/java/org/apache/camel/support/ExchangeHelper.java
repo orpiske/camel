@@ -37,7 +37,6 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.ExchangePropertyKey;
-import org.apache.camel.ExtendedExchange;
 import org.apache.camel.Message;
 import org.apache.camel.MessageHistory;
 import org.apache.camel.NoSuchBeanException;
@@ -329,7 +328,7 @@ public final class ExchangeHelper {
      * @param source the source exchange which is not modified
      */
     public static void copyResults(Exchange target, Exchange source) {
-        doCopyResults((ExtendedExchange) target, (ExtendedExchange) source, false);
+        doCopyResults(target, source, false);
     }
 
     /**
@@ -340,10 +339,10 @@ public final class ExchangeHelper {
      * @param source source exchange.
      */
     public static void copyResultsPreservePattern(Exchange target, Exchange source) {
-        doCopyResults((ExtendedExchange) target, (ExtendedExchange) source, true);
+        doCopyResults(target, source, true);
     }
 
-    private static void doCopyResults(ExtendedExchange result, ExtendedExchange source, boolean preserverPattern) {
+    private static void doCopyResults(Exchange result, Exchange source, boolean preserverPattern) {
         if (result == source) {
             // we just need to ensure MEP is as expected (eg copy result to OUT if out capable)
             // and the result is not failed
@@ -389,15 +388,15 @@ public final class ExchangeHelper {
         if (source.hasProperties()) {
             result.getProperties().putAll(source.getProperties());
         }
-        source.adapt(ExtendedExchange.class).copyInternalProperties(result);
+        source.getExchangeExtension().copyInternalProperties(result);
 
         // copy over state
         result.setRouteStop(source.isRouteStop());
         result.setRollbackOnly(source.isRollbackOnly());
         result.setRollbackOnlyLast(source.isRollbackOnlyLast());
-        result.setNotifyEvent(source.isNotifyEvent());
-        result.setRedeliveryExhausted(source.isRedeliveryExhausted());
-        result.setErrorHandlerHandled(source.getErrorHandlerHandled());
+        result.getExchangeExtension().setNotifyEvent(source.getExchangeExtension().isNotifyEvent());
+        result.getExchangeExtension().setRedeliveryExhausted(source.getExchangeExtension().isRedeliveryExhausted());
+        result.getExchangeExtension().setErrorHandlerHandled(source.getExchangeExtension().getErrorHandlerHandled());
         result.setException(source.getException());
     }
 

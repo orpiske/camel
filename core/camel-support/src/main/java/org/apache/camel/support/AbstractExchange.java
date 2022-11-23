@@ -55,6 +55,193 @@ import static org.apache.camel.support.MessageHelper.copyBody;
  */
 class AbstractExchange implements ExtendedExchange {
 
+    public class ExtendedExchangeExtension implements ExchangeExtension {
+        private final AbstractExchange exchange;
+
+        private ExtendedExchangeExtension(AbstractExchange exchange) {
+            this.exchange = exchange;
+        }
+
+        @Override
+        public void setFromEndpoint(Endpoint fromEndpoint) {
+            this.exchange.fromEndpoint = fromEndpoint;
+        }
+
+        @Override
+        public void setFromRouteId(String fromRouteId) {
+            exchange.fromRouteId = fromRouteId;
+        }
+
+        /**
+         * Is stream caching disabled on the given exchange
+         */
+        public boolean isStreamCacheDisabled() {
+            return this.exchange.streamCacheDisabled;
+        }
+
+        /**
+         * Used to force disabling stream caching which some components can do in special use-cases.
+         */
+        public void setStreamCacheDisabled(boolean streamCacheDisabled) {
+            this.exchange.streamCacheDisabled = streamCacheDisabled;
+        }
+
+        @Override
+        public void addOnCompletion(Synchronization onCompletion) {
+            this.exchange.addOnCompletion(onCompletion);
+        }
+
+        @Override
+        public boolean isErrorHandlerHandledSet() {
+            return this.exchange.isErrorHandlerHandledSet();
+        }
+
+        @Override
+        public Boolean getErrorHandlerHandled() {
+            return this.exchange.errorHandlerHandled;
+        }
+
+        @Override
+        public void setErrorHandlerHandled(Boolean errorHandlerHandled) {
+            this.exchange.errorHandlerHandled = errorHandlerHandled;
+        }
+
+        @Override
+        public boolean isErrorHandlerHandled() {
+            return this.exchange.errorHandlerHandled;
+        }
+
+        @Override
+        public boolean isRedeliveryExhausted() {
+            return this.exchange.redeliveryExhausted;
+        }
+
+        @Override
+        public void setRedeliveryExhausted(boolean redeliveryExhausted) {
+            this.exchange.redeliveryExhausted = redeliveryExhausted;
+        }
+
+        @Override
+        public void handoverCompletions(Exchange target) {
+            this.exchange.handoverCompletions(target);
+        }
+
+        @Override
+        public List<Synchronization> handoverCompletions() {
+            return this.exchange.handoverCompletions();
+        }
+
+        @Override
+        public void setUnitOfWork(UnitOfWork unitOfWork) {
+            this.exchange.setUnitOfWork(unitOfWork);
+        }
+
+        @Override
+        public void copyInternalProperties(Exchange target) {
+            this.exchange.copyInternalProperties(target);
+        }
+
+        @Override
+        public void setProperties(Map<String, Object> properties) {
+            this.exchange.setProperties(properties);
+        }
+
+        @Override
+        public void setHistoryNodeId(String historyNodeId) {
+            this.exchange.historyNodeId = historyNodeId;
+        }
+
+        @Override
+        public String getHistoryNodeId() {
+            return this.exchange.historyNodeId;
+        }
+
+        @Override
+        public String getHistoryNodeSource() {
+            return this.exchange.historyNodeSource;
+        }
+
+        @Override
+        public void setHistoryNodeSource(String historyNodeSource) {
+            this.exchange.historyNodeSource = historyNodeSource;
+        }
+
+        @Override
+        public String getHistoryNodeLabel() {
+            return this.exchange.historyNodeSource;
+        }
+
+        @Override
+        public void setHistoryNodeLabel(String historyNodeLabel) {
+            this.exchange.historyNodeLabel = historyNodeLabel;
+        }
+
+        @Override
+        public boolean isNotifyEvent() {
+            return this.exchange.notifyEvent;
+        }
+
+        @Override
+        public void setNotifyEvent(boolean notifyEvent) {
+            this.exchange.notifyEvent = notifyEvent;
+        }
+
+        @Override
+        public Map<String, Object> getInternalProperties() {
+            return this.exchange.getInternalProperties();
+        }
+
+        @Override
+        public boolean containsOnCompletion(Synchronization onCompletion) {
+            return this.exchange.containsOnCompletion(onCompletion);
+        }
+
+        @Override
+        public void setTransacted(boolean transacted) {
+            this.exchange.transacted = transacted;
+        }
+
+        @Override
+        public void setInterruptable(boolean interruptable) {
+            this.exchange.interruptable = interruptable;
+        }
+
+        @Override
+        public boolean isInterrupted() {
+            return this.exchange.interrupted;
+        }
+
+        @Override
+        public void setInterrupted(boolean interrupted) {
+            this.exchange.setInterrupted(interrupted);
+        }
+
+        @Override
+        public <T> T getInOrNull(Class<T> type) {
+            return this.exchange.getInOrNull(type);
+        }
+
+        @Override
+        public AsyncCallback getDefaultConsumerCallback() {
+            return this.exchange.defaultConsumerCallback;
+        }
+
+        @Override
+        public void setDefaultConsumerCallback(AsyncCallback callback) {
+            this.exchange.defaultConsumerCallback = callback;
+        }
+
+        @Override
+        public void setSafeCopyProperty(String key, SafeCopyProperty value) {
+            this.exchange.setSafeCopyProperty(key, value);
+        }
+
+        @Override
+        public <T> T getSafeCopyProperty(String key, Class<T> type) {
+            return this.exchange.getSafeCopyProperty(key, type);
+        }
+    }
+
     // number of elements in array
     static final int INTERNAL_LENGTH = ExchangePropertyKey.values().length;
     // empty array for reset
@@ -90,17 +277,19 @@ class AbstractExchange implements ExtendedExchange {
     Boolean errorHandlerHandled;
     AsyncCallback defaultConsumerCallback; // optimize (do not reset)
     Map<String, SafeCopyProperty> safeCopyProperties;
+    private final ExtendedExchangeExtension privateExtension;
+
 
     public AbstractExchange(CamelContext context) {
-        this.context = context;
-        this.pattern = ExchangePattern.InOnly;
-        this.created = System.currentTimeMillis();
+        this(context, ExchangePattern.InOnly);
     }
 
     public AbstractExchange(CamelContext context, ExchangePattern pattern) {
         this.context = context;
         this.pattern = pattern;
         this.created = System.currentTimeMillis();
+
+        privateExtension = new ExtendedExchangeExtension(this);
     }
 
     public AbstractExchange(Exchange parent) {
@@ -110,6 +299,8 @@ class AbstractExchange implements ExtendedExchange {
         this.fromEndpoint = parent.getFromEndpoint();
         this.fromRouteId = parent.getFromRouteId();
         this.unitOfWork = parent.getUnitOfWork();
+
+        privateExtension = new ExtendedExchangeExtension(this);
     }
 
     public AbstractExchange(Endpoint fromEndpoint) {
@@ -117,6 +308,8 @@ class AbstractExchange implements ExtendedExchange {
         this.pattern = fromEndpoint.getExchangePattern();
         this.created = System.currentTimeMillis();
         this.fromEndpoint = fromEndpoint;
+
+        privateExtension = new ExtendedExchangeExtension(this);
     }
 
     public AbstractExchange(Endpoint fromEndpoint, ExchangePattern pattern) {
@@ -124,6 +317,8 @@ class AbstractExchange implements ExtendedExchange {
         this.pattern = pattern;
         this.created = System.currentTimeMillis();
         this.fromEndpoint = fromEndpoint;
+
+        privateExtension = new ExtendedExchangeExtension(this);
     }
 
     @Override
@@ -969,5 +1164,11 @@ class AbstractExchange implements ExtendedExchange {
 
         return ExchangeHelper.convertToType(this, type, value);
     }
+
+
+    public ExtendedExchangeExtension getExchangeExtension() {
+        return privateExtension;
+    }
+
 
 }

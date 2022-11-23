@@ -26,6 +26,7 @@ import org.apache.camel.spi.UnitOfWork;
  * Extended {@link Exchange} which contains the methods and APIs that are not intended for Camel end users but used
  * internally by Camel for optimization purposes, SPI, custom components, or more advanced used-cases with Camel.
  */
+@Deprecated
 public interface ExtendedExchange extends Exchange {
 
     /**

@@ -56,6 +56,7 @@ class AbstractExchange implements Exchange {
 
     public class ExtendedExchangeExtension implements ExchangeExtension {
         private final AbstractExchange exchange;
+        private boolean failureHandled;
 
         private ExtendedExchangeExtension(AbstractExchange exchange) {
             this.exchange = exchange;
@@ -238,6 +239,16 @@ class AbstractExchange implements Exchange {
         @Override
         public <T> T getSafeCopyProperty(String key, Class<T> type) {
             return this.exchange.getSafeCopyProperty(key, type);
+        }
+
+        @Override
+        public boolean isFailureHandled() {
+            return failureHandled;
+        }
+
+        @Override
+        public void setFailureHandled(boolean failureHandled) {
+            this.failureHandled = failureHandled;
         }
     }
 

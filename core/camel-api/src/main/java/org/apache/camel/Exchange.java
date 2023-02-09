@@ -125,6 +125,7 @@ public interface Exchange {
     @Deprecated
     String EXTERNAL_REDELIVERED = "CamelExternalRedelivered";
 
+    @Deprecated
     String FAILURE_HANDLED = "CamelFailureHandled";
     String FAILURE_ENDPOINT = "CamelFailureEndpoint";
     String FAILURE_ROUTE_ID = "CamelFailureRouteId";
@@ -484,6 +485,10 @@ public interface Exchange {
          * This is only used when pooled exchange is enabled for optimization and reducing object allocations.
          */
         void setDefaultConsumerCallback(AsyncCallback callback);
+
+        boolean isFailureHandled();
+
+        void setFailureHandled(boolean failureHandled);
     }
 
     /**

@@ -30,6 +30,7 @@ import org.apache.camel.spi.UnitOfWork;
 
 public class ExtendedExchangeExtension implements ExchangeExtension {
     private final AbstractExchange exchange;
+    private boolean failureHandled;
 
     ExtendedExchangeExtension(AbstractExchange exchange) {
         this.exchange = exchange;
@@ -212,5 +213,15 @@ public class ExtendedExchangeExtension implements ExchangeExtension {
     @Override
     public <T> T getSafeCopyProperty(String key, Class<T> type) {
         return this.exchange.getSafeCopyProperty(key, type);
+    }
+
+    @Override
+    public boolean isFailureHandled() {
+        return failureHandled;
+    }
+
+    @Override
+    public void setFailureHandled(boolean failureHandled) {
+        this.failureHandled = failureHandled;
     }
 }

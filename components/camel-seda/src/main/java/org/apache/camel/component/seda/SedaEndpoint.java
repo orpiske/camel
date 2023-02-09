@@ -100,6 +100,8 @@ public class SedaEndpoint extends DefaultEndpoint implements AsyncEndpoint, Brow
     private boolean discardIfNoConsumers;
 
     private BlockingQueueFactory<Exchange> queueFactory;
+    private String key;
+    private QueueReference ref;
 
     public SedaEndpoint() {
         queueFactory = new LinkedBlockingQueueFactory<>();
@@ -213,8 +215,14 @@ public class SedaEndpoint extends DefaultEndpoint implements AsyncEndpoint, Brow
      * @return the reference, or <tt>null</tt> if no queue reference exists.
      */
     public synchronized QueueReference getQueueReference() {
-        String key = getComponent().getQueueKey(getEndpointUri());
-        QueueReference ref = getComponent().getQueueReference(key);
+        if (key == null) {
+            key = getComponent().getQueueKey(getEndpointUri());
+        }
+
+        if (ref == null) {
+            ref = getComponent().getQueueReference(key);
+        }
+
         return ref;
     }
 

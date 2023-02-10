@@ -71,7 +71,7 @@ public final class EndpointHelper {
         // which is a little complex depending on the placeholder is from context-path or query parameters
         // in the uri string
         try {
-            uri = camelContext.adapt(ExtendedCamelContext.class).resolvePropertyPlaceholders(uri, true);
+            uri = camelContext.getCamelContextExtension().resolvePropertyPlaceholders(uri, true);
             if (uri == null || uri.isEmpty()) {
                 return uri;
             }

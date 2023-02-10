@@ -226,6 +226,11 @@ public abstract class AbstractCamelContext extends BaseService
         public boolean isEventNotificationApplicable() {
             return camelContext.isEventNotificationApplicable();
         }
+
+        @Override
+        public String resolvePropertyPlaceholders(String text, boolean keepUnresolvedOptional) {
+            return camelContext.resolvePropertyPlaceholders(text, keepUnresolvedOptional);
+        }
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractCamelContext.class);

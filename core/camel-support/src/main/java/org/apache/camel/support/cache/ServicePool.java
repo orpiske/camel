@@ -233,14 +233,20 @@ abstract class ServicePool<S extends Service> extends ServiceSupport implements 
             if (s == null) {
                 synchronized (this) {
                     if (s == null) {
-                        LOG.trace("Creating service from endpoint: {}", endpoint);
+                        if (LOG.isTraceEnabled()) {
+                            LOG.trace("Creating service from endpoint: {}", endpoint);
+                        }
+
                         S tempS = creator.apply(endpoint);
                         endpoint.getCamelContext().addService(tempS, true, true);
                         s = tempS;
                     }
                 }
             }
-            LOG.trace("Acquired service: {}", s);
+
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Acquired service: {}", s);
+            }
             return s;
         }
 
@@ -248,8 +254,9 @@ abstract class ServicePool<S extends Service> extends ServiceSupport implements 
         public void release(S s) {
             cleanupEvicts();
 
-            // noop
-            LOG.trace("Released service: {}", s);
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Released service: {}", s);
+            }
         }
 
         @Override

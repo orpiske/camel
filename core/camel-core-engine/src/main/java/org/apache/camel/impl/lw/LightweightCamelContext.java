@@ -26,6 +26,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.CamelContextExtension;
 import org.apache.camel.CatalogCamelContext;
 import org.apache.camel.Component;
 import org.apache.camel.ConsumerTemplate;
@@ -2205,4 +2206,8 @@ public class LightweightCamelContext implements ExtendedCamelContext, CatalogCam
         delegate.start();
     }
 
+    @Override
+    public CamelContextExtension getCamelContextExtension() {
+        return delegate.getCamelContextExtension();
+    }
 }

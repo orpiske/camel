@@ -1501,4 +1501,6 @@ public interface CamelContext extends CamelContextLifecycle, RuntimeConfiguratio
      */
     StartupSummaryLevel getStartupSummaryLevel();
 
+    CamelContextExtension getCamelContextExtension();
+
 }

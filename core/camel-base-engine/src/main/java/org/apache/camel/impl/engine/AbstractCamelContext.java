@@ -46,6 +46,7 @@ import java.util.function.Supplier;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelContextAware;
+import org.apache.camel.CamelContextExtension;
 import org.apache.camel.CatalogCamelContext;
 import org.apache.camel.Component;
 import org.apache.camel.Consumer;
@@ -367,6 +368,8 @@ public abstract class AbstractCamelContext extends BaseService
     private SSLContextParameters sslContextParameters;
     private StartupSummaryLevel startupSummaryLevel = StartupSummaryLevel.Default;
     private boolean logJvmUptime;
+    private final ExtendedCamelContextExtension extendedCamelContextExtension;
+
 
     /**
      * Creates the {@link CamelContext} using {@link org.apache.camel.support.DefaultRegistry} as registry.
@@ -424,6 +427,8 @@ public abstract class AbstractCamelContext extends BaseService
                 throw new RuntimeException("Error initializing CamelContext", e);
             }
         }
+
+        this.extendedCamelContextExtension = new ExtendedCamelContextExtension(this);
     }
 
     protected static <T> T lookup(CamelContext context, String ref, Class<T> type) {
@@ -5539,5 +5544,10 @@ public abstract class AbstractCamelContext extends BaseService
             }
             Thread.currentThread().setContextClassLoader(tccl);
         }
+    }
+
+    @Override
+    public CamelContextExtension getCamelContextExtension() {
+        return extendedCamelContextExtension;
     }
 }

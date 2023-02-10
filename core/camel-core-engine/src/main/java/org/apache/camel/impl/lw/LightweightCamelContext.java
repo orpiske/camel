@@ -2205,4 +2205,8 @@ public class LightweightCamelContext implements ExtendedCamelContext, CatalogCam
         delegate.start();
     }
 
+    @Override
+    public CamelContextExtension getCamelContextExtension() {
+        return delegate.getCamelContextExtension();
+    }
 }

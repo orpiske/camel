@@ -205,6 +205,29 @@ import static org.apache.camel.spi.UnitOfWork.MDC_CAMEL_CONTEXT_ID;
 public abstract class AbstractCamelContext extends BaseService
         implements ExtendedCamelContext, CatalogCamelContext, Suspendable {
 
+    public class ExtendedCamelContextExtension implements CamelContextExtension {
+        private final AbstractCamelContext camelContext;
+
+        public ExtendedCamelContextExtension(AbstractCamelContext camelContext) {
+            this.camelContext = camelContext;
+        }
+
+        @Override
+        public AsyncProcessorAwaitManager getAsyncProcessorAwaitManager() {
+            return camelContext.getAsyncProcessorAwaitManager();
+        }
+
+        @Override
+        public HeadersMapFactory getHeadersMapFactory() {
+            return camelContext.getHeadersMapFactory();
+        }
+
+        @Override
+        public boolean isEventNotificationApplicable() {
+            return camelContext.isEventNotificationApplicable();
+        }
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger(AbstractCamelContext.class);
 
     // start auto assigning route ids using numbering 1000 and upwards
@@ -367,6 +390,8 @@ public abstract class AbstractCamelContext extends BaseService
     private SSLContextParameters sslContextParameters;
     private StartupSummaryLevel startupSummaryLevel = StartupSummaryLevel.Default;
     private boolean logJvmUptime;
+    private final ExtendedCamelContextExtension extendedCamelContextExtension;
+
 
     /**
      * Creates the {@link CamelContext} using {@link org.apache.camel.support.DefaultRegistry} as registry.
@@ -424,6 +449,8 @@ public abstract class AbstractCamelContext extends BaseService
                 throw new RuntimeException("Error initializing CamelContext", e);
             }
         }
+
+        this.extendedCamelContextExtension = new ExtendedCamelContextExtension(this);
     }
 
     protected static <T> T lookup(CamelContext context, String ref, Class<T> type) {
@@ -5539,5 +5566,10 @@ public abstract class AbstractCamelContext extends BaseService
             }
             Thread.currentThread().setContextClassLoader(tccl);
         }
+    }
+
+    @Override
+    public CamelContextExtension getCamelContextExtension() {
+        return extendedCamelContextExtension;
     }
 }

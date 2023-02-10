@@ -219,6 +219,7 @@ public class LightweightRuntimeCamelContext implements ExtendedCamelContext, Cat
     private final String version;
     private Date startDate;
     private StartupSummaryLevel startupSummaryLevel;
+    private CamelContextExtension extendedCamelContextExtension;
 
     LightweightRuntimeCamelContext(CamelContext reference, CamelContext context) {
         this.reference = reference;
@@ -248,7 +249,7 @@ public class LightweightRuntimeCamelContext implements ExtendedCamelContext, Cat
         modelineFactory = context.adapt(ExtendedCamelContext.class).getModelineFactory();
         processorExchangeFactory = context.adapt(ExtendedCamelContext.class).getProcessorExchangeFactory();
         reactiveExecutor = context.adapt(ExtendedCamelContext.class).getReactiveExecutor();
-        asyncProcessorAwaitManager = context.adapt(ExtendedCamelContext.class).getAsyncProcessorAwaitManager();
+        asyncProcessorAwaitManager = context.getCamelContextExtension().getAsyncProcessorAwaitManager();
         executorServiceManager = context.getExecutorServiceManager();
         shutdownStrategy = context.getShutdownStrategy();
         applicationContextClassLoader = context.getApplicationContextClassLoader();
@@ -276,6 +277,8 @@ public class LightweightRuntimeCamelContext implements ExtendedCamelContext, Cat
         logExhaustedMessageBody = context.isLogExhaustedMessageBody();
         version = context.getVersion();
         startupSummaryLevel = context.getStartupSummaryLevel();
+
+        extendedCamelContextExtension = context.getCamelContextExtension();
     }
 
     /**
@@ -2332,5 +2335,10 @@ public class LightweightRuntimeCamelContext implements ExtendedCamelContext, Cat
         }
         CamelContextAware.trySetCamelContext(service, reference);
         service.start();
+    }
+
+    @Override
+    public CamelContextExtension getCamelContextExtension() {
+        return extendedCamelContextExtension;
     }
 }

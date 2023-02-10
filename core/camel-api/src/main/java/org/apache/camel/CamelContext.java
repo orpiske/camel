@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.camel.spi.AsyncProcessorAwaitManager;
 import org.apache.camel.spi.CamelContextNameStrategy;
 import org.apache.camel.spi.ClassResolver;
 import org.apache.camel.spi.DataFormat;
@@ -29,6 +30,7 @@ import org.apache.camel.spi.DataType;
 import org.apache.camel.spi.Debugger;
 import org.apache.camel.spi.EndpointRegistry;
 import org.apache.camel.spi.ExecutorServiceManager;
+import org.apache.camel.spi.HeadersMapFactory;
 import org.apache.camel.spi.InflightRepository;
 import org.apache.camel.spi.Injector;
 import org.apache.camel.spi.Language;
@@ -81,6 +83,24 @@ import org.apache.camel.vault.VaultConfiguration;
  * method.
  */
 public interface CamelContext extends CamelContextLifecycle, RuntimeConfiguration {
+
+    interface CamelContextExtension {
+        AsyncProcessorAwaitManager getAsyncProcessorAwaitManager();
+
+        /**
+         * Gets the {@link HeadersMapFactory} to use.
+         */
+        HeadersMapFactory getHeadersMapFactory();
+
+        /**
+         * Whether exchange event notification is applicable (possible). This API is used internally in Camel as
+         * optimization.
+         *
+         * This is <b>only</b> for exchange events as this allows Camel to optimize to avoid preparing exchange events if
+         * there are no event listeners that are listening for exchange events.
+         */
+        boolean isEventNotificationApplicable();
+    }
 
     /**
      * Adapts this {@link org.apache.camel.CamelContext} to the specialized type.
@@ -1500,5 +1520,7 @@ public interface CamelContext extends CamelContextLifecycle, RuntimeConfiguratio
      * Controls the level of information logged during startup (and shutdown) of {@link CamelContext}.
      */
     StartupSummaryLevel getStartupSummaryLevel();
+
+    CamelContextExtension getCamelContextExtension();
 
 }

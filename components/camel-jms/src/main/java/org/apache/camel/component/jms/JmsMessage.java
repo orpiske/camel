@@ -48,8 +48,18 @@ public class JmsMessage extends DefaultMessage {
             this.jmsMessage = message;
         }
 
-        public boolean isTransactedRedelivered() {
-            return JmsMessageHelper.getJMSRedelivered(jmsMessage.jmsMessage);
+        public TransactedRedeliveryState transactedRedeliveredState() {
+            final Boolean jmsRedelivered = JmsMessageHelper.getJMSRedelivered(jmsMessage.jmsMessage);
+
+            if (jmsRedelivered == null) {
+                return TransactedRedeliveryState.UNDEFINED;
+            } else {
+                if (jmsRedelivered == true) {
+                    return TransactedRedeliveryState.IS_REDELIVERY;
+                }
+            }
+
+            return TransactedRedeliveryState.NON_REDELIVERY;
         }
     }
 

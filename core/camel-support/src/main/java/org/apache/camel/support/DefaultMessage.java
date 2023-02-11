@@ -46,8 +46,8 @@ public class DefaultMessage extends MessageSupport {
         }
 
         @Override
-        public boolean isTransactedRedelivered() {
-            return false;
+        public TransactedRedeliveryState transactedRedeliveredState() {
+            return TransactedRedeliveryState.UNDEFINED;
         }
 
         @Override

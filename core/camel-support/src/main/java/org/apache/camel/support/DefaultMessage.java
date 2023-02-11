@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
+import org.apache.camel.spi.DataType;
 import org.apache.camel.ExtendedCamelContext;
 import org.apache.camel.spi.HeadersMapFactory;
 
@@ -37,24 +38,56 @@ import org.apache.camel.spi.HeadersMapFactory;
  * implementation uses the {@link org.apache.camel.util.CaseInsensitiveMap CaseInsensitiveMap}.
  */
 public class DefaultMessage extends MessageSupport {
-    private Map<String, Object> headers;
-    private static final MessageTrait DEFAULT_MESSAGE_TRAIT = new MessageTrait() {
+    public static class DefaultMessageTrait implements MessageTrait {
+        private final DefaultMessage message;
+
+        public DefaultMessageTrait(DefaultMessage message) {
+            this.message = message;
+        }
+
         @Override
         public boolean isTransactedRedelivered() {
             return false;
         }
-    };
+
+        @Override
+        public boolean isDataAware() {
+            return true;
+        }
+
+        @Override
+        public boolean hasDataType() {
+            return message.hasDataType();
+        }
+
+        @Override
+        public void setDataType(DataType dataType) {
+            message.setDataType(dataType);
+        }
+
+        @Override
+        public DataType getDataType() {
+            return message.getDataType();
+        }
+    }
+
+    private Map<String, Object> headers;
+    private final MessageTrait defaultMessageTrait;
 
     public DefaultMessage(Exchange exchange) {
         setExchange(exchange);
         if (exchange != null) {
             setCamelContext(exchange.getContext());
         }
+
+        defaultMessageTrait = new DefaultMessageTrait(this);
     }
 
     public DefaultMessage(CamelContext camelContext) {
         this.camelContext = (ExtendedCamelContext) camelContext;
         this.typeConverter = camelContext.getTypeConverter();
+
+        defaultMessageTrait = new DefaultMessageTrait(this);
     }
 
     @Override
@@ -290,13 +323,13 @@ public class DefaultMessage extends MessageSupport {
 
     @Override
     public void setHeaders(Map<String, Object> headers) {
-        HeadersMapFactory factory = camelContext.getHeadersMapFactory();
+        HeadersMapFactory factory = camelContext.adapt(ExtendedCamelContext.class).getHeadersMapFactory();
         if (factory != null) {
             if (factory.isInstanceOf(headers)) {
                 this.headers = headers;
             } else {
                 // create a new map
-                this.headers = camelContext.getHeadersMapFactory().newMap(headers);
+                this.headers = camelContext.adapt(ExtendedCamelContext.class).getHeadersMapFactory().newMap(headers);
             }
         } else {
             // should not really happen but some tests rely on using camel context that is not started
@@ -327,7 +360,7 @@ public class DefaultMessage extends MessageSupport {
     protected Map<String, Object> createHeaders() {
         Map<String, Object> map;
 
-        HeadersMapFactory factory = camelContext.getHeadersMapFactory();
+        HeadersMapFactory factory = camelContext.adapt(ExtendedCamelContext.class).getHeadersMapFactory();
         if (factory != null) {
             map = factory.newMap();
         } else {
@@ -356,6 +389,6 @@ public class DefaultMessage extends MessageSupport {
 
     @Override
     public MessageTrait getMessageTraits() {
-        return DEFAULT_MESSAGE_TRAIT;
+        return defaultMessageTrait;
     }
 }

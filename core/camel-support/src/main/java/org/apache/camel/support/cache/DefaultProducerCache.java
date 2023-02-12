@@ -60,6 +60,9 @@ public class DefaultProducerCache extends ServiceSupport implements ProducerCach
     private boolean extendedStatistics;
     private int maxCacheSize;
 
+    private Endpoint lastUsedEndpoint;
+    private AsyncProducer lastUsedProducer;
+
     public DefaultProducerCache(Object source, CamelContext camelContext, int cacheSize) {
         this.source = source;
         this.camelContext = camelContext;
@@ -121,11 +124,20 @@ public class DefaultProducerCache extends ServiceSupport implements ProducerCach
 
     @Override
     public AsyncProducer acquireProducer(Endpoint endpoint) {
+        // Try to favor thread locality as some data in the producer's cache may be shared among threads,
+        // triggering cases of false sharing
+        if (endpoint == lastUsedEndpoint) {
+            return lastUsedProducer;
+        }
+
         try {
             AsyncProducer producer = producers.acquire(endpoint);
             if (statistics != null) {
                 statistics.onHit(endpoint.getEndpointUri());
             }
+            lastUsedEndpoint = endpoint;
+            lastUsedProducer = producer;
+
             return producer;
         } catch (Throwable e) {
             throw new FailedToCreateProducerException(endpoint, e);

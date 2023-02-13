@@ -84,9 +84,7 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
             return;
         }
 
-        boolean begin = event instanceof ExchangeCreatedEvent;
-        boolean complete = event instanceof ExchangeCompletedEvent || event instanceof ExchangeFailedEvent;
-        boolean reloaded = event instanceof RouteReloadedEvent;
+        boolean reloaded = event.getType() == CamelEvent.Type.RouteReloaded;
 
         if (reloaded) {
             if (restartDuration) {
@@ -100,6 +98,7 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
             return;
         }
 
+        boolean complete = event.getType() == CamelEvent.Type.ExchangeCompleted || event.getType() == CamelEvent.Type.ExchangeFailed;
         if (maxMessages > 0 && complete) {
             boolean result = doneMessages.incrementAndGet() >= maxMessages;
             LOG.trace("Duration max messages check {} >= {} -> {}", doneMessages.get(), maxMessages, result);
@@ -118,6 +117,7 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
             }
         }
 
+        boolean begin = event.getType() == CamelEvent.Type.ExchangeCreated;
         // idle reacts on both incoming and complete messages
         if (maxIdleSeconds > 0 && (begin || complete)) {
             if (watch != null) {
@@ -129,8 +129,8 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
 
     @Override
     public boolean isEnabled(CamelEvent event) {
-        return event instanceof ExchangeCreatedEvent || event instanceof ExchangeCompletedEvent
-                || event instanceof ExchangeFailedEvent || event instanceof RouteReloadedEvent;
+        return event.getType() == CamelEvent.Type.ExchangeCreated || event.getType() == CamelEvent.Type.ExchangeCreated
+                || event.getType() == CamelEvent.Type.ExchangeFailed || event.getType() == CamelEvent.Type.RouteReloaded;
     }
 
     @Override

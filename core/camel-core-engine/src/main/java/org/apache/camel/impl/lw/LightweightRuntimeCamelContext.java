@@ -1764,22 +1764,12 @@ public class LightweightRuntimeCamelContext implements ExtendedCamelContext, Cat
     }
 
     @Override
-    public ExchangeFactory getExchangeFactory() {
-        return exchangeFactory;
-    }
-
-    @Override
     public ExchangeFactoryManager getExchangeFactoryManager() {
         return exchangeFactoryManager;
     }
 
     @Override
     public void setExchangeFactoryManager(ExchangeFactoryManager exchangeFactoryManager) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setExchangeFactory(ExchangeFactory exchangeFactory) {
         throw new UnsupportedOperationException();
     }
 

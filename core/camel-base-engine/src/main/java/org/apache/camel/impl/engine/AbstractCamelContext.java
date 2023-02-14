@@ -5161,8 +5161,8 @@ public abstract class AbstractCamelContext extends BaseService
         this.runtimeCamelCatalog = doAddService(runtimeCamelCatalog);
     }
 
-    @Override
-    public ExchangeFactory getExchangeFactory() {
+
+    ExchangeFactory getExchangeFactory() {
         if (exchangeFactory == null) {
             synchronized (lock) {
                 if (exchangeFactory == null) {
@@ -5173,8 +5173,7 @@ public abstract class AbstractCamelContext extends BaseService
         return exchangeFactory;
     }
 
-    @Override
-    public void setExchangeFactory(ExchangeFactory exchangeFactory) {
+    void setExchangeFactory(ExchangeFactory exchangeFactory) {
         // automatic inject camel context
         exchangeFactory.setCamelContext(this);
         this.exchangeFactory = exchangeFactory;

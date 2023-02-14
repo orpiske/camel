@@ -230,16 +230,6 @@ public interface ExtendedCamelContext extends CamelContext {
     List<Service> getServices();
 
     /**
-     * Gets the exchange factory to use.
-     */
-    ExchangeFactory getExchangeFactory();
-
-    /**
-     * Sets a custom exchange factory to use.
-     */
-    void setExchangeFactory(ExchangeFactory exchangeFactory);
-
-    /**
      * Gets the exchange factory manager to use.
      */
     ExchangeFactoryManager getExchangeFactoryManager();

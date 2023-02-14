@@ -50,8 +50,8 @@ import org.apache.camel.util.concurrent.SynchronousExecutorService;
  */
 public class DefaultProducerTemplate extends ServiceSupport implements ProducerTemplate {
     private final CamelContext camelContext;
-    private volatile ProducerCache producerCache;
-    private volatile ExecutorService executor;
+    private ProducerCache producerCache;
+    private ExecutorService executor;
     private Endpoint defaultEndpoint;
     private int maximumCacheSize;
     private boolean eventNotifierEnabled = true;

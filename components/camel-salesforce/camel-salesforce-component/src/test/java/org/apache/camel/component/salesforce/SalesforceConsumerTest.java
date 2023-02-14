@@ -107,7 +107,7 @@ public class SalesforceConsumerTest {
         when(endpoint.getConfiguration()).thenReturn(configuration);
         when(endpoint.getCamelContext()).thenReturn(context);
         when(context.adapt(ExtendedCamelContext.class)).thenReturn(context);
-        when(context.getExchangeFactory()).thenReturn(exchangeFactory);
+        when(context.getCamelContextExtension().getExchangeFactory()).thenReturn(exchangeFactory);
         when(exchangeFactory.newExchangeFactory(any())).thenReturn(exchangeFactory);
         when(exchangeFactory.create(endpoint, true)).thenReturn(exchange);
         when(exchange.getExchangeExtension()).thenReturn(exchangeExtension);

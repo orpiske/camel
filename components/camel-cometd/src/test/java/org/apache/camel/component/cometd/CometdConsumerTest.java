@@ -74,7 +74,7 @@ public class CometdConsumerTest {
 
         when(endpoint.getCamelContext()).thenReturn(context);
         when(context.adapt(ExtendedCamelContext.class)).thenReturn(context);
-        when(context.getExchangeFactory()).thenReturn(exchangeFactory);
+        when(context.getCamelContextExtension().getExchangeFactory()).thenReturn(exchangeFactory);
         when(exchangeFactory.newExchangeFactory(any())).thenReturn(exchangeFactory);
 
         testObj = new CometdConsumer(endpoint, processor);

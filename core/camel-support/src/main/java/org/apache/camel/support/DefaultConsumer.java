@@ -61,7 +61,7 @@ public class DefaultConsumer extends ServiceSupport implements Consumer, RouteAw
         this.asyncProcessor = AsyncProcessorConverterHelper.convert(processor);
         this.exceptionHandler = new LoggingExceptionHandler(endpoint.getCamelContext(), getClass());
         // create a per consumer exchange factory
-        this.exchangeFactory = endpoint.getCamelContext().adapt(ExtendedCamelContext.class)
+        this.exchangeFactory = endpoint.getCamelContext().getCamelContextExtension()
                 .getExchangeFactory().newExchangeFactory(this);
     }
 

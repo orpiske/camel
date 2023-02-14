@@ -71,7 +71,7 @@ public class MailConsumerAuthenticatorTest {
 
         when(sender.getSession()).thenReturn(session);
         when(ecc.adapt(ExtendedCamelContext.class)).thenReturn(ecc);
-        when(ecc.getExchangeFactory()).thenReturn(ef);
+        when(ecc.getCamelContextExtension().getExchangeFactory()).thenReturn(ef);
         when(ef.newExchangeFactory(any())).thenReturn(ef);
 
         MailConsumer consumer = new MailConsumer(endpoint, processor, sender);

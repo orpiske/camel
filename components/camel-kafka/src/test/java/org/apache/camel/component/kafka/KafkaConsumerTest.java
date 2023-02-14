@@ -41,7 +41,7 @@ public class KafkaConsumerTest {
     public void consumerRequiresBootstrapServers() {
         when(endpoint.getCamelContext()).thenReturn(ecc);
         when(ecc.adapt(ExtendedCamelContext.class)).thenReturn(ecc);
-        when(ecc.getExchangeFactory()).thenReturn(ef);
+        when(ecc.getCamelContextExtension().getExchangeFactory()).thenReturn(ef);
         when(ef.newExchangeFactory(any())).thenReturn(ef);
         when(endpoint.getComponent()).thenReturn(component);
         when(endpoint.getConfiguration()).thenReturn(configuration);
@@ -58,7 +58,7 @@ public class KafkaConsumerTest {
     public void consumerOnlyRequiresBootstrapServers() {
         when(endpoint.getCamelContext()).thenReturn(ecc);
         when(ecc.adapt(ExtendedCamelContext.class)).thenReturn(ecc);
-        when(ecc.getExchangeFactory()).thenReturn(ef);
+        when(ecc.getCamelContextExtension().getExchangeFactory()).thenReturn(ef);
         when(ef.newExchangeFactory(any())).thenReturn(ef);
         when(endpoint.getComponent()).thenReturn(component);
         when(endpoint.getConfiguration()).thenReturn(configuration);

@@ -174,7 +174,7 @@ public class Pipeline extends AsyncProcessorSupport implements Navigate<Processo
 
     @Override
     protected void doBuild() throws Exception {
-        boolean pooled = camelContext.adapt(ExtendedCamelContext.class).getExchangeFactory().isPooled();
+        boolean pooled = camelContext.getCamelContextExtension().getExchangeFactory().isPooled();
         if (pooled) {
             taskFactory = new PooledTaskFactory(getId()) {
                 @Override
@@ -182,7 +182,7 @@ public class Pipeline extends AsyncProcessorSupport implements Navigate<Processo
                     return new PipelineTask();
                 }
             };
-            int capacity = camelContext.adapt(ExtendedCamelContext.class).getExchangeFactory().getCapacity();
+            int capacity = camelContext.getCamelContextExtension().getExchangeFactory().getCapacity();
             taskFactory.setCapacity(capacity);
         } else {
             taskFactory = new PrototypeTaskFactory() {

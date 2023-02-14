@@ -45,7 +45,7 @@ class PooledExchangeTest extends ContextTestSupport {
         ExtendedCamelContext ecc = (ExtendedCamelContext) super.createCamelContext();
         ecc.getCamelContextExtension().setExchangeFactory(new PooledExchangeFactory());
         ecc.setProcessorExchangeFactory(new PooledProcessorExchangeFactory());
-        ecc.getExchangeFactory().setStatisticsEnabled(true);
+        ecc.getCamelContextExtension().getExchangeFactory().setStatisticsEnabled(true);
         ecc.getProcessorExchangeFactory().setStatisticsEnabled(true);
 
         return ecc;

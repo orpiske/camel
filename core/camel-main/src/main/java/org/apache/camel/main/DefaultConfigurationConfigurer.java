@@ -149,9 +149,9 @@ public final class DefaultConfigurationConfigurer {
             ecc.getCamelContextExtension().setExchangeFactory(new PrototypeExchangeFactory());
             ecc.setProcessorExchangeFactory(new PrototypeProcessorExchangeFactory());
         }
-        ecc.getExchangeFactory().setCapacity(config.getExchangeFactoryCapacity());
+        ecc.getCamelContextExtension().getExchangeFactory().setCapacity(config.getExchangeFactoryCapacity());
         ecc.getProcessorExchangeFactory().setCapacity(config.getExchangeFactoryCapacity());
-        ecc.getExchangeFactory().setStatisticsEnabled(config.isExchangeFactoryStatisticsEnabled());
+        ecc.getCamelContextExtension().getExchangeFactory().setStatisticsEnabled(config.isExchangeFactoryStatisticsEnabled());
         ecc.getProcessorExchangeFactory().setStatisticsEnabled(config.isExchangeFactoryStatisticsEnabled());
 
         if (!config.isJmxEnabled()) {

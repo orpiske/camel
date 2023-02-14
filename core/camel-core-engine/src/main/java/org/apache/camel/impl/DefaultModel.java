@@ -586,7 +586,7 @@ public class DefaultModel implements Model {
                 // and memorize so the script is only evaluated once and the local bean is the same
                 // if a route template refers to the local bean multiple times
                 routeTemplateContext.bind(beanFactory.getName(), clazz, Suppliers.memorize(() -> {
-                    ExchangeFactory ef = camelContext.adapt(ExtendedCamelContext.class).getExchangeFactory();
+                    ExchangeFactory ef = camelContext.getCamelContextExtension().getExchangeFactory();
                     Exchange dummy = ef.create(false);
                     try {
                         String text = ScriptHelper.resolveOptionalExternalScript(camelContext, dummy, script);

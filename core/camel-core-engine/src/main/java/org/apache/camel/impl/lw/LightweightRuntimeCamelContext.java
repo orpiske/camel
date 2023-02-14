@@ -245,7 +245,7 @@ public class LightweightRuntimeCamelContext implements ExtendedCamelContext, Cat
                 = context.adapt(ExtendedCamelContext.class).getDependencyInjectionAnnotationFactory();
         headersMapFactory = context.adapt(ExtendedCamelContext.class).getHeadersMapFactory();
         cliConnectorFactory = context.adapt(ExtendedCamelContext.class).getCliConnectorFactory();
-        exchangeFactory = context.adapt(ExtendedCamelContext.class).getExchangeFactory();
+        exchangeFactory = context.getCamelContextExtension().getExchangeFactory();
         exchangeFactoryManager = context.adapt(ExtendedCamelContext.class).getExchangeFactoryManager();
         modelineFactory = context.adapt(ExtendedCamelContext.class).getModelineFactory();
         processorExchangeFactory = context.adapt(ExtendedCamelContext.class).getProcessorExchangeFactory();

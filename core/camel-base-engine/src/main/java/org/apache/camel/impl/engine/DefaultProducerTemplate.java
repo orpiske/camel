@@ -745,9 +745,6 @@ public class DefaultProducerTemplate extends ServiceSupport implements ProducerT
     }
 
     private org.apache.camel.spi.ProducerCache getProducerCache() {
-        if (!isStarted()) {
-            throw new IllegalStateException("ProducerTemplate has not been started");
-        }
         return producerCache;
     }
 

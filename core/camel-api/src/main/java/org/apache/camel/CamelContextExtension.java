@@ -18,6 +18,7 @@
 package org.apache.camel;
 
 import org.apache.camel.spi.AsyncProcessorAwaitManager;
+import org.apache.camel.spi.ExchangeFactory;
 import org.apache.camel.spi.HeadersMapFactory;
 
 public interface CamelContextExtension {
@@ -50,4 +51,14 @@ public interface CamelContextExtension {
      *                                  them
      */
     String resolvePropertyPlaceholders(String text, boolean keepUnresolvedOptional);
+
+    /**
+     * Gets the exchange factory to use.
+     */
+    ExchangeFactory getExchangeFactory();
+
+    /**
+     * Sets a custom exchange factory to use.
+     */
+    void setExchangeFactory(ExchangeFactory exchangeFactory);
 }

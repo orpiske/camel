@@ -39,7 +39,7 @@ public class FileConsumerDeleteExchangePooledTest extends ContextTestSupport {
         context.getExchangeFactoryManager().setStatisticsEnabled(true);
 
         PooledExchangeFactory pef = new PooledExchangeFactory();
-        context.setExchangeFactory(pef);
+        context.getCamelContextExtension().setExchangeFactory(pef);
 
         context.getExchangeFactory().setStatisticsEnabled(true);
         context.getProcessorExchangeFactory().setStatisticsEnabled(true);

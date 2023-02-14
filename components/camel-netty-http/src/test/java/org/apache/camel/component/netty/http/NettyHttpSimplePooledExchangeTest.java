@@ -41,7 +41,7 @@ public class NettyHttpSimplePooledExchangeTest extends BaseNettyTest {
     protected CamelContext createCamelContext() throws Exception {
         ExtendedCamelContext ecc = (ExtendedCamelContext) super.createCamelContext();
 
-        ecc.setExchangeFactory(new PooledExchangeFactory());
+        ecc.getCamelContextExtension().setExchangeFactory(new PooledExchangeFactory());
         ecc.setProcessorExchangeFactory(new PooledProcessorExchangeFactory());
         ecc.getExchangeFactory().setStatisticsEnabled(true);
         ecc.getProcessorExchangeFactory().setStatisticsEnabled(true);

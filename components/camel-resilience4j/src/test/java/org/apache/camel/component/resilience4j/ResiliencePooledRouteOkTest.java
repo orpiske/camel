@@ -41,7 +41,7 @@ public class ResiliencePooledRouteOkTest extends CamelTestSupport {
     @Override
     protected CamelContext createCamelContext() throws Exception {
         CamelContext context = super.createCamelContext();
-        context.adapt(ExtendedCamelContext.class).setExchangeFactory(new PooledExchangeFactory());
+        context.getCamelContextExtension().setExchangeFactory(new PooledExchangeFactory());
 
         bi = context.adapt(ExtendedCamelContext.class).getBeanIntrospection();
         bi.setLoggingLevel(LoggingLevel.INFO);

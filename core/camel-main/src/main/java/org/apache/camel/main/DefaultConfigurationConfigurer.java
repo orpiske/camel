@@ -143,10 +143,10 @@ public final class DefaultConfigurationConfigurer {
         ecc.getBeanIntrospection().afterPropertiesConfigured(camelContext);
 
         if ("pooled".equals(config.getExchangeFactory())) {
-            ecc.setExchangeFactory(new PooledExchangeFactory());
+            ecc.getCamelContextExtension().setExchangeFactory(new PooledExchangeFactory());
             ecc.setProcessorExchangeFactory(new PooledProcessorExchangeFactory());
         } else if ("prototype".equals(config.getExchangeFactory())) {
-            ecc.setExchangeFactory(new PrototypeExchangeFactory());
+            ecc.getCamelContextExtension().setExchangeFactory(new PrototypeExchangeFactory());
             ecc.setProcessorExchangeFactory(new PrototypeProcessorExchangeFactory());
         }
         ecc.getExchangeFactory().setCapacity(config.getExchangeFactoryCapacity());
@@ -460,7 +460,7 @@ public final class DefaultConfigurationConfigurer {
         }
         ExchangeFactory exf = getSingleBeanOfType(registry, ExchangeFactory.class);
         if (exf != null) {
-            ecc.setExchangeFactory(exf);
+            ecc.getCamelContextExtension().setExchangeFactory(exf);
         }
         Set<TypeConverters> tcs = registry.findByType(TypeConverters.class);
         if (!tcs.isEmpty()) {

@@ -1641,12 +1641,12 @@ public class LightweightCamelContext implements ExtendedCamelContext, CatalogCam
 
     @Override
     public ExchangeFactory getExchangeFactory() {
-        return getExtendedCamelContext().getExchangeFactory();
+        return getCamelContextExtension().getExchangeFactory();
     }
 
     @Override
     public void setExchangeFactory(ExchangeFactory exchangeFactory) {
-        getExtendedCamelContext().setExchangeFactory(exchangeFactory);
+        getCamelContextExtension().setExchangeFactory(exchangeFactory);
     }
 
     @Override

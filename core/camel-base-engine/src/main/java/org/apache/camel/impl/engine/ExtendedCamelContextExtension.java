@@ -19,6 +19,7 @@ package org.apache.camel.impl.engine;
 
 import org.apache.camel.CamelContextExtension;
 import org.apache.camel.spi.AsyncProcessorAwaitManager;
+import org.apache.camel.spi.ExchangeFactory;
 import org.apache.camel.spi.HeadersMapFactory;
 
 public class ExtendedCamelContextExtension implements CamelContextExtension {
@@ -46,5 +47,15 @@ public class ExtendedCamelContextExtension implements CamelContextExtension {
     @Override
     public String resolvePropertyPlaceholders(String text, boolean keepUnresolvedOptional) {
         return camelContext.resolvePropertyPlaceholders(text, keepUnresolvedOptional);
+    }
+
+    @Override
+    public ExchangeFactory getExchangeFactory() {
+        return camelContext.getExchangeFactory();
+    }
+
+    @Override
+    public void setExchangeFactory(ExchangeFactory exchangeFactory) {
+        camelContext.setExchangeFactory(exchangeFactory);
     }
 }

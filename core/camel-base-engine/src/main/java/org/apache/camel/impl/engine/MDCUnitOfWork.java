@@ -323,4 +323,10 @@ public class MDCUnitOfWork extends DefaultUnitOfWork implements Service {
         }
     }
 
+    @Override
+    public void done(Exchange exchange) {
+        super.done(exchange);
+
+        clear();
+    }
 }

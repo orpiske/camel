@@ -53,9 +53,6 @@ public final class UnitOfWorkHelper {
         // unit of work is done
         try {
             uow.done(exchange);
-            if (uow instanceof Service) {
-                ServiceHelper.stopService(uow);
-            }
         } catch (Throwable e) {
             LOG.warn("Exception occurred during done UnitOfWork for Exchange: {}. This exception will be ignored.",
                     exchange, e);

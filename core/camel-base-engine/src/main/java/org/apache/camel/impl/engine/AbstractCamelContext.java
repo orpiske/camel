@@ -51,7 +51,6 @@ import org.apache.camel.Component;
 import org.apache.camel.Consumer;
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.Endpoint;
-import org.apache.camel.ErrorHandlerFactory;
 import org.apache.camel.ExtendedCamelContext;
 import org.apache.camel.FailedToStartComponentException;
 import org.apache.camel.FluentProducerTemplate;
@@ -1886,10 +1885,6 @@ public abstract class AbstractCamelContext extends BaseService
         this.managementMBeanAssembler = doAddService(managementMBeanAssembler, false);
     }
 
-    public boolean isAutoCreateComponents() {
-        return autoCreateComponents;
-    }
-
     public void setAutoCreateComponents(boolean autoCreateComponents) {
         this.autoCreateComponents = autoCreateComponents;
     }
@@ -1949,10 +1944,6 @@ public abstract class AbstractCamelContext extends BaseService
         return routePolicyFactories;
     }
 
-    public void setRoutePolicyFactories(List<RoutePolicyFactory> routePolicyFactories) {
-        this.routePolicyFactories = routePolicyFactories;
-    }
-
     @Override
     public void addRoutePolicyFactory(RoutePolicyFactory routePolicyFactory) {
         // avoid adding double which can happen with spring xml on spring boot
@@ -2009,14 +2000,6 @@ public abstract class AbstractCamelContext extends BaseService
     @Override
     public void setBacklogTracing(Boolean backlogTrace) {
         this.backlogTrace = backlogTrace;
-    }
-
-    public Boolean getBacklogTraceStandby() {
-        return backlogTraceStandby;
-    }
-
-    public void setBacklogTraceStandby(Boolean backlogTraceStandby) {
-        this.backlogTraceStandby = backlogTraceStandby;
     }
 
     @Override
@@ -2121,10 +2104,6 @@ public abstract class AbstractCamelContext extends BaseService
             throw RuntimeCamelException.wrapRuntimeCamelException(e);
         }
         return answer;
-    }
-
-    public void setErrorHandlerExecutorService(ScheduledExecutorService errorHandlerExecutorService) {
-        this.errorHandlerExecutorService = errorHandlerExecutorService;
     }
 
     protected ScheduledExecutorService createErrorHandlerExecutorService() {
@@ -4682,9 +4661,5 @@ public abstract class AbstractCamelContext extends BaseService
 
     List<RouteStartupOrder> getRouteStartupOrder() {
         return routeStartupOrder;
-    }
-
-    protected ScheduledExecutorService getErrorHandlerExecutorService() {
-        return camelContextExtension.getErrorHandlerExecutorService();
     }
 }

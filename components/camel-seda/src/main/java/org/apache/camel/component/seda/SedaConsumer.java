@@ -138,12 +138,17 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
 
     protected void doRun() {
         BlockingQueue<Exchange> queue = getEndpoint().getQueue();
-        ServiceStatus serviceStatus = getStatus();
-
         // loop while we are allowed, or if we are stopping loop until the queue is empty
-        while (queue != null && isRunAllowed(serviceStatus)) {
+        while (queue != null) {
+            final ServiceStatus contextStatus = getEndpoint().getCamelContext().getStatus();
+            final ServiceStatus consumerStatus = getStatus();
+
+            if (!isRunAllowed(consumerStatus)) {
+                break;
+            }
+
             // do not poll during CamelContext is starting, as we should only poll when CamelContext is fully started
-            if (serviceStatus.isStarting()) {
+            if (contextStatus.isStarting()) {
                 LOG.trace("CamelContext is starting so skip polling");
                 try {
                     // sleep at most 1 sec
@@ -151,11 +156,12 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
                 } catch (InterruptedException e) {
                     LOG.debug("Sleep interrupted, are we stopping? {}", isStopping() || isStopped());
                 }
+
                 continue;
             }
 
             // do not poll if we are suspended or starting again after resuming
-            if (ServiceHelper.isSuspendingOrSuspended(serviceStatus) || serviceStatus.isStarting()) {
+            if (ServiceHelper.isSuspendingOrSuspended(consumerStatus) || consumerStatus.isStarting()) {
                 if (shutdownPending && queue.isEmpty()) {
                     LOG.trace(
                             "Consumer is suspended and shutdown is pending, so this consumer thread is breaking out because the task queue is empty.");
@@ -211,8 +217,6 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
                     getExceptionHandler().handleException(e);
                 }
             }
-
-            serviceStatus = getStatus();
         }
     }
 

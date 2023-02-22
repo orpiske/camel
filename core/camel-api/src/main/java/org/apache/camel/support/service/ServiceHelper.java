@@ -26,6 +26,7 @@ import org.apache.camel.Channel;
 import org.apache.camel.Navigate;
 import org.apache.camel.Processor;
 import org.apache.camel.Service;
+import org.apache.camel.ServiceStatus;
 import org.apache.camel.ShutdownableService;
 import org.apache.camel.StatefulService;
 import org.apache.camel.Suspendable;
@@ -514,6 +515,14 @@ public final class ServiceHelper {
                 }
             }
         }
+    }
+
+    public static boolean isSuspendingOrSuspended(ServiceStatus serviceStatus) {
+        return serviceStatus.isSuspending() || serviceStatus.isSuspended();
+    }
+
+    public static boolean isRunAllowed(ServiceStatus serviceStatus) {
+        return serviceStatus.isStarting() || serviceStatus.isStarted() || serviceStatus.isSuspending() || serviceStatus.isSuspended();
     }
 
 }

@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.camel.AsyncProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.ServiceStatus;
 import org.apache.camel.ShutdownRunningTask;
 import org.apache.camel.Suspendable;
 import org.apache.camel.spi.ShutdownAware;
@@ -34,6 +35,7 @@ import org.apache.camel.support.DefaultConsumer;
 import org.apache.camel.support.EmptyAsyncCallback;
 import org.apache.camel.support.ExchangeHelper;
 import org.apache.camel.support.UnitOfWorkHelper;
+import org.apache.camel.support.service.ServiceHelper;
 import org.apache.camel.util.ObjectHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,19 +109,19 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
         }
     }
 
-    @Override
-    public boolean isRunAllowed() {
+    public boolean isRunAllowed(ServiceStatus serviceStatus) {
         // if we force shutdown then do not allow running anymore
         if (forceShutdown) {
             return false;
         }
 
-        if (isSuspending() || isSuspended()) {
+        if (ServiceHelper.isSuspendingOrSuspended(serviceStatus)) {
             // allow to run even if we are suspended as we want to
             // keep the thread task running
             return true;
         }
-        return super.isRunAllowed();
+
+        return ServiceHelper.isRunAllowed(serviceStatus);
     }
 
     @Override
@@ -136,11 +138,12 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
 
     protected void doRun() {
         BlockingQueue<Exchange> queue = getEndpoint().getQueue();
-        // loop while we are allowed, or if we are stopping loop until the queue is empty
-        while (queue != null && isRunAllowed()) {
+        ServiceStatus serviceStatus = getStatus();
 
+        // loop while we are allowed, or if we are stopping loop until the queue is empty
+        while (queue != null && isRunAllowed(serviceStatus)) {
             // do not poll during CamelContext is starting, as we should only poll when CamelContext is fully started
-            if (getEndpoint().getCamelContext().getStatus().isStarting()) {
+            if (serviceStatus.isStarting()) {
                 LOG.trace("CamelContext is starting so skip polling");
                 try {
                     // sleep at most 1 sec
@@ -152,7 +155,7 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
             }
 
             // do not poll if we are suspended or starting again after resuming
-            if (isSuspending() || isSuspended() || isStarting()) {
+            if (ServiceHelper.isSuspendingOrSuspended(serviceStatus) || serviceStatus.isStarting()) {
                 if (shutdownPending && queue.isEmpty()) {
                     LOG.trace(
                             "Consumer is suspended and shutdown is pending, so this consumer thread is breaking out because the task queue is empty.");
@@ -201,7 +204,6 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
                 }
             } catch (InterruptedException e) {
                 LOG.debug("Sleep interrupted, are we stopping? {}", isStopping() || isStopped());
-                continue;
             } catch (Throwable e) {
                 if (exchange != null) {
                     getExceptionHandler().handleException("Error processing exchange", exchange, e);
@@ -209,6 +211,8 @@ public class SedaConsumer extends DefaultConsumer implements Runnable, ShutdownA
                     getExceptionHandler().handleException(e);
                 }
             }
+
+            serviceStatus = getStatus();
         }
     }
 

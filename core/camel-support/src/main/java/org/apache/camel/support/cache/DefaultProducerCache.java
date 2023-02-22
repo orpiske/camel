@@ -48,6 +48,8 @@ import org.slf4j.LoggerFactory;
 public class DefaultProducerCache extends ServiceSupport implements ProducerCache {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultProducerCache.class);
+    private static final RejectedExecutionException REJECTED_EXECUTION_EXCEPTION = new RejectedExecutionException("CamelContext is stopped");
+
     private static final long ACQUIRE_WAIT_TIME = 30000;
 
     private final CamelContext camelContext;
@@ -152,7 +154,7 @@ public class DefaultProducerCache extends ServiceSupport implements ProducerCach
     @Override
     public Exchange send(Endpoint endpoint, Exchange exchange, Processor resultProcessor) {
         if (camelContext.isStopped()) {
-            exchange.setException(new RejectedExecutionException("CamelContext is stopped"));
+            exchange.setException(REJECTED_EXECUTION_EXCEPTION);
             return exchange;
         }
 

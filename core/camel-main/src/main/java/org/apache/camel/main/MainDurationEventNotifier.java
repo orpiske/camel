@@ -23,10 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.spi.CamelEvent;
-import org.apache.camel.spi.CamelEvent.ExchangeCompletedEvent;
-import org.apache.camel.spi.CamelEvent.ExchangeCreatedEvent;
-import org.apache.camel.spi.CamelEvent.ExchangeFailedEvent;
-import org.apache.camel.spi.CamelEvent.RouteReloadedEvent;
 import org.apache.camel.support.EventNotifierSupport;
 import org.apache.camel.util.StopWatch;
 import org.slf4j.Logger;
@@ -84,7 +80,7 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
             return;
         }
 
-        boolean reloaded = event.getType() == CamelEvent.Type.RouteReloaded;
+        final boolean reloaded = event.getType() == CamelEvent.Type.RouteReloaded;
 
         if (reloaded) {
             if (restartDuration) {
@@ -98,7 +94,7 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
             return;
         }
 
-        boolean complete = event.getType() == CamelEvent.Type.ExchangeCompleted || event.getType() == CamelEvent.Type.ExchangeFailed;
+        final boolean complete = event.getType() == CamelEvent.Type.ExchangeCompleted || event.getType() == CamelEvent.Type.ExchangeFailed;
         if (maxMessages > 0 && complete) {
             boolean result = doneMessages.incrementAndGet() >= maxMessages;
             if (LOG.isTraceEnabled()) {
@@ -119,7 +115,7 @@ public class MainDurationEventNotifier extends EventNotifierSupport {
             }
         }
 
-        boolean begin = event.getType() == CamelEvent.Type.ExchangeCreated;
+        final boolean begin = event.getType() == CamelEvent.Type.ExchangeCreated;
         // idle reacts on both incoming and complete messages
         if (maxIdleSeconds > 0 && (begin || complete)) {
             if (watch != null) {

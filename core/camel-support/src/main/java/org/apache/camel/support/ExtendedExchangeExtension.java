@@ -18,20 +18,26 @@
 package org.apache.camel.support;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.camel.AsyncCallback;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangeExtension;
+import org.apache.camel.ExchangePropertyKey;
+import org.apache.camel.MessageHistory;
 import org.apache.camel.SafeCopyProperty;
 import org.apache.camel.spi.Synchronization;
 import org.apache.camel.spi.UnitOfWork;
 
 public class ExtendedExchangeExtension implements ExchangeExtension {
-    private final AbstractExchange exchange;
+    private final EnumMap<ExchangePropertyKey, Object> internalProperties;
+
     private Boolean errorHandlerHandled;
     private boolean failureHandled;
     private Endpoint fromEndpoint;
@@ -49,8 +55,17 @@ public class ExtendedExchangeExtension implements ExchangeExtension {
     private UnitOfWork unitOfWork;
     private List<Synchronization> onCompletions;
 
-    ExtendedExchangeExtension(AbstractExchange exchange) {
-        this.exchange = exchange;
+    ExtendedExchangeExtension() {
+        this.internalProperties = new EnumMap<>(ExchangePropertyKey.class);
+
+    }
+
+    ExtendedExchangeExtension(ExtendedExchangeExtension extendedExchangeExtension) {
+        this.internalProperties = new EnumMap<>(extendedExchangeExtension.internalProperties);
+    }
+
+    ExtendedExchangeExtension(Map<ExchangePropertyKey, Object> internalProperties) {
+        this.internalProperties = new EnumMap<>(internalProperties);
     }
 
     @Override
@@ -174,7 +189,7 @@ public class ExtendedExchangeExtension implements ExchangeExtension {
 
     @Override
     public void copyInternalProperties(Exchange target) {
-        this.exchange.copyInternalProperties(target);
+        copyInternalProperties((AbstractExchange) target);
     }
 
     @Override
@@ -224,7 +239,14 @@ public class ExtendedExchangeExtension implements ExchangeExtension {
 
     @Override
     public Map<String, Object> getInternalProperties() {
-        return this.exchange.getInternalProperties();
+        Map<String, Object> map = new HashMap<>();
+        for (ExchangePropertyKey key : ExchangePropertyKey.values()) {
+            Object value = internalProperties.get(key);
+            if (value != null) {
+                map.put(key.getName(), value);
+            }
+        }
+        return map;
     }
 
     @Override
@@ -337,5 +359,30 @@ public class ExtendedExchangeExtension implements ExchangeExtension {
         answer.setPattern(exchange.pattern);
 
         return answer;
+    }
+
+    void copyMessageHistory() {
+        internalProperties.computeIfPresent(ExchangePropertyKey.MESSAGE_HISTORY,
+                (k, v) -> new CopyOnWriteArrayList<>((List<MessageHistory>) v));
+    }
+
+    Object getProperty(ExchangePropertyKey key) {
+        return internalProperties.get(key);
+    }
+
+    void setProperty(ExchangePropertyKey key, Object value) {
+        internalProperties.put(key, value);
+    }
+
+    Object removeProperty(ExchangePropertyKey key) {
+        return internalProperties.remove(key);
+    }
+
+    void clearInternalProperties() {
+        internalProperties.clear();
+    }
+
+    void copyInternalProperties(AbstractExchange target) {
+        target.getExchangeExtension().internalProperties.putAll(internalProperties);
     }
 }

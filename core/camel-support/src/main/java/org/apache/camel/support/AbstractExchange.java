@@ -49,7 +49,7 @@ import org.apache.camel.util.ObjectHelper;
  * @see DefaultExchange
  */
 abstract class AbstractExchange implements Exchange {
-    protected final EnumMap<ExchangePropertyKey, Object> internalProperties;
+
 
     protected final CamelContext context;
     protected Map<String, Object> properties; // create properties on-demand as we use internal properties mostly
@@ -69,8 +69,7 @@ abstract class AbstractExchange implements Exchange {
     AbstractExchange(CamelContext context, EnumMap<ExchangePropertyKey, Object> internalProperties,
                      Map<String, Object> properties) {
         this.context = context;
-        this.internalProperties = new EnumMap<>(internalProperties);
-        this.privateExtension = new ExtendedExchangeExtension(this);
+        this.privateExtension = new ExtendedExchangeExtension(internalProperties);
         this.properties = safeCopyProperties(properties);
     }
 
@@ -83,8 +82,8 @@ abstract class AbstractExchange implements Exchange {
         this.pattern = pattern;
         this.created = System.currentTimeMillis();
 
-        internalProperties = new EnumMap<>(ExchangePropertyKey.class);
-        privateExtension = new ExtendedExchangeExtension(this);
+
+        privateExtension = new ExtendedExchangeExtension();
     }
 
     public AbstractExchange(Exchange parent) {
@@ -92,9 +91,7 @@ abstract class AbstractExchange implements Exchange {
         this.pattern = parent.getPattern();
         this.created = parent.getCreated();
 
-        internalProperties = new EnumMap<>(ExchangePropertyKey.class);
-
-        privateExtension = new ExtendedExchangeExtension(this);
+        privateExtension = new ExtendedExchangeExtension();
         privateExtension.setFromEndpoint(parent.getFromEndpoint());
         privateExtension.setFromRouteId(parent.getFromRouteId());
         privateExtension.setUnitOfWork(parent.getUnitOfWork());
@@ -105,9 +102,7 @@ abstract class AbstractExchange implements Exchange {
         this.pattern = parent.getPattern();
         this.created = parent.getCreated();
 
-        this.internalProperties = new EnumMap<>(parent.internalProperties);
-
-        privateExtension = new ExtendedExchangeExtension(this);
+        privateExtension = new ExtendedExchangeExtension(parent.getExchangeExtension());
         privateExtension.setFromEndpoint(parent.getFromEndpoint());
         privateExtension.setFromRouteId(parent.getFromRouteId());
         privateExtension.setUnitOfWork(parent.getUnitOfWork());
@@ -142,8 +137,7 @@ abstract class AbstractExchange implements Exchange {
         this.pattern = fromEndpoint.getExchangePattern();
         this.created = System.currentTimeMillis();
 
-        internalProperties = new EnumMap<>(ExchangePropertyKey.class);
-        privateExtension = new ExtendedExchangeExtension(this);
+        privateExtension = new ExtendedExchangeExtension();
         privateExtension.setFromEndpoint(fromEndpoint);
     }
 
@@ -152,8 +146,7 @@ abstract class AbstractExchange implements Exchange {
         this.pattern = pattern;
         this.created = System.currentTimeMillis();
 
-        internalProperties = new EnumMap<>(ExchangePropertyKey.class);
-        privateExtension = new ExtendedExchangeExtension(this);
+        privateExtension = new ExtendedExchangeExtension();
         privateExtension.setFromEndpoint(fromEndpoint);
     }
 
@@ -169,8 +162,7 @@ abstract class AbstractExchange implements Exchange {
         AbstractExchange exchange = newCopy();
 
         if (getContext().isMessageHistory()) {
-            exchange.internalProperties.computeIfPresent(ExchangePropertyKey.MESSAGE_HISTORY,
-                    (k, v) -> new CopyOnWriteArrayList<>((List<MessageHistory>) v));
+            privateExtension.copyMessageHistory();
         }
 
         return exchange;
@@ -183,7 +175,7 @@ abstract class AbstractExchange implements Exchange {
 
     @Override
     public Object getProperty(ExchangePropertyKey key) {
-        return internalProperties.get(key);
+        return privateExtension.getProperty(key);
     }
 
     @Override
@@ -242,12 +234,12 @@ abstract class AbstractExchange implements Exchange {
 
     @Override
     public void setProperty(ExchangePropertyKey key, Object value) {
-        internalProperties.put(key, value);
+        privateExtension.setProperty(key, value);
     }
 
     @Override
     public Object removeProperty(ExchangePropertyKey key) {
-        return internalProperties.remove(key);
+        return privateExtension.removeProperty(key);
     }
 
     @Override
@@ -255,7 +247,7 @@ abstract class AbstractExchange implements Exchange {
         Object answer = null;
         ExchangePropertyKey key = ExchangePropertyKey.asExchangePropertyKey(name);
         if (key != null) {
-            answer = internalProperties.get(key);
+            answer = privateExtension.getProperty(key);
             // if the property is not an internal then fallback to lookup in the properties map
         }
         if (answer == null && properties != null) {
@@ -326,7 +318,7 @@ abstract class AbstractExchange implements Exchange {
             if (properties != null) {
                 properties.clear();
             }
-            internalProperties.clear();
+            privateExtension.clearInternalProperties();
             return true;
         }
 
@@ -338,7 +330,7 @@ abstract class AbstractExchange implements Exchange {
                     continue;
                 }
                 matches = true;
-                internalProperties.remove(epk);
+                privateExtension.removeProperty(epk);
             }
         }
 
@@ -393,7 +385,7 @@ abstract class AbstractExchange implements Exchange {
     @Override
     public Map<String, Object> getAllProperties() {
         // include also internal properties (creates a new map)
-        Map<String, Object> map = getInternalProperties();
+        Map<String, Object> map = privateExtension.getInternalProperties();
         if (properties != null && !properties.isEmpty()) {
             map.putAll(properties);
         }
@@ -637,21 +629,6 @@ abstract class AbstractExchange implements Exchange {
         }
     }
 
-    void copyInternalProperties(Exchange target) {
-        ((AbstractExchange) target).internalProperties.putAll(internalProperties);
-    }
-
-    Map<String, Object> getInternalProperties() {
-        Map<String, Object> map = new HashMap<>();
-        for (ExchangePropertyKey key : ExchangePropertyKey.values()) {
-            Object value = internalProperties.get(key);
-            if (value != null) {
-                map.put(key.getName(), value);
-            }
-        }
-        return map;
-    }
-
     protected String createExchangeId() {
         return context.getUuidGenerator().generateExchangeUuid();
     }
@@ -694,6 +671,7 @@ abstract class AbstractExchange implements Exchange {
         return ExchangeHelper.convertToType(this, type, value);
     }
 
+    @Deprecated
     public ExtendedExchangeExtension getExchangeExtension() {
         return privateExtension;
     }

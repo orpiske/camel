@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//def AGENT_LABEL = 'ppc64le'
+//def PLATFORM = 'ppc64le'
 //def JDK_NAME = env.JDK_NAME ?: 'jdk_17_latest'
 
 def MAVEN_PARAMS = "-B -e -fae -V -Dnoassembly -Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2 -Dfailsafe.rerunFailingTestsCount=1"
 def MAVEN_TEST_PARAMS = env.MAVEN_TEST_PARAMS ?: "-Dkafka.instance.type=local-strimzi-container -Dci.env.name=apache.org"
+def MAVEN_TEST_PARAMS_UBUNTU = env.MAVEN_TEST_PARAMS ?: "-Dci.env.name=apache.org"
 /*
 Below parameters are required for camel/core/camel-core module's test cases to pass
 - xpathExprGrpLimit: limits the number of groups an Xpath expression can contain 
@@ -41,7 +42,8 @@ pipeline {
 
     parameters {
         booleanParam(name: 'CLEAN', defaultValue: true, description: 'Perform the build in clean workspace'),
-        choice(name: 'AGENT_NODE_FILTER', choices: ['all', 'ppc64le', 's390x'], description: 'Run on specific node'),
+        booleanParam(name: 'VIRTUAL_THREAD', defaultValue: false, description: 'Perform the build using virtual threads')
+        choice(name: 'PLATFORM_FILTER', choices: ['all', 'ppc64le', 's390x', 'ubuntu'], description: 'Run on specific platform'),
         choice(name: 'JDK_FILTER', choices: ['all', 'jdk_17_latest', 'jdk_21_latest'], description: 'Run on specific jdk')
     }
     agent none
@@ -49,11 +51,11 @@ pipeline {
         stage('BuildAndTest') {
             matrix {
                 agent {
-                    label ${AGENT_LABEL}
+                    label ${PLATFORM}
                 }
                 when { anyOf {
-                    expression { params.AGENT_NODE_FILTER == 'all' }
-                    expression { params.AGENT_NODE_FILTER == env.AGENT_LABEL }
+                    expression { params.PLATFORM_FILTER == 'all' }
+                    expression { params.PLATFORM_FILTER == env.PLATFORM }
                     expression { params.JDK_FILTER == 'all' }
                     expression { params.JDK_FILTER == env.JDK_NAME }
                 } }
@@ -63,8 +65,8 @@ pipeline {
                         values 'jdk_17_latest', 'jdk_21_latest'
                     }
                     axis {
-                        name 'AGENT_LABEL'
-                        values 'ppc64le', 's390x'
+                        name 'PLATFORM'
+                        values 'ppc64le', 's390x', 'ubuntu'
                     }
                 }
                 excludes {
@@ -74,7 +76,7 @@ pipeline {
                             values 'jdk_21_latest'
                         }
                         axis {
-                            name 'AGENT_LABEL'
+                            name 'PLATFORM'
                             values 'ppc64le'
                         }
                     }
@@ -84,7 +86,7 @@ pipeline {
                             values 'jdk_21_latest'
                         }
                         axis {
-                            name 'AGENT_LABEL'
+                            name 'PLATFORM'
                             values 's390x'
                         }
                     }
@@ -107,19 +109,41 @@ pipeline {
                             branch 'main'
                         }*/
                         steps {
-                            echo "Do Build for ${AGENT_LABEL}-${JDK_NAME}"
+                            echo "Do Build for ${PLATFORM}-${JDK_NAME}"
                             sh 'java -version'
-                            sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Dquickly clean install"
+                            if(${PLATFORM} == "ubuntu"){
+                                sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Darchetype.test.skip -Dmaven.test.skip.exec=true clean install"
+                            } else {
+                                sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Dquickly clean install"
+                            }
+                        }
+                    }
+                    
+                    if(${PLATFORM} == "ubuntu") {
+                        stage('Code Quality Review') {
+                            steps {
+                                withCredentials([string(credentialsId: 'apache-camel-core', variable: 'SONAR_TOKEN')]) {
+                                    sh "./mvnw $MAVEN_PARAMS -Dsonar.host.url=https://sonarcloud.io -Dsonar.java.experimental.batchModeSizeInKB=2048 -Dsonar.organization=apache -Dsonar.projectKey=apache_camel -Dsonar.branch.name=$BRANCH_NAME org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                                }
+                            }
                         }
                     }
 
                     stage('Test') {
                         steps {
-                            echo "Do Test for ${AGENT_LABEL}-${JDK_NAME}"
+                            echo "Do Test for ${PLATFORM}-${JDK_NAME}"
                             sh 'java -version'
                             timeout(unit: 'HOURS', time: 7) {
-                                // Skip the test case execution of modules which are either not supported on ppc64le or vendor images are not available for ppc64le.
-                                sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS $MAVEN_TEST_LIMIT_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -pl '!docs'"
+                                if(${PLATFORM} == "ubuntu"){
+                                    if(${JDK_NAME} == "jdk_21_latest") {
+                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS_UBUNTU -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -Dcamel.threads.virtual.enabled=${params.VIRTUAL_THREAD}"
+                                    } else{
+                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify"
+                                    }
+                                } else {
+                                    // Skip the test case execution of modules which are either not supported on ppc64le or vendor images are not available for ppc64le.
+                                    sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS $MAVEN_TEST_LIMIT_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -pl '!docs'"
+                                }
                             }
                         }
                         post {

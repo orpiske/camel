@@ -42,7 +42,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'CLEAN', defaultValue: true, description: 'Perform the build in clean workspace')
-        booleanParam(name: 'VIRTUAL_THREAD', defaultValue: false, description: 'Perform the build using virtual threads on JDK 21 and newer')
+        booleanParam(name: 'VIRTUAL_THREAD', defaultValue: false, description: 'Perform the build using virtual threads')
         choice(name: 'PLATFORM_FILTER', choices: ['all', 'ppc64le', 's390x', 'ubuntu'], description: 'Run on specific platform')
         choice(name: 'JDK_FILTER', choices: ['all', 'jdk_17_latest', 'jdk_21_latest'], description: 'Run on specific jdk')
     }
@@ -51,16 +51,14 @@ pipeline {
         stage('BuildAndTest') {
             matrix {
                 agent {
-                    label ${PLATFORM}
+                    label "${PLATFORM}"
                 }
-                when {
-                    anyOf {
-                        expression { params.PLATFORM_FILTER == 'all' }
-                        expression { params.PLATFORM_FILTER == env.PLATFORM }
-                        expression { params.JDK_FILTER == 'all' }
-                        expression { params.JDK_FILTER == env.JDK_NAME }
-                    }
-                }
+                when { anyOf {
+                    expression { params.PLATFORM_FILTER == 'all' }
+                    expression { params.PLATFORM_FILTER == env.PLATFORM }
+                    expression { params.JDK_FILTER == 'all' }
+                    expression { params.JDK_FILTER == env.JDK_NAME }
+                } }
                 axes {
                     axis {
                         name 'JDK_NAME'
@@ -94,7 +92,7 @@ pipeline {
                     }
                 }
                 tools {
-                    jdk ${JDK_NAME}
+                    jdk "${JDK_NAME}"
                 }
                 stages {
                     stage('Clean workspace') {
@@ -113,38 +111,44 @@ pipeline {
                         steps {
                             echo "Do Build for ${PLATFORM}-${JDK_NAME}"
                             sh 'java -version'
-                            if(${PLATFORM} == "ubuntu"){
-                                sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Darchetype.test.skip -Dmaven.test.skip.exec=true clean install"
-                            } else {
-                                sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Dquickly clean install"
-                            }
-                        }
-                    }
-                    
-                    if(${PLATFORM} == "ubuntu") {
-                        stage('Code Quality Review') {
-                            steps {
-                                withCredentials([string(credentialsId: 'apache-camel-core', variable: 'SONAR_TOKEN')]) {
-                                    sh "./mvnw $MAVEN_PARAMS -Dsonar.host.url=https://sonarcloud.io -Dsonar.java.experimental.batchModeSizeInKB=2048 -Dsonar.organization=apache -Dsonar.projectKey=apache_camel -Dsonar.branch.name=$BRANCH_NAME org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                            script {
+                                if(${PLATFORM} == "ubuntu"){
+                                    sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Darchetype.test.skip -Dmaven.test.skip.exec=true clean install"
+                                } else {
+                                    sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Dquickly clean install"
                                 }
                             }
                         }
                     }
+                    
+                    script {
+                        if("${PLATFORM}" == "ubuntu") {
+                            stage('Code Quality Review') {
+                                steps {
+                                    withCredentials([string(credentialsId: 'apache-camel-core', variable: 'SONAR_TOKEN')]) {
+                                        sh "./mvnw $MAVEN_PARAMS -Dsonar.host.url=https://sonarcloud.io -Dsonar.java.experimental.batchModeSizeInKB=2048 -Dsonar.organization=apache -Dsonar.projectKey=apache_camel -Dsonar.branch.name=$BRANCH_NAME org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                                    }
+                                }
+                            }
+                        }
+                    }   
 
                     stage('Test') {
                         steps {
                             echo "Do Test for ${PLATFORM}-${JDK_NAME}"
                             sh 'java -version'
                             timeout(unit: 'HOURS', time: 7) {
-                                if(${PLATFORM} == "ubuntu"){
-                                    if(${JDK_NAME} == "jdk_21_latest") {
-                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS_UBUNTU -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -Dcamel.threads.virtual.enabled=${params.VIRTUAL_THREAD}"
-                                    } else{
-                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify"
+                                script {
+                                    if(${PLATFORM} == "ubuntu"){
+                                        if(${JDK_NAME} == "jdk_21_latest") {
+                                            sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS_UBUNTU -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -Dcamel.threads.virtual.enabled=${params.VIRTUAL_THREAD}"
+                                        } else{
+                                            sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify"
+                                        }
+                                    } else {
+                                        // Skip the test case execution of modules which are either not supported on ppc64le or vendor images are not available for ppc64le.
+                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS $MAVEN_TEST_LIMIT_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -pl '!docs'"
                                     }
-                                } else {
-                                    // Skip the test case execution of modules which are either not supported on ppc64le or vendor images are not available for ppc64le.
-                                    sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS $MAVEN_TEST_LIMIT_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -pl '!docs'"
                                 }
                             }
                         }

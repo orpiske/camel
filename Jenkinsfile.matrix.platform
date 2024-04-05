@@ -105,29 +105,25 @@ pipeline {
                     }
 
                     stage('Build & Install') {
-                        /*when {
-                            branch 'main'
-                        }*/
                         steps {
                             echo "Do Build for ${PLATFORM}-${JDK_NAME}"
                             sh 'java -version'
-                            script {
-                                if(${PLATFORM} == "ubuntu"){
-                                    sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Darchetype.test.skip -Dmaven.test.skip.exec=true clean install"
-                                } else {
-                                    sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Dquickly clean install"
-                                }
-                            }
+                            sh "./mvnw -U $MAVEN_PARAMS -Dskip.camel.maven.plugin.tests -Darchetype.test.skip -Dmaven.test.skip.exec=true clean install"
                         }
                     }
-                    
-                    script {
-                        if("${PLATFORM}" == "ubuntu") {
-                            stage('Code Quality Review') {
-                                steps {
+
+                    stage('Code Quality Review') {
+                        steps {
+                            script {
+                                if ("${PLATFORM}" == "ubuntu") {
                                     withCredentials([string(credentialsId: 'apache-camel-core', variable: 'SONAR_TOKEN')]) {
-                                        sh "./mvnw $MAVEN_PARAMS -Dsonar.host.url=https://sonarcloud.io -Dsonar.java.experimental.batchModeSizeInKB=2048 -Dsonar.organization=apache -Dsonar.projectKey=apache_camel -Dsonar.branch.name=$BRANCH_NAME org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                                        /*
+                                        * sh "./mvnw $MAVEN_PARAMS -Dsonar.host.url=https://sonarcloud.io -Dsonar.java.experimental.batchModeSizeInKB=2048 -Dsonar.organization=apache -Dsonar.projectKey=apache_camel -Dsonar.branch.name=$BRANCH_NAME org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                                        */
+                                        echo "Code quality review ENABLED for ${PLATFORM}"
                                     }
+                                } else {
+                                    echo "Code quality review disabled for ${PLATFORM}"
                                 }
                             }
                         }
@@ -139,7 +135,7 @@ pipeline {
                             sh 'java -version'
                             timeout(unit: 'HOURS', time: 7) {
                                 script {
-                                    if(${PLATFORM} == "ubuntu"){
+                                    if (${PLATFORM} == "ubuntu"){
                                         if(${JDK_NAME} == "jdk_21_latest") {
                                             sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS_UBUNTU -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -Dcamel.threads.virtual.enabled=${params.VIRTUAL_THREAD}"
                                         } else{

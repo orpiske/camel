@@ -3023,8 +3023,12 @@ public abstract class AbstractCamelContext extends BaseService
         if (startupSummaryLevel != StartupSummaryLevel.Off) {
             if (LOG.isInfoEnabled()) {
                 String taken = TimeUtils.printDuration(stopWatch.taken(), true);
-                LOG.info("Apache Camel {} ({}) shutdown in {} (uptime:{})", getVersion(), camelContextExtension.getName(),
-                        taken, CamelContextHelper.getUptime(this));
+
+                final Duration uptime = this.getUptime();
+                final String uptimeStr = CamelContextHelper.getUptime(this);
+
+                LOG.info("Apache Camel {} ({}) shutdown in {} (uptime: {} or {} milliseconds in total)", getVersion(), camelContextExtension.getName(),
+                        taken, uptimeStr, uptime.toMillis());
             }
         }
 

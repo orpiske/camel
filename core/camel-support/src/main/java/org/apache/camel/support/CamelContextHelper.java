@@ -41,6 +41,8 @@ import org.apache.camel.spi.RestConfiguration;
 import org.apache.camel.spi.RouteStartupOrder;
 import org.apache.camel.util.ObjectHelper;
 import org.apache.camel.util.TimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.apache.camel.util.ObjectHelper.isNotEmpty;
 
@@ -48,6 +50,7 @@ import static org.apache.camel.util.ObjectHelper.isNotEmpty;
  * A number of helper methods
  */
 public final class CamelContextHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(CamelContextHelper.class);
 
     public static final String MODEL_DOCUMENTATION_PREFIX = "META-INF/org/apache/camel/model/";
 
@@ -655,6 +658,7 @@ public final class CamelContextHelper {
             return "";
         }
 
+        LOG.info("Printing duration for {} milliseconds", delta);
         return TimeUtils.printDuration(delta);
     }
 

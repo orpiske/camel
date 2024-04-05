@@ -47,6 +47,9 @@ public class TimeUtilsTest {
         assertEquals("1h30m1s", TimeUtils.printDuration(5401000, true));
         assertEquals("2d23h", TimeUtils.printDuration(259032000));
         assertEquals("2d23h57m12s", TimeUtils.printDuration(259032000, true));
+
+        assertEquals("3h52m", TimeUtils.printDuration(13964119));
+
     }
 
     @Test

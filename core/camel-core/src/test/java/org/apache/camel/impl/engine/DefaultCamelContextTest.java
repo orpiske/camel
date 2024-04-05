@@ -16,6 +16,7 @@
  */
 package org.apache.camel.impl.engine;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -61,6 +62,23 @@ public class DefaultCamelContextTest extends TestSupport {
         ctx.start();
         assertNotNull(CamelContextHelper.getStartDate(ctx));
     }
+
+
+    @Test
+    public void testUptime() throws InterruptedException {
+        DefaultCamelContext ctx = new DefaultCamelContext(false);
+
+        // The context has not started, therefore, the uptime should be zero
+        final Duration stoppedUptime = ctx.getUptime();
+        assertEquals(Duration.ZERO, stoppedUptime);
+
+        ctx.start();
+        Thread.sleep(60000);
+        // The context has not started, therefore the uptime should be zero
+        final Duration uptime = ctx.getUptime();
+        assertEquals(60, uptime.toSeconds());
+    }
+
 
     @Test
     public void testAutoCreateComponentsOn() {

@@ -152,13 +152,15 @@ pipeline {
                         }
                     }
                     stage('Email') {
-                        post {
-                            always {
-                                emailext(
-                                subject: '${DEFAULT_SUBJECT}',
-                                body: '${DEFAULT_CONTENT}',
-                                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                                )
+                        steps {
+                            post {
+                                always {
+                                    emailext(
+                                    subject: '${DEFAULT_SUBJECT}',
+                                    body: '${DEFAULT_CONTENT}',
+                                    recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                                    )
+                                }
                             }
                         }
                     }

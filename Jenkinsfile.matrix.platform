@@ -101,7 +101,7 @@ pipeline {
                         }
                     }
 
-                    stage('Build ${PLATFORM}-${JDK_NAME}') {
+                    stage('Build') {
                         steps {
                             echo "Do Build for ${PLATFORM}-${JDK_NAME}"
                             sh 'java -version'

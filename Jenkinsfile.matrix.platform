@@ -151,18 +151,19 @@ pipeline {
                             }
                         }
                     }
+                    stage('Email') {
+                        post {
+                            always {
+                                emailext(
+                                subject: '${DEFAULT_SUBJECT}',
+                                body: '${DEFAULT_CONTENT}',
+                                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                                )
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            emailext(
-                subject: '${DEFAULT_SUBJECT}',
-                body: '${DEFAULT_CONTENT}',
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-            )
         }
     }
 }

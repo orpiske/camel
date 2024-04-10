@@ -153,6 +153,7 @@ pipeline {
                     }
                     stage('Email') {
                         steps {
+                            echo "Sending report CI email for developers"
                             post {
                                 always {
                                     emailext(

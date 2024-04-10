@@ -18,11 +18,11 @@ def MAVEN_PARAMS = "-B -e -fae -V -Dnoassembly -Dmaven.compiler.fork=true -Dsure
 def MAVEN_TEST_PARAMS = env.MAVEN_TEST_PARAMS ?: "-Dkafka.instance.type=local-strimzi-container -Dci.env.name=apache.org"
 def MAVEN_TEST_PARAMS_UBUNTU = env.MAVEN_TEST_PARAMS ?: "-Dci.env.name=apache.org"
 /*
-Below parameters are required for camel/core/camel-core module's test cases to pass
+Below parameters are required for camel/core/camel-core module's test cases to pass on ppc64 and s390x
 - xpathExprGrpLimit: limits the number of groups an Xpath expression can contain 
 - xpathExprOpLimit: limits the number of operators an Xpath expression can contain
 */
-def MAVEN_TEST_LIMIT_PARAMS = "-Djdk.xml.xpathExprGrpLimit=100 -Djdk.xml.xpathExprOpLimit=2000"
+def MAVEN_TEST_PARAMS_ALT_ARCHS = "-Djdk.xml.xpathExprGrpLimit=100 -Djdk.xml.xpathExprOpLimit=2000"
 
 pipeline {
 
@@ -139,7 +139,7 @@ pipeline {
                                         }
                                     } else {
                                         // Skip the test case execution of modules which are either not supported on ppc64le or vendor images are not available for ppc64le.
-                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS $MAVEN_TEST_LIMIT_PARAMS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -pl '!docs'"
+                                        sh "./mvnw $MAVEN_PARAMS $MAVEN_TEST_PARAMS $MAVEN_TEST_PARAMS_ALT_ARCHS -Darchetype.test.skip -Dmaven.test.failure.ignore=true -Dcheckstyle.skip=true verify -pl '!docs'"
                                     }
                                 }
                             }

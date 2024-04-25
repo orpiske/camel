@@ -138,6 +138,7 @@
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <argLine>-XX:+ExitOnOutOfMemoryError -Xmx2G</argLine>
                             <systemPropertyVariables>
                                 <visibleassertions.silence>true</visibleassertions.silence>
                             </systemPropertyVariables>

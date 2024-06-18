@@ -28,10 +28,12 @@ import java.util.Set;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
+import org.apache.camel.InvalidPayloadException;
 import org.apache.camel.NoTypeConversionAvailableException;
 import org.apache.camel.TestSupport;
 import org.apache.camel.TypeConversionException;
 import org.apache.camel.TypeConverter;
+import org.apache.camel.converter.stream.InputStreamCache;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.converter.DefaultTypeConverter;
 import org.apache.camel.impl.engine.DefaultPackageScanClassResolver;
@@ -39,12 +41,14 @@ import org.apache.camel.spi.BeanIntrospection;
 import org.apache.camel.support.DefaultExchange;
 import org.apache.camel.support.PluginHelper;
 import org.apache.camel.support.service.ServiceHelper;
+import org.apache.camel.util.ObjectHelper;
 import org.apache.camel.util.ReflectionInjector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -272,5 +276,23 @@ public class ConverterTest extends TestSupport {
     public void testToInt() {
         int i = converter.convertTo(int.class, "0");
         assertEquals(0, i);
+    }
+
+    @Test
+    public void testStreamCacheToString() throws InvalidPayloadException {
+        CamelContext camel = new DefaultCamelContext();
+        Exchange e = new DefaultExchange(camel);
+        InputStreamCache body = new InputStreamCache("Hello Camel Rider!".getBytes(UTF_8));
+        e.getMessage().setBody(body);
+
+        String first = e.getMessage().getBody(String.class);
+        String second = e.getMessage().getBody(String.class);
+
+        assertFalse(ObjectHelper.isEmpty(second), "second should not be null or empty");
+        assertEquals(first, second);
+        String third = e.getMessage().getMandatoryBody(String.class);
+        assertFalse(ObjectHelper.isEmpty(third), "third should not be null or empty");
+        assertEquals(first, third);
+
     }
 }

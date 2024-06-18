@@ -23,6 +23,7 @@ import org.apache.camel.CamelContextAware;
 import org.apache.camel.Exchange;
 import org.apache.camel.InvalidPayloadException;
 import org.apache.camel.Message;
+import org.apache.camel.StreamCache;
 import org.apache.camel.TypeConverter;
 import org.apache.camel.spi.DataType;
 import org.apache.camel.spi.DataTypeAware;
@@ -96,6 +97,12 @@ public abstract class MessageSupport implements Message, CamelContextAware, Data
             // lets first try converting the body itself first
             // as for some types like InputStream v Reader its more efficient to do the transformation
             // from the body itself as its got efficient implementations of them, before trying the message
+            //Reset the stream before trying to convert it.
+
+            if ((StreamCache.class.isInstance(body))) {
+                ((StreamCache) body).reset();
+            }
+
             T answer = typeConverter.convertTo(type, e, body);
             if (answer != null) {
                 return answer;
@@ -122,6 +129,10 @@ public abstract class MessageSupport implements Message, CamelContextAware, Data
 
         Exchange e = getExchange();
         if (e != null) {
+            //Reset the stream before trying to convert it.
+            if ((StreamCache.class.isInstance(body))) {
+                ((StreamCache) body).reset();
+            }
             try {
                 return typeConverter.mandatoryConvertTo(type, e, getBody());
             } catch (Exception cause) {

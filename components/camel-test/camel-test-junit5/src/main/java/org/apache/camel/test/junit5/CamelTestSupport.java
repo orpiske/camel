@@ -210,14 +210,7 @@ public abstract class CamelTestSupport extends AbstractTestSupport implements Be
 
         contextManager.dumpRouteCoverage(getClass(), currentTestName, time);
 
-        if (testConfigurationBuilder.isCreateCamelContextPerClass()) {
-            // will tear down test specially in afterAll callback
-            return;
-        }
-
         LOG.debug("tearDown()");
-
-        contextManager.stop();
 
         doPostTearDown();
         cleanupResources();

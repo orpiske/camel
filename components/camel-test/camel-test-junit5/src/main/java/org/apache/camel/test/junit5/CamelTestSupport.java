@@ -36,6 +36,7 @@ import org.apache.camel.util.StopWatch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -205,10 +206,10 @@ public abstract class CamelTestSupport extends AbstractTestSupport implements Be
      */
     @Deprecated(since = "4.7.0")
     @AfterEach
-    public final void tearDown() throws Exception {
+    public final void tearDown(TestInfo testInfo) throws Exception {
         long time = watch.taken();
 
-        contextManager.dumpRouteCoverage(getClass(), currentTestName, time);
+        contextManager.dumpRouteCoverage(getClass(), testInfo.getDisplayName(), time);
 
         LOG.debug("tearDown()");
 

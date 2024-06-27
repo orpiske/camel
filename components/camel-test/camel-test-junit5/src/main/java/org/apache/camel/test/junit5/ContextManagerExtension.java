@@ -27,7 +27,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ContextManagerExtension implements BeforeEachCallback, AfterEachCallback, AfterAllCallback,
+public final class ContextManagerExtension
+        implements BeforeEachCallback, AfterEachCallback, AfterAllCallback,
         BeforeAllCallback {
     private static final Logger LOG = LoggerFactory.getLogger(ContextManagerExtension.class);
 
@@ -49,9 +50,18 @@ public final class ContextManagerExtension implements BeforeEachCallback, AfterE
         this.contextManagerFactory = contextManagerFactory;
     }
 
+    public ContextManagerExtension(TestExecutionConfiguration testConfigurationBuilder,
+                                   CamelContextConfiguration camelContextConfiguration) {
+        this.testConfigurationBuilder = testConfigurationBuilder;
+        this.camelContextConfiguration = camelContextConfiguration;
+
+        this.contextManagerFactory = new ContextManagerFactory();
+    }
+
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        final boolean perClassPresent = context.getTestInstanceLifecycle().filter(lc -> lc.equals(TestInstance.Lifecycle.PER_CLASS)).isPresent();
+        final boolean perClassPresent
+                = context.getTestInstanceLifecycle().filter(lc -> lc.equals(TestInstance.Lifecycle.PER_CLASS)).isPresent();
         if (perClassPresent) {
             LOG.trace("Creating a legacy context manager for {}", context.getDisplayName());
             contextManager = contextManagerFactory.createContextManager(
@@ -83,6 +93,7 @@ public final class ContextManagerExtension implements BeforeEachCallback, AfterE
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
         DefaultCamelContext.clearOptions();
+        contextManager.stop();
     }
 
     public CamelContextManager getContextManager() {

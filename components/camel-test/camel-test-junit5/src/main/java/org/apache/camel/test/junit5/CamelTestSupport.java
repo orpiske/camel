@@ -51,7 +51,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * {@link org.apache.camel.ProducerTemplate} for use in the test case Do <tt>not</tt> use this class for Spring Boot
  * testing.
  */
-public abstract class CamelTestSupport extends AbstractTestSupport implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+public abstract class CamelTestSupport extends AbstractTestSupport
+        implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
     private static final Logger LOG = LoggerFactory.getLogger(CamelTestSupport.class);
 
     @RegisterExtension
@@ -64,27 +65,29 @@ public abstract class CamelTestSupport extends AbstractTestSupport implements Be
 
     @RegisterExtension
     @Order(1)
-    public static final ContextManagerExtension contextManagerExtension = new ContextManagerExtension();
+    public final ContextManagerExtension contextManagerExtension;
     private CamelContextManager contextManager;
 
     protected CamelTestSupport() {
-        super(contextManagerExtension.getTestConfigurationBuilder(), contextManagerExtension.getCamelContextConfiguration());
+        super(new TestExecutionConfiguration(), new CamelContextConfiguration());
 
         testConfigurationBuilder.withJMX(useJmx())
-                 .withUseRouteBuilder(isUseRouteBuilder())
-                 .withUseAdviceWith(isUseAdviceWith())
-                 .withDumpRouteCoverage(isDumpRouteCoverage());
+                .withUseRouteBuilder(isUseRouteBuilder())
+                .withUseAdviceWith(isUseAdviceWith())
+                .withDumpRouteCoverage(isDumpRouteCoverage());
 
-         camelContextConfiguration
-                 .withCamelContextSupplier(this::createCamelContext)
-                 .withRegistryBinder(this::bindToRegistry)
-                 .withPostProcessor(this::postProcessTest)
-                 .withRoutesSupplier(this::createRouteBuilders)
-                 .withUseOverridePropertiesWithPropertiesComponent(useOverridePropertiesWithPropertiesComponent())
-                 .withRouteFilterExcludePattern(getRouteFilterExcludePattern())
-                 .withRouteFilterIncludePattern(getRouteFilterIncludePattern())
-                 .withMockEndpoints(isMockEndpoints())
-                 .withMockEndpointsAndSkip(isMockEndpointsAndSkip());
+        camelContextConfiguration
+                .withCamelContextSupplier(this::createCamelContext)
+                .withRegistryBinder(this::bindToRegistry)
+                .withPostProcessor(this::postProcessTest)
+                .withRoutesSupplier(this::createRouteBuilders)
+                .withUseOverridePropertiesWithPropertiesComponent(useOverridePropertiesWithPropertiesComponent())
+                .withRouteFilterExcludePattern(getRouteFilterExcludePattern())
+                .withRouteFilterIncludePattern(getRouteFilterIncludePattern())
+                .withMockEndpoints(isMockEndpoints())
+                .withMockEndpointsAndSkip(isMockEndpointsAndSkip());
+
+        contextManagerExtension = new ContextManagerExtension(testConfigurationBuilder, camelContextConfiguration);
     }
 
     @Override

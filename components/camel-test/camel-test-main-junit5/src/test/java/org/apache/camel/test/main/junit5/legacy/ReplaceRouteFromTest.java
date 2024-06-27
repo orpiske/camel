@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ReplaceRouteFromTest extends CamelMainTestSupport {
 
     @Override
-        public void doPreSetup() {
+    public void doPreSetup() {
         replaceRouteFromWith("foo", "direct:foo");
     }
 

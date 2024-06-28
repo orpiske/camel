@@ -26,7 +26,6 @@ import org.apache.camel.Processor;
 import org.apache.camel.RoutesBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.ProcessorDefinition;
 import org.apache.camel.spi.CamelBeanPostProcessor;
 import org.apache.camel.spi.Language;
@@ -37,12 +36,7 @@ import org.apache.camel.util.StopWatch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -56,9 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * {@link org.apache.camel.ProducerTemplate} for use in the test case Do <tt>not</tt> use this class for Spring Boot
  * testing.
  */
-public abstract class CamelTestSupport extends AbstractTestSupport
-        implements BeforeEachCallback, AfterEachCallback, AfterAllCallback, BeforeAllCallback, BeforeTestExecutionCallback,
-        AfterTestExecutionCallback {
+public abstract class CamelTestSupport extends AbstractTestSupport implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
     private static final Logger LOG = LoggerFactory.getLogger(CamelTestSupport.class);
 
     @RegisterExtension
@@ -69,35 +61,29 @@ public abstract class CamelTestSupport extends AbstractTestSupport
     protected CamelTestSupport camelTestSupportExtension = this;
     private final StopWatch watch = new StopWatch();
 
-    @Deprecated
-    private String currentTestName;
-
+    @RegisterExtension
+    @Order(1)
+    public static final ContextManagerExtension contextManagerExtension = new ContextManagerExtension();
     private CamelContextManager contextManager;
-    private final ContextManagerFactory contextManagerFactory;
-
-    protected CamelTestSupport(ContextManagerFactory contextManagerFactory) {
-        super();
-        this.contextManagerFactory = contextManagerFactory;
-
-        testConfigurationBuilder.withJMX(useJmx())
-                .withUseRouteBuilder(isUseRouteBuilder())
-                .withUseAdviceWith(isUseAdviceWith())
-                .withDumpRouteCoverage(isDumpRouteCoverage());
-
-        camelContextConfiguration
-                .withCamelContextSupplier(this::createCamelContext)
-                .withRegistryBinder(this::bindToRegistry)
-                .withPostProcessor(this::postProcessTest)
-                .withRoutesSupplier(this::createRouteBuilders)
-                .withUseOverridePropertiesWithPropertiesComponent(useOverridePropertiesWithPropertiesComponent())
-                .withRouteFilterExcludePattern(getRouteFilterExcludePattern())
-                .withRouteFilterIncludePattern(getRouteFilterIncludePattern())
-                .withMockEndpoints(isMockEndpoints())
-                .withMockEndpointsAndSkip(isMockEndpointsAndSkip());
-    }
 
     protected CamelTestSupport() {
-        this(new ContextManagerFactory());
+        super(contextManagerExtension.getTestConfigurationBuilder(), contextManagerExtension.getCamelContextConfiguration());
+
+        testConfigurationBuilder.withJMX(useJmx())
+                 .withUseRouteBuilder(isUseRouteBuilder())
+                 .withUseAdviceWith(isUseAdviceWith())
+                 .withDumpRouteCoverage(isDumpRouteCoverage());
+
+         camelContextConfiguration
+                 .withCamelContextSupplier(this::createCamelContext)
+                 .withRegistryBinder(this::bindToRegistry)
+                 .withPostProcessor(this::postProcessTest)
+                 .withRoutesSupplier(this::createRouteBuilders)
+                 .withUseOverridePropertiesWithPropertiesComponent(useOverridePropertiesWithPropertiesComponent())
+                 .withRouteFilterExcludePattern(getRouteFilterExcludePattern())
+                 .withRouteFilterIncludePattern(getRouteFilterIncludePattern())
+                 .withMockEndpoints(isMockEndpoints())
+                 .withMockEndpointsAndSkip(isMockEndpointsAndSkip());
     }
 
     @Override
@@ -116,46 +102,6 @@ public abstract class CamelTestSupport extends AbstractTestSupport
         return watch.taken();
     }
 
-    @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        if (contextManager == null) {
-            LOG.trace("Creating a transient context manager for {}", context.getDisplayName());
-            contextManager = contextManagerFactory.createContextManager(ContextManagerFactory.Type.BEFORE_EACH,
-                    testConfigurationBuilder, camelContextConfiguration);
-        }
-
-        currentTestName = context.getDisplayName();
-        ExtensionContext.Store globalStore = context.getStore(ExtensionContext.Namespace.GLOBAL);
-        contextManager.setGlobalStore(globalStore);
-    }
-
-    @Override
-    public void afterEach(ExtensionContext context) throws Exception {
-        DefaultCamelContext.clearOptions();
-    }
-
-    @Override
-    public void beforeAll(ExtensionContext context) {
-        final boolean perClassPresent
-                = context.getTestInstanceLifecycle().filter(lc -> lc.equals(Lifecycle.PER_CLASS)).isPresent();
-        if (perClassPresent) {
-            LOG.trace("Creating a legacy context manager for {}", context.getDisplayName());
-            testConfigurationBuilder.withCreateCamelContextPerClass(perClassPresent);
-            contextManager = contextManagerFactory.createContextManager(ContextManagerFactory.Type.BEFORE_ALL,
-                    testConfigurationBuilder, camelContextConfiguration);
-            ExtensionContext.Store globalStore = context.getStore(ExtensionContext.Namespace.GLOBAL);
-            contextManager.setGlobalStore(globalStore);
-        }
-    }
-
-    @Override
-    public void afterAll(ExtensionContext context) {
-        if (contextManager != null) {
-            // It may be null in some occasion, such as when failing to initialize the context
-            contextManager.stop();
-        }
-    }
-
     /**
      * Gets the name of the current test being executed.
      *
@@ -163,7 +109,7 @@ public abstract class CamelTestSupport extends AbstractTestSupport
      */
     @Deprecated(since = "4.7.0")
     public final String getCurrentTestName() {
-        return currentTestName;
+        return contextManagerExtension.getCurrentTestName();
     }
 
     /**
@@ -180,6 +126,7 @@ public abstract class CamelTestSupport extends AbstractTestSupport
         setupResources();
         doPreSetup();
 
+        contextManager = contextManagerExtension.getContextManager();
         contextManager.createCamelContext(this);
         context = contextManager.context();
 

@@ -26,6 +26,12 @@ public class AvroHttpSpringProducerTest extends AvroHttpProducerTest {
 
     private AbstractApplicationContext applicationContext;
 
+    public AvroHttpSpringProducerTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void doPostTearDown() {
 
@@ -36,10 +42,5 @@ public class AvroHttpSpringProducerTest extends AvroHttpProducerTest {
     protected CamelContext createCamelContext() throws Exception {
         applicationContext = new ClassPathXmlApplicationContext("org/apache/camel/component/avro/avro-http-producer.xml");
         return SpringCamelContext.springCamelContext(applicationContext, true);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

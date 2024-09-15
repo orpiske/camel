@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HttpCustomComponentNameTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public HttpCustomComponentNameTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

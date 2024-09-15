@@ -68,14 +68,15 @@ public class SmooksProcessorTest extends CamelTestSupport {
     @EndpointInject(value = "mock:result")
     private MockEndpoint result;
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public SmooksProcessorTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    protected boolean useJmx() {
+        return true;
     }
 
     private void assertOneProcessedMessage() throws Exception {

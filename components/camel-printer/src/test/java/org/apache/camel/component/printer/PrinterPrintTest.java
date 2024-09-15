@@ -63,6 +63,12 @@ public class PrinterPrintTest extends CamelTestSupport {
     Class<?> printServiceLookupServicesClass = PrintServiceLookup.class.getDeclaredClasses()[0];
     Object printServiceLookup;
 
+    public PrinterPrintTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @BeforeEach
     public void setup() throws Exception {
         setupJavaPrint();
@@ -71,11 +77,6 @@ public class PrinterPrintTest extends CamelTestSupport {
     @Override
     public void doPostTearDown() throws Exception {
         restoreJavaPrint();
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     // Check if there is an awt library

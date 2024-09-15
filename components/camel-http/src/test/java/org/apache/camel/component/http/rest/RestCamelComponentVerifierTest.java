@@ -45,6 +45,12 @@ public class RestCamelComponentVerifierTest extends BaseHttpTest {
     private Map<String, Object> parameters;
     private ComponentVerifierExtension verifier;
 
+    public RestCamelComponentVerifierTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void setupResources() throws Exception {
         localServer = ServerBootstrap.bootstrap()
@@ -72,11 +78,6 @@ public class RestCamelComponentVerifierTest extends BaseHttpTest {
         if (localServer != null) {
             localServer.stop();
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     private HttpProcessor getHttpProcessor() {

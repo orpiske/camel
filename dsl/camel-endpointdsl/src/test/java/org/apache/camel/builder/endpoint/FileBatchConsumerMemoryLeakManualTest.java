@@ -31,14 +31,15 @@ public class FileBatchConsumerMemoryLeakManualTest extends BaseEndpointDslTest {
 
     private String fileUrl = "target/data/filesorter/";
 
-    @Override
-    public void doPreSetup() {
-        deleteDirectory("target/data/filesorter");
+    public FileBatchConsumerMemoryLeakManualTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public void doPreSetup() {
+        deleteDirectory("target/data/filesorter");
     }
 
     @Test

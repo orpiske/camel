@@ -27,9 +27,10 @@ public class MyLocalAddRouteBuilderTest extends CamelTestSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyLocalAddRouteBuilderTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MyLocalAddRouteBuilderTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

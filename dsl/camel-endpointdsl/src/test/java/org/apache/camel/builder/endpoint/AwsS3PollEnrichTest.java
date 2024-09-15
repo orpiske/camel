@@ -21,9 +21,10 @@ import org.junit.jupiter.api.Test;
 
 public class AwsS3PollEnrichTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public AwsS3PollEnrichTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

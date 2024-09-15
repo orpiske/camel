@@ -52,9 +52,10 @@ public class XMLSecurityDataFormatTest extends CamelTestSupport {
 
     private Key defaultKey;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public XMLSecurityDataFormatTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

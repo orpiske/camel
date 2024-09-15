@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PahoMqtt5ComponentVerifierExtensionTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public PahoMqtt5ComponentVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

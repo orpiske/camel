@@ -34,6 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisabledIfSystemProperty(named = "java.vendor", matches = ".*ibm.*")
 public class NettySSLContextParametersTest extends BaseNettyTest {
 
+    public NettySSLContextParametersTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @BindToRegistry("sslContextParameters")
     public SSLContextParameters loadSSLContextParams() {
 
@@ -61,11 +67,6 @@ public class NettySSLContextParametersTest extends BaseNettyTest {
         sslContextParameters.setServerParameters(scsp);
 
         return sslContextParameters;
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

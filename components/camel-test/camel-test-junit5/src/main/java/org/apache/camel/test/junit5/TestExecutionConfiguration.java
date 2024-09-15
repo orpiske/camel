@@ -133,6 +133,9 @@ public class TestExecutionConfiguration {
         return this;
     }
 
+    /**
+     * Whether is using the RouteBuilder or not
+     */
     public boolean useRouteBuilder() {
         return useRouteBuilder;
     }

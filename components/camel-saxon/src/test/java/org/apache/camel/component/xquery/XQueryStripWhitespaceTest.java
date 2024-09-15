@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class XQueryStripWhitespaceTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public XQueryStripWhitespaceTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

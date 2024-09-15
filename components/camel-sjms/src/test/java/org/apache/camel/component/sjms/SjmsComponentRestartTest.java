@@ -34,6 +34,12 @@ public class SjmsComponentRestartTest extends CamelTestSupport {
      */
     public static ArtemisService service;
 
+    public SjmsComponentRestartTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @BindToRegistry("activemqCF")
     private ActiveMQConnectionFactory connectionFactory
             = new ActiveMQConnectionFactory(service.serviceAddress());
@@ -48,11 +54,6 @@ public class SjmsComponentRestartTest extends CamelTestSupport {
         if (service != null) {
             service.shutdown();
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

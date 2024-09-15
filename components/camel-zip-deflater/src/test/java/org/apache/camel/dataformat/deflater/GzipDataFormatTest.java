@@ -39,9 +39,10 @@ public class GzipDataFormatTest extends CamelTestSupport {
                                        + "Or to take arms against a sea of troubles,\n"
                                        + "And by opposing end them? To die: to sleep;";
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public GzipDataFormatTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     private byte[] sendText() {

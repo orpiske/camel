@@ -32,13 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ConsulServiceCallWithRegistrationIT extends ConsulTestSupport {
     private static final String SERVICE_HOST = "localhost";
 
-    // ******************************
-    // Setup / tear down
-    // ******************************
+    public ConsulServiceCallWithRegistrationIT() {
+        super();
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

@@ -28,6 +28,12 @@ public class AvroNettySpringConsumerTest extends AvroNettyConsumerTest {
 
     private AbstractApplicationContext applicationContext;
 
+    public AvroNettySpringConsumerTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void doPostSetup() {
         keyValue = (KeyValueProtocolImpl) applicationContext.getBean("keyValue");
@@ -47,10 +53,5 @@ public class AvroNettySpringConsumerTest extends AvroNettyConsumerTest {
         applicationContext = new ClassPathXmlApplicationContext(xmlPath + "base.xml", xmlPath + getRouteType().name() + ".xml");
 
         return SpringCamelContext.springCamelContext(applicationContext, true);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

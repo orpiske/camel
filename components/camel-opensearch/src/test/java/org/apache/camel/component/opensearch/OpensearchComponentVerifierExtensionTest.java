@@ -27,9 +27,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OpensearchComponentVerifierExtensionTest extends CamelTestSupport {
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+
+    public OpensearchComponentVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

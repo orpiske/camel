@@ -34,9 +34,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class MailProducerUnsupportedCharsetTest extends CamelTestSupport {
     private static final MailboxUser jones = Mailbox.getOrCreateUser("jones", "secret");
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MailProducerUnsupportedCharsetTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

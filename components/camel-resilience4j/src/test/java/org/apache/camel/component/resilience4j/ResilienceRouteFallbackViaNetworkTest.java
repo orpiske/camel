@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ResilienceRouteFallbackViaNetworkTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public ResilienceRouteFallbackViaNetworkTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

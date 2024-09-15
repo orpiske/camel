@@ -28,6 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuartzCronMappingTest extends BaseQuartzTest {
 
+    public QuartzCronMappingTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void test5PartsCronPattern() throws Exception {
         context.addRoutes(new RouteBuilder() {
@@ -63,10 +69,4 @@ public class QuartzCronMappingTest extends BaseQuartzTest {
         }
         return (QuartzEndpoint) endpoint;
     }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
 }

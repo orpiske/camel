@@ -33,9 +33,10 @@ public class GroovyLanguageConfigurationAndDocumentationTest extends CamelTestSu
 
     private static final Logger LOG = LoggerFactory.getLogger(GroovyLanguageConfigurationAndDocumentationTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public GroovyLanguageConfigurationAndDocumentationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

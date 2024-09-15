@@ -32,6 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CronPatternsTest extends CamelTestSupport {
 
+    public CronPatternsTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "cron:tab?schedule=0/1 * * * * ? 1 2", "cron:tab?schedule=wrong pattern",
@@ -71,10 +77,4 @@ public class CronPatternsTest extends CamelTestSupport {
 
         Assertions.assertEquals(0, bi.getInvokedCounter());
     }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
 }

@@ -29,12 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NettyHttpProducerProxyModeTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
     private static final int port = AvailablePortFinder.getNextAvailable();
+
+    public NettyHttpProducerProxyModeTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
 
     @Test
     public void testProxyNotSupported() throws Exception {

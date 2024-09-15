@@ -44,9 +44,10 @@ public class RouteWatcherReloadStrategyTest extends CamelTestSupport {
 
     private RouteWatcherReloadStrategy reloadStrategy;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public RouteWatcherReloadStrategyTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

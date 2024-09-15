@@ -39,6 +39,8 @@ public class XMLEncryption11Test extends CamelTestSupport {
     TestHelper xmlsecTestHelper = new TestHelper();
 
     public XMLEncryption11Test() throws Exception {
+        super();
+
         //
         // BouncyCastle is required for GCM support
         //
@@ -50,11 +52,8 @@ public class XMLEncryption11Test extends CamelTestSupport {
             Provider provider = (java.security.Provider) cons.newInstance();
             Security.insertProviderAt(provider, 2);
         }
-    }
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

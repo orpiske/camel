@@ -23,9 +23,10 @@ import org.springframework.context.ApplicationContext;
 
 public class BarcodeDataFormatSpringTest extends BarcodeDataFormatCamelTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public BarcodeDataFormatSpringTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

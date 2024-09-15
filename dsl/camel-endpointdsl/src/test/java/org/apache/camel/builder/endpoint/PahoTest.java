@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PahoTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public PahoTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

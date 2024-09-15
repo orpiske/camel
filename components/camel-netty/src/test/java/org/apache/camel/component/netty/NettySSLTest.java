@@ -34,6 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisabledIfSystemProperty(named = "java.vendor", matches = ".*ibm.*")
 public class NettySSLTest extends BaseNettyTest {
 
+    public NettySSLTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @BindToRegistry("ksf")
     public File loadKeystoreKsf() {
         return new File("src/test/resources/keystore.jks");
@@ -42,11 +48,6 @@ public class NettySSLTest extends BaseNettyTest {
     @BindToRegistry("tsf")
     public File loadKeystoreTsf() {
         return new File("src/test/resources/keystore.jks");
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

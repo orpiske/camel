@@ -34,9 +34,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class HttpJavaBodyTest extends BaseJettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public HttpJavaBodyTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

@@ -66,18 +66,6 @@ public abstract class AbstractTestSupport implements CommonTestSupport {
         // noop
     }
 
-    /**
-     * Use the RouteBuilder or not
-     *
-     * @deprecated Use the accessors from {@link #testConfiguration()} method
-     * @return     <tt>true</tt> then {@link CamelContext} will be auto started, <tt>false</tt> then
-     *             {@link CamelContext} will <b>not</b> be auto started (you will have to start it manually)
-     */
-    @Deprecated(since = "4.7.0")
-    public boolean isUseRouteBuilder() {
-        return testConfigurationBuilder.useRouteBuilder();
-    }
-
     @Deprecated(since = "4.7.0")
     public void setUseRouteBuilder(boolean useRouteBuilder) {
         testConfigurationBuilder.withUseRouteBuilder(useRouteBuilder);

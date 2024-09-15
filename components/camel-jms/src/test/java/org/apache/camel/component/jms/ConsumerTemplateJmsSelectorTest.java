@@ -27,6 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ConsumerTemplateJmsSelectorTest extends AbstractPersistentJMSTest {
 
+    public ConsumerTemplateJmsSelectorTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testJmsSelector() {
         // must start CamelContext because use route builder is false
@@ -47,10 +53,5 @@ public class ConsumerTemplateJmsSelectorTest extends AbstractPersistentJMSTest {
         ConnectionFactory connectionFactory = ConnectionFactoryHelper.createConnectionFactory(service);
         JmsComponent component = jmsComponentTransacted(connectionFactory);
         camelContext.addComponent("activemq", component);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

@@ -34,9 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class HttpConverterTest extends BaseJettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public HttpConverterTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

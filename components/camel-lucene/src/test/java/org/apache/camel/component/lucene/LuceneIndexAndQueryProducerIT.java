@@ -50,6 +50,12 @@ public class LuceneIndexAndQueryProducerIT extends CamelTestSupport {
             "I worked in a pet store and people kept asking how big I'd get. - Rodney Dangerfield"
     };
 
+    public LuceneIndexAndQueryProducerIT() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     protected void bindToRegistry(Registry registry) {
         registry.bind("std", new File("target/stdindexDir"));
@@ -59,11 +65,6 @@ public class LuceneIndexAndQueryProducerIT extends CamelTestSupport {
         registry.bind("simpleAnalyzer", new SimpleAnalyzer());
         registry.bind("whitespace", new File("target/whitespaceindexDir"));
         registry.bind("whitespaceAnalyzer", new WhitespaceAnalyzer());
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     private void sendRequest(final String quote) {

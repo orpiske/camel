@@ -24,6 +24,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class HazelcastErrorMessagesTest extends HazelcastCamelTestSupport {
 
+    public HazelcastErrorMessagesTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testAtomicNumberConsumer() {
         RouteBuilder builder = new RouteBuilder() {
@@ -58,10 +64,4 @@ public class HazelcastErrorMessagesTest extends HazelcastCamelTestSupport {
                     e.getCause().getMessage().contains("You cannot send messages to this endpoint: hazelcast-instance://foo"));
         }
     }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
 }

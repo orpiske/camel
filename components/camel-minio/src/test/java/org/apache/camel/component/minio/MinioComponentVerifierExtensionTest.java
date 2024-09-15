@@ -28,12 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MinioComponentVerifierExtensionTest extends CamelTestSupport {
 
-    // *************************************************
-    // Tests (parameters)
-    // *************************************************
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MinioComponentVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

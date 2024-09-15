@@ -30,9 +30,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class JettyRouteWithUnknownSslSocketPropertiesTest extends BaseJettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JettyRouteWithUnknownSslSocketPropertiesTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

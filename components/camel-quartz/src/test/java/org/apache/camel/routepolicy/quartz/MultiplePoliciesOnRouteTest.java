@@ -36,15 +36,16 @@ public class MultiplePoliciesOnRouteTest extends CamelTestSupport {
     private String url = "seda:foo?concurrentConsumers=20";
     private int size = 100;
 
+    public MultiplePoliciesOnRouteTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     protected void bindToRegistry(Registry registry) {
         registry.bind("startPolicy", createRouteStartPolicy());
         registry.bind("throttlePolicy", createThrottlePolicy());
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     private RoutePolicy createRouteStartPolicy() {

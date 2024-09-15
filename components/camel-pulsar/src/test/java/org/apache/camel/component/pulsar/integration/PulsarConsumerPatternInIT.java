@@ -58,9 +58,10 @@ public class PulsarConsumerPatternInIT extends PulsarITSupport {
     @EndpointInject("mock:result")
     private MockEndpoint to;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public PulsarConsumerPatternInIT() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

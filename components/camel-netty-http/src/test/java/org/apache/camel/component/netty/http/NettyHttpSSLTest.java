@@ -38,6 +38,12 @@ public class NettyHttpSSLTest extends BaseNettyTest {
 
     protected final Properties originalValues = new Properties();
 
+    public NettyHttpSSLTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void doPreSetup() throws Exception {
         // ensure jsse clients can validate the self signed dummy localhost cert,
@@ -67,11 +73,6 @@ public class NettyHttpSSLTest extends BaseNettyTest {
                 System.setProperty((String) key, (String) value);
             }
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

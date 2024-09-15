@@ -54,9 +54,10 @@ public class ZipDeflaterDataFormatTest extends CamelTestSupport {
                                        + "She bellows on a knoll against the sky.\n"
                                        + "Her udder shrivels and the milk goes dry.";
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public ZipDeflaterDataFormatTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

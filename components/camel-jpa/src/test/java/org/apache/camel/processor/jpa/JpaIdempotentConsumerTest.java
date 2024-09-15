@@ -47,9 +47,10 @@ public class JpaIdempotentConsumerTest extends AbstractJpaTest {
     protected Endpoint startEndpoint;
     protected MockEndpoint resultEndpoint;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JpaIdempotentConsumerTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

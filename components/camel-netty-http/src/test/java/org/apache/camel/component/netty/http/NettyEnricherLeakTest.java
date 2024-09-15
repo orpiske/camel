@@ -23,9 +23,10 @@ import org.junit.jupiter.api.Test;
 
 public class NettyEnricherLeakTest extends BaseNettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public NettyEnricherLeakTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

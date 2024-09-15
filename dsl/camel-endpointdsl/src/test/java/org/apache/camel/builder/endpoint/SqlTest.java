@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SqlTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public SqlTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

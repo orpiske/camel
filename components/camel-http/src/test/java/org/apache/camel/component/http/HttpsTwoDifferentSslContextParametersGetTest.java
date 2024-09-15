@@ -43,6 +43,12 @@ public class HttpsTwoDifferentSslContextParametersGetTest extends BaseHttpsTest 
     @BindToRegistry("sslContextParameters2")
     private SSLContextParameters sslContextParameters2 = new SSLContextParameters();
 
+    public HttpsTwoDifferentSslContextParametersGetTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void setupResources() throws Exception {
         localServer = ServerBootstrap.bootstrap().setHttpProcessor(getBasicHttpProcessor())
@@ -56,11 +62,6 @@ public class HttpsTwoDifferentSslContextParametersGetTest extends BaseHttpsTest 
         if (localServer != null) {
             localServer.stop();
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

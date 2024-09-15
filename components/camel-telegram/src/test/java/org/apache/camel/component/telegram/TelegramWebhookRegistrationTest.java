@@ -42,6 +42,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class TelegramWebhookRegistrationTest extends TelegramTestSupport {
 
+    public TelegramWebhookRegistrationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testAutomaticRegistration() throws Exception {
         final MockProcessor<String> mockProcessor = getMockRoutes().getMock("setWebhook?url=http://my-domain.com/my-test");
@@ -148,10 +154,5 @@ public class TelegramWebhookRegistrationTest extends TelegramTestSupport {
                         "GET",
                         String.class,
                         TelegramTestUtil.serialize(result));
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

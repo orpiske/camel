@@ -47,6 +47,12 @@ public class CamelComponentVerifierTest extends BaseHttpTest {
     private HttpServer localServer;
     private ComponentVerifierExtension verifier;
 
+    public CamelComponentVerifierTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void setupResources() throws Exception {
         localServer = ServerBootstrap.bootstrap()
@@ -74,11 +80,6 @@ public class CamelComponentVerifierTest extends BaseHttpTest {
         if (localServer != null) {
             localServer.stop();
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     private HttpProcessor getHttpProcessor() {

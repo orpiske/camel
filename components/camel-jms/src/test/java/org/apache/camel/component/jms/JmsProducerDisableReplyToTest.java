@@ -22,6 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JmsProducerDisableReplyToTest extends AbstractPersistentJMSTest {
 
+    public JmsProducerDisableReplyToTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testProducerDisableReplyTo() {
         // must start CamelContext because use route builder is false
@@ -32,10 +38,5 @@ public class JmsProducerDisableReplyToTest extends AbstractPersistentJMSTest {
 
         Object out = consumer.receiveBody(url, 5000);
         assertEquals("Hello World", out);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

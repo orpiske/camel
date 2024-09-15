@@ -45,9 +45,10 @@ public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
     @EndpointInject("mock://result")
     MockEndpoint result;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MllpTcpServerConsumerConnectionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

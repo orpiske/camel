@@ -34,9 +34,10 @@ public class EipDocumentationTest extends CamelTestSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(EipDocumentationTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public EipDocumentationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

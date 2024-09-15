@@ -41,6 +41,8 @@ public class EncryptionAlgorithmTest extends CamelTestSupport {
     TestHelper xmlsecTestHelper = new TestHelper();
 
     public EncryptionAlgorithmTest() throws Exception {
+        super();
+
         // BouncyCastle is required for some algorithms
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons;
@@ -50,11 +52,8 @@ public class EncryptionAlgorithmTest extends CamelTestSupport {
             Provider provider = (java.security.Provider) cons.newInstance();
             Security.insertProviderAt(provider, 2);
         }
-    }
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

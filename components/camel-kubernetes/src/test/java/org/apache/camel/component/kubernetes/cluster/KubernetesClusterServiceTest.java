@@ -76,6 +76,12 @@ public class KubernetesClusterServiceTest extends CamelTestSupport {
 
     private Map<String, CamelPreemptiveClusterService> clusterServices = new HashMap<>();
 
+    public KubernetesClusterServiceTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @AfterEach
     public void shutdownLock() {
         for (LockTestServer<?> server : this.lockServers.values()) {
@@ -466,10 +472,5 @@ public class KubernetesClusterServiceTest extends CamelTestSupport {
         }
 
         return recorder;
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

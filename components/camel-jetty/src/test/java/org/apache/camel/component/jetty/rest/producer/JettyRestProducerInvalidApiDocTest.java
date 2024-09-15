@@ -26,9 +26,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class JettyRestProducerInvalidApiDocTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JettyRestProducerInvalidApiDocTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

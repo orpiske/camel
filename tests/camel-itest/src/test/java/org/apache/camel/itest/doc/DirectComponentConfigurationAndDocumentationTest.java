@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EnabledIfSystemProperty(named = "enable.documentation.itests", matches = "true")
 public class DirectComponentConfigurationAndDocumentationTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public DirectComponentConfigurationAndDocumentationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

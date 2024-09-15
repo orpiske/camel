@@ -25,9 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpProxyTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public HttpProxyTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

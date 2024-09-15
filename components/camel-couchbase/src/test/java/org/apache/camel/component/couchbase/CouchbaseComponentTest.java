@@ -30,14 +30,15 @@ public class CouchbaseComponentTest extends CamelTestSupport {
 
     private CouchbaseComponent component;
 
-    @Override
-    public void doPostSetup() {
-        component = context.getComponent("couchbase", CouchbaseComponent.class);
+    public CouchbaseComponentTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public void doPostSetup() {
+        component = context.getComponent("couchbase", CouchbaseComponent.class);
     }
 
     @Test

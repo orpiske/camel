@@ -26,6 +26,12 @@ public class AvroNettySpringProducerTest extends AvroNettyProducerTest {
 
     private AbstractApplicationContext applicationContext;
 
+    public AvroNettySpringProducerTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void doPostTearDown() {
         IOHelper.close(applicationContext);
@@ -35,10 +41,5 @@ public class AvroNettySpringProducerTest extends AvroNettyProducerTest {
     protected CamelContext createCamelContext() throws Exception {
         applicationContext = new ClassPathXmlApplicationContext("org/apache/camel/component/avro/avro-netty-producer.xml");
         return SpringCamelContext.springCamelContext(applicationContext, true);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

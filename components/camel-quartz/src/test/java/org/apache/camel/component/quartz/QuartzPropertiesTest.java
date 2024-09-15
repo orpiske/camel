@@ -28,9 +28,10 @@ public class QuartzPropertiesTest extends BaseQuartzTest {
 
     private QuartzComponent quartz;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public QuartzPropertiesTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

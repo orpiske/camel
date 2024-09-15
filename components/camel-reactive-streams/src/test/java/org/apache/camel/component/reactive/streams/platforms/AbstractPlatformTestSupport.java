@@ -40,6 +40,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public abstract class AbstractPlatformTestSupport extends BaseReactiveTest {
 
+    public AbstractPlatformTestSupport() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testPublisher() throws Exception {
 
@@ -110,11 +116,6 @@ public abstract class AbstractPlatformTestSupport extends BaseReactiveTest {
             assertTrue(number < 0);
         }
 
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     protected abstract void changeSign(Publisher<Integer> data, Consumer<Integer> consume);

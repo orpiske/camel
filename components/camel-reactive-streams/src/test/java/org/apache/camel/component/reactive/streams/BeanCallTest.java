@@ -36,6 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SuppressWarnings("unused")
 public class BeanCallTest extends BaseReactiveTest {
 
+    public BeanCallTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void beanCallTest() throws Exception {
         new RouteBuilder() {
@@ -260,10 +266,5 @@ public class BeanCallTest extends BaseReactiveTest {
 
     public String processBodyStd(Publisher<Integer> data) {
         return "Hello";
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

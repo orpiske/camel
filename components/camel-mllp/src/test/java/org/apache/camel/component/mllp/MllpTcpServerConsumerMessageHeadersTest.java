@@ -45,9 +45,10 @@ public class MllpTcpServerConsumerMessageHeadersTest extends CamelTestSupport {
     @EndpointInject("mock://on-completion-result")
     MockEndpoint onCompletionResult;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MllpTcpServerConsumerMessageHeadersTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

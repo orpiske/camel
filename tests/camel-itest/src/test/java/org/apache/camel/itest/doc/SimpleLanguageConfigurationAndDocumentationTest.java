@@ -33,9 +33,10 @@ public class SimpleLanguageConfigurationAndDocumentationTest extends CamelTestSu
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleLanguageConfigurationAndDocumentationTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public SimpleLanguageConfigurationAndDocumentationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

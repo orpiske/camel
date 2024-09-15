@@ -24,6 +24,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MinaSendToProcessorTest extends BaseMinaTest {
 
+    public MinaSendToProcessorTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     private RouteBuilder getRouteBuilder(String uri) {
         return new RouteBuilder() {
 
@@ -47,10 +53,5 @@ public class MinaSendToProcessorTest extends BaseMinaTest {
         context.addRoutes(getRouteBuilder("mina:tcp://localhost:%1$s?sync=false"));
 
         assertDoesNotThrow(() -> context.start(), "Should not have thrown an exception");
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

@@ -35,6 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BasicPublisherTest extends BaseReactiveTest {
 
+    public BasicPublisherTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testWorking() throws Exception {
 
@@ -124,10 +130,4 @@ public class BasicPublisherTest extends BaseReactiveTest {
         assertThrows(FailedToStartRouteException.class,
                 () -> context.start());
     }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
 }

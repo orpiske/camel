@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GoogleSheetsVerifierExtensionTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public GoogleSheetsVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

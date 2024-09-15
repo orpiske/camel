@@ -29,9 +29,11 @@ import org.kiwiproject.consul.model.health.ServiceHealth;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ConsulServiceRegistryIT extends ConsulTestSupport {
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+
+    public ConsulServiceRegistryIT() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

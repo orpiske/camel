@@ -33,9 +33,10 @@ public class StringDataFormatConfigurationAndDocumentationTest extends CamelTest
 
     private static final Logger LOG = LoggerFactory.getLogger(EipDocumentationTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public StringDataFormatConfigurationAndDocumentationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

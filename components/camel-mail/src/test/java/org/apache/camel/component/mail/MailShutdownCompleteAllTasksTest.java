@@ -38,14 +38,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MailShutdownCompleteAllTasksTest extends CamelTestSupport {
     private static final MailboxUser jones = Mailbox.getOrCreateUser("jones", "secret");
 
-    @Override
-    public void doPreSetup() throws Exception {
-        prepareMailbox();
+    public MailShutdownCompleteAllTasksTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public void doPreSetup() throws Exception {
+        prepareMailbox();
     }
 
     @Test

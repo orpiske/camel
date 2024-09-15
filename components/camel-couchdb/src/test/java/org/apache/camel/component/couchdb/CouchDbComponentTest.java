@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CouchDbComponentTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public CouchDbComponentTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

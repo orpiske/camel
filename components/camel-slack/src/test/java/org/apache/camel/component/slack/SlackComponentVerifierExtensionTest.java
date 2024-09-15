@@ -28,12 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SlackComponentVerifierExtensionTest extends CamelTestSupport {
 
-    // *************************************************
-    // Tests (parameters)
-    // *************************************************
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public SlackComponentVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

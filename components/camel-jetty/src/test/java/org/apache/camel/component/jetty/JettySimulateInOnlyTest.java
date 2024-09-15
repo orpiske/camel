@@ -29,9 +29,10 @@ public class JettySimulateInOnlyTest extends BaseJettyTest {
 
     private static String route = "";
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JettySimulateInOnlyTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

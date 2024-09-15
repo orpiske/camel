@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisabledIfSystemProperty(named = "java.vendor", matches = ".*ibm.*")
 public class NettySSLClasspathTest extends BaseNettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public NettySSLClasspathTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

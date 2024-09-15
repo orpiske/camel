@@ -37,6 +37,12 @@ public class HttpDefaultPortNumberTest extends BaseHttpTest {
 
     private HttpServer localServer;
 
+    public HttpDefaultPortNumberTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void setupResources() throws Exception {
         localServer = ServerBootstrap.bootstrap().setHttpProcessor(getBasicHttpProcessor())
@@ -131,11 +137,6 @@ public class HttpDefaultPortNumberTest extends BaseHttpTest {
         Exchange exchange = template.request("direct:start", null);
 
         assertRefused(exchange, ":80");
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return true;
     }
 
     private void assertRefused(Exchange exchange, String portExt) {

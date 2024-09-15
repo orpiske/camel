@@ -32,6 +32,12 @@ public class ModelineParserTest extends CamelTestSupport {
 
     private final List<String> deps = new ArrayList<>();
 
+    public ModelineParserTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     private ModelineFactory resolveModelineFactory(CamelContext camelContext) {
         return PluginHelper.getModelineFactory(camelContext);
     }
@@ -46,11 +52,6 @@ public class ModelineParserTest extends CamelTestSupport {
             }
         });
         return context;
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

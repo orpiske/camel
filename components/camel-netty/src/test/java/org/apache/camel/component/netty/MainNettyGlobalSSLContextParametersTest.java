@@ -31,9 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisabledIfSystemProperty(named = "java.vendor", matches = ".*ibm.*")
 public class MainNettyGlobalSSLContextParametersTest extends BaseNettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MainNettyGlobalSSLContextParametersTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

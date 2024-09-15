@@ -24,8 +24,9 @@ abstract class NoBuilderTest extends CamelTestSupport {
 
     static final Logger LOG = LoggerFactory.getLogger(NoBuilderTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public NoBuilderTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 }

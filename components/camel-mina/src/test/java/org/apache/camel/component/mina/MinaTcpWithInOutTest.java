@@ -38,6 +38,12 @@ public class MinaTcpWithInOutTest extends BaseMinaTest {
     private Exchange receivedExchange;
     private CountDownLatch latch;
 
+    public MinaTcpWithInOutTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testMinaRouteWithInOut() throws Exception {
         latch = new CountDownLatch(1);
@@ -122,10 +128,5 @@ public class MinaTcpWithInOutTest extends BaseMinaTest {
         producer.stop();
         context.stop();
         server.stop();
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

@@ -38,6 +38,12 @@ public class CxfMultipleConsumersSupportTest extends CamelTestSupport {
     protected static final String SIMPLE_OTHER_URI = "cxf://" + SIMPLE_OTHER_ADDRESS
                                                      + "?serviceClass=org.apache.camel.component.cxf.jaxws.HelloService";
 
+    public CxfMultipleConsumersSupportTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testMultipleConsumersNotAllowed() throws Exception {
         context.addRoutes(new RouteBuilder() {
@@ -81,10 +87,5 @@ public class CxfMultipleConsumersSupportTest extends CamelTestSupport {
         template.sendBody("direct:start", "Hello World");
 
         MockEndpoint.assertIsSatisfied(context);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

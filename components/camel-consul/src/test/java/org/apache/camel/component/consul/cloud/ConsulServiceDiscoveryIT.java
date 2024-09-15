@@ -39,9 +39,10 @@ public class ConsulServiceDiscoveryIT extends ConsulTestSupport {
     private AgentClient client;
     private List<Registration> registrations;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public ConsulServiceDiscoveryIT() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

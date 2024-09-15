@@ -33,9 +33,10 @@ import org.slf4j.LoggerFactory;
 public class LuceneQueryProcessorIT extends CamelTestSupport {
     private static final Logger LOG = LoggerFactory.getLogger(LuceneQueryProcessorIT.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public LuceneQueryProcessorIT() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     private void sendRequest() {

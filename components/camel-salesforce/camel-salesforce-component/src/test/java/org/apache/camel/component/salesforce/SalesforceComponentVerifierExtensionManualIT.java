@@ -32,9 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SalesforceComponentVerifierExtensionManualIT extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public SalesforceComponentVerifierExtensionManualIT() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     // *********************************

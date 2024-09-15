@@ -29,6 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EventTypeTest extends BaseReactiveTest {
 
+    public EventTypeTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testOnCompleteHeaderForwarded() throws Exception {
 
@@ -168,10 +174,5 @@ public class EventTypeTest extends BaseReactiveTest {
         MockEndpoint endpoint = getMockEndpoint("mock:endpoint");
         endpoint.expectedMessageCount(0);
         endpoint.assertIsSatisfied(200);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

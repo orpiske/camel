@@ -42,9 +42,10 @@ public class JsonPathLanguageTest extends CamelTestSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(JsonPathLanguageTest.class);
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JsonPathLanguageTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

@@ -26,9 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MyBatisUnknownStatementTypeTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MyBatisUnknownStatementTypeTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

@@ -35,6 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisabledIfSystemProperty(named = "java.vendor", matches = ".*ibm.*")
 public class NettyGlobalSSLContextParametersTest extends BaseNettyTest {
 
+    public NettyGlobalSSLContextParametersTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     protected CamelContext createCamelContext() throws Exception {
         CamelContext context = super.createCamelContext();
@@ -62,11 +68,6 @@ public class NettyGlobalSSLContextParametersTest extends BaseNettyTest {
 
         ((SSLContextParametersAware) context.getComponent("netty")).setUseGlobalSslContextParameters(true);
         return context;
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

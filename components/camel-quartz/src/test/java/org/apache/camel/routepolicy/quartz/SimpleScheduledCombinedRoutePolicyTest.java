@@ -31,9 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class SimpleScheduledCombinedRoutePolicyTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public SimpleScheduledCombinedRoutePolicyTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

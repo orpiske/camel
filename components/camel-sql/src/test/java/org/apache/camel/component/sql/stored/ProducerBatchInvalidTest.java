@@ -35,8 +35,13 @@ public class ProducerBatchInvalidTest extends CamelTestSupport {
 
     private EmbeddedDatabase db;
 
-    @Override
+    public ProducerBatchInvalidTest() {
+        super();
 
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
+    @Override
     public void doPreSetup() throws Exception {
         db = new EmbeddedDatabaseBuilder()
                 .setName(getClass().getSimpleName())
@@ -50,11 +55,6 @@ public class ProducerBatchInvalidTest extends CamelTestSupport {
         if (db != null) {
             db.shutdown();
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

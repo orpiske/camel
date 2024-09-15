@@ -31,9 +31,10 @@ public class NettySSLPassphaseBeanTest extends BaseNettyTest {
     @BindToRegistry("myBean")
     private String bean = "changeit";
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public NettySSLPassphaseBeanTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

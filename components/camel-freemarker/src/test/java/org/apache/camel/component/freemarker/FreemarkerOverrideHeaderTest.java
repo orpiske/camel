@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FreemarkerOverrideHeaderTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public FreemarkerOverrideHeaderTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     private Exchange createLetter() {

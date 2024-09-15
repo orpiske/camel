@@ -25,9 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PropertyPlaceholderTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public PropertyPlaceholderTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

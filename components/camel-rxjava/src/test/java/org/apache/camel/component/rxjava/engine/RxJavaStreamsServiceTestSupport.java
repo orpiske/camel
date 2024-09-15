@@ -28,6 +28,12 @@ import org.apache.camel.util.ObjectHelper;
 class RxJavaStreamsServiceTestSupport extends CamelTestSupport {
     protected CamelReactiveStreamsService crs;
 
+    public RxJavaStreamsServiceTestSupport() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     protected CamelContext createCamelContext() throws Exception {
         CamelContext context = super.createCamelContext();
@@ -45,12 +51,6 @@ class RxJavaStreamsServiceTestSupport extends CamelTestSupport {
     @Override
     protected void doPostSetup() {
         this.crs = CamelReactiveStreams.get(context);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        // You need to start the context if "use route builder" is set to false
-        return false;
     }
 
     protected ReactiveStreamsComponent getReactiveStreamsComponent() {

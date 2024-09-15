@@ -24,9 +24,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class JettySessionSupportTest extends BaseJettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JettySessionSupportTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

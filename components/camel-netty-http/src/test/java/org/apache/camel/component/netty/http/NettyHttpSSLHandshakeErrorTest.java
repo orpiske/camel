@@ -30,9 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisabledIfSystemProperty(named = "java.vendor", matches = ".*ibm.*")
 public class NettyHttpSSLHandshakeErrorTest extends BaseNettyTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public NettyHttpSSLHandshakeErrorTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

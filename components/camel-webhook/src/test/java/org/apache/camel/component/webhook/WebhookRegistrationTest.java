@@ -34,6 +34,12 @@ public class WebhookRegistrationTest extends WebhookTestBase {
 
     private AtomicInteger unregistered;
 
+    public WebhookRegistrationTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @BeforeEach
     public void initialize() {
         this.registered = new AtomicInteger();
@@ -68,11 +74,6 @@ public class WebhookRegistrationTest extends WebhookTestBase {
         context.stop();
         Awaitility.waitAtMost(5, TimeUnit.SECONDS).until(() -> unregistered.get() == 1);
         assertEquals(1, registered.get());
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Override

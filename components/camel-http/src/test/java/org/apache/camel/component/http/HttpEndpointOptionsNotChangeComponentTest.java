@@ -36,9 +36,10 @@ public class HttpEndpointOptionsNotChangeComponentTest extends CamelTestSupport 
     @BindToRegistry("myStrategy")
     private MyHeaderFilterStrategy strategy = new MyHeaderFilterStrategy();
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public HttpEndpointOptionsNotChangeComponentTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

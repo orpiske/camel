@@ -26,6 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CronLoaderTest extends CamelTestSupport {
 
+    public CronLoaderTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     void testDummyCronServiceLoading() throws Exception {
         configureRoutes();
@@ -67,10 +73,5 @@ public class CronLoaderTest extends CamelTestSupport {
                         .to("mock:result");
             }
         });
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

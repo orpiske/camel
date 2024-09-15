@@ -47,6 +47,12 @@ public class HttpsTwoComponentsSslContextParametersGetTest extends BaseHttpsTest
     @BindToRegistry("https-bar")
     private HttpComponent httpComponent1 = new HttpComponent();
 
+    public HttpsTwoComponentsSslContextParametersGetTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void setupResources() throws Exception {
         localServer = ServerBootstrap.bootstrap().setHttpProcessor(getBasicHttpProcessor())
@@ -60,11 +66,6 @@ public class HttpsTwoComponentsSslContextParametersGetTest extends BaseHttpsTest
         if (localServer != null) {
             localServer.stop();
         }
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     @Test

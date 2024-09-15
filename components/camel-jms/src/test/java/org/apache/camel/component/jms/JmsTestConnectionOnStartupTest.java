@@ -33,6 +33,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class JmsTestConnectionOnStartupTest extends CamelTestSupport {
 
+    public JmsTestConnectionOnStartupTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testConnectionOnStartupConsumerTest() throws Exception {
         context.addRoutes(new RouteBuilder() {
@@ -83,10 +89,5 @@ public class JmsTestConnectionOnStartupTest extends CamelTestSupport {
         camelContext.addComponent("activemq", jmsComponentAutoAcknowledge(connectionFactory));
 
         return camelContext;
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 }

@@ -37,9 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JacksonJSonNodeConverterTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JacksonJSonNodeConverterTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

@@ -28,9 +28,10 @@ import org.junit.jupiter.api.Test;
 
 public class KameletEipMulticastTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public KameletEipMulticastTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

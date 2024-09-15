@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HttpsBasicAuthTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public HttpsBasicAuthTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

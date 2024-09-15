@@ -35,6 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BackpressurePublisherRoutePolicyTest extends BaseReactiveTest {
 
+    public BackpressurePublisherRoutePolicyTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Test
     public void testThatBackpressureCausesTemporaryRouteStop() throws Exception {
 
@@ -157,10 +163,4 @@ public class BackpressurePublisherRoutePolicyTest extends BaseReactiveTest {
 
         assertTrue(latch.await(5, TimeUnit.SECONDS));
     }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
 }

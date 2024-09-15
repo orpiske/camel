@@ -28,12 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GoogleMailStreamComponentVerifierExtensionTest extends CamelTestSupport {
 
-    // *************************************************
-    // Tests (parameters)
-    // *************************************************
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public GoogleMailStreamComponentVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

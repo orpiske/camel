@@ -37,11 +37,8 @@ public class ServiceNowMetaDataExtensionIT extends ServiceNowITSupport {
 
     public ServiceNowMetaDataExtensionIT() {
         super(false);
-    }
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     protected ServiceNowComponent getComponent() {

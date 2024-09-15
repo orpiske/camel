@@ -39,9 +39,10 @@ public class StreamFileTest extends CamelTestSupport {
 
     private FileOutputStream fos;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public StreamFileTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

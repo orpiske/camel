@@ -25,14 +25,14 @@ public class ReactiveStreamsTestSupport extends BaseReactiveTest {
 
     protected CamelReactiveStreamsService camel;
 
+    public ReactiveStreamsTestSupport() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @BeforeEach
     public void initReactiveStreamService() {
         this.camel = CamelReactiveStreams.get(context);
     }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
-    }
-
 }

@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class QuartzTest extends BaseEndpointDslTest {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public QuartzTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

@@ -38,6 +38,12 @@ public abstract class StompBaseTest extends CamelTestSupport {
     static int sslServicePort = AvailablePortFinder.getNextAvailable();
     static int servicePort = AvailablePortFinder.getNextAvailable();
 
+    public StompBaseTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @RegisterExtension
     public static ArtemisService service = new ArtemisEmbeddedServiceBuilder()
             .withCustomConfiguration(configuration -> {
@@ -65,11 +71,6 @@ public abstract class StompBaseTest extends CamelTestSupport {
     private SSLContext clientSslContext;
 
     protected boolean isUseSsl() {
-        return false;
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
         return false;
     }
 

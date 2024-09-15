@@ -48,6 +48,12 @@ public class CamelComponentVerifierExtensionTest extends BaseHttpTest {
     private HttpServer localServer;
     private ComponentVerifierExtension verifier;
 
+    public CamelComponentVerifierExtensionTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
+    }
+
     @Override
     public void setupResources() throws Exception {
         localServer = ServerBootstrap.bootstrap()
@@ -74,11 +80,6 @@ public class CamelComponentVerifierExtensionTest extends BaseHttpTest {
     void setupVerifier() {
         Component component = context().getComponent("http");
         verifier = component.getExtension(ComponentVerifierExtension.class).orElseThrow(IllegalStateException::new);
-    }
-
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
     }
 
     private HttpProcessor getHttpProcessor() {

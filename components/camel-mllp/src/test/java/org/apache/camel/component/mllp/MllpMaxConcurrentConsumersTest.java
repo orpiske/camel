@@ -47,9 +47,10 @@ public class MllpMaxConcurrentConsumersTest extends CamelTestSupport {
     @EndpointInject(value = "mock://result")
     MockEndpoint result;
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public MllpMaxConcurrentConsumersTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Override

@@ -33,11 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ServiceNowComponentVerifierIT extends ServiceNowITSupport {
     public ServiceNowComponentVerifierIT() {
         super(false);
-    }
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     protected ComponentVerifierExtension getVerifier() {

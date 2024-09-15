@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonPathPredicateJsonSmartTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseRouteBuilder() {
-        return false;
+    public JsonPathPredicateJsonSmartTest() {
+        super();
+
+        testConfigurationBuilder.withUseRouteBuilder(false);
     }
 
     @Test

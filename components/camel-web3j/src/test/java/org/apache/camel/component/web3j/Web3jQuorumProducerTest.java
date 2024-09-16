@@ -45,14 +45,15 @@ public class Web3jQuorumProducerTest extends Web3jMockTestSupport {
     @Mock
     protected Request request;
 
-    @Override
-    protected String getUrl() {
-        return "web3j://http://127.0.0.1:8545?web3j=#mockQuorum&quorumAPI=true&";
+    public Web3jQuorumProducerTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Override
-    public boolean isUseAdviceWith() {
-        return false;
+    protected String getUrl() {
+        return "web3j://http://127.0.0.1:8545?web3j=#mockQuorum&quorumAPI=true&";
     }
 
     @Test

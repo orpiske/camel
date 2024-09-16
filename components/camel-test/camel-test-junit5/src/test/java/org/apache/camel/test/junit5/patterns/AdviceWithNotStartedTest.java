@@ -32,9 +32,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class AdviceWithNotStartedTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public AdviceWithNotStartedTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Test

@@ -26,8 +26,10 @@ import org.junit.jupiter.api.Test;
 
 public class SimpleWeaveAddMockLastTest extends CamelTestSupport {
 
-    public boolean isUseAdviceWith() {
-        return true;
+    public SimpleWeaveAddMockLastTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Test

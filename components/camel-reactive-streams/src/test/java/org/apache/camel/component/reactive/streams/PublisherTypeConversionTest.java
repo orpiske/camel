@@ -32,6 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PublisherTypeConversionTest extends BaseReactiveTest {
 
+    public PublisherTypeConversionTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
+    }
+
     @Test
     public void testConversion() throws Exception {
 
@@ -78,10 +84,5 @@ public class PublisherTypeConversionTest extends BaseReactiveTest {
                         .to("reactive-streams:pub");
             }
         };
-    }
-
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
     }
 }

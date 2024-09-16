@@ -41,9 +41,10 @@ public class MllpTcpServerConsumerBindTimeoutTest extends CamelTestSupport {
     @EndpointInject("mock://result")
     MockEndpoint result;
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public MllpTcpServerConsumerBindTimeoutTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Override

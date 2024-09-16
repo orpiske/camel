@@ -32,14 +32,15 @@ import static org.apache.camel.builder.Builder.constant;
 
 public class AdviceWithOnExceptionTransactedTest extends CamelSpringTestSupport {
 
-    @Override
-    protected AbstractApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("org/apache/camel/test/issues/AdviceWithOnExceptionTransacted.xml");
+    public AdviceWithOnExceptionTransactedTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("org/apache/camel/test/issues/AdviceWithOnExceptionTransacted.xml");
     }
 
     @Override

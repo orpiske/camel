@@ -36,9 +36,10 @@ public class AdviceWithIssueIT extends CamelTestSupport {
             = "activemq:topic:integrations?allowNullBody=false&asyncConsumer=true&concurrentConsumers=10&jmsMessageType=Map&preserveMessageQos=true";
     final String advicedPub = "activemq:topic:integrations";
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public AdviceWithIssueIT() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Test

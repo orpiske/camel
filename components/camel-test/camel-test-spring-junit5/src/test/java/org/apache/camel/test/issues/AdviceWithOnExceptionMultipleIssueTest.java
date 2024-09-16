@@ -26,14 +26,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AdviceWithOnExceptionMultipleIssueTest extends CamelSpringTestSupport {
 
-    @Override
-    protected AbstractApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("org/apache/camel/test/issues/AdviceWithOnExceptionMultipleIssueTest.xml");
+    public AdviceWithOnExceptionMultipleIssueTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("org/apache/camel/test/issues/AdviceWithOnExceptionMultipleIssueTest.xml");
     }
 
     @Test

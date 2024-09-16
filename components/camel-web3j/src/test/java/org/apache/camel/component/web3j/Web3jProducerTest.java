@@ -100,9 +100,10 @@ public class Web3jProducerTest extends Web3jMockTestSupport {
     @Mock
     private Request request;
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return false;
+    public Web3jProducerTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Test

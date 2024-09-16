@@ -47,4 +47,17 @@ public interface LegacyTestSupport {
      * @return <tt>false</tt> by default.
      */
     boolean useJmx();
+
+    /**
+     * Override when using <a href="http://camel.apache.org/advicewith.html">advice with</a> and return <tt>true</tt>.
+     * This helps to know advice with is to be used, and {@link CamelContext} will not be started before the advice with
+     * takes place. This helps by ensuring the advice with has been property setup before the {@link CamelContext} is
+     * started
+     * <p/>
+     * <b>Important:</b> It's important to start {@link CamelContext} manually from the unit test after you are done
+     * doing all the advice with.
+     *
+     * @return <tt>true</tt> if you use advice with in your unit tests.
+     */
+    boolean isUseAdviceWith();
 }

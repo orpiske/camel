@@ -30,9 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class AdviceRouteTest extends CamelMainTestSupport {
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public AdviceRouteTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Override

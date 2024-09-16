@@ -81,9 +81,10 @@ public class ExecJavaProcessTest extends CamelTestSupport {
     @BindToRegistry("executorMock")
     private ProvokeExceptionExecCommandExecutor provokerMock = new ProvokeExceptionExecCommandExecutor();
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public ExecJavaProcessTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Test

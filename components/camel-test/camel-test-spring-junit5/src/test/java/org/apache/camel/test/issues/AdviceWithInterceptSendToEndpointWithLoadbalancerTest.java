@@ -26,15 +26,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AdviceWithInterceptSendToEndpointWithLoadbalancerTest extends CamelSpringTestSupport {
 
+    public AdviceWithInterceptSendToEndpointWithLoadbalancerTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
+    }
+
     @Override
     protected AbstractApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext(
                 "org/apache/camel/test/issues/AdviceWithInterceptSendToEndpointWithLoadbalancerTest.xml");
-    }
-
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
     }
 
     @Test

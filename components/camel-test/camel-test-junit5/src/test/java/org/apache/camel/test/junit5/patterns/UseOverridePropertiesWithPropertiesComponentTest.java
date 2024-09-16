@@ -28,9 +28,10 @@ import org.junit.jupiter.api.Test;
 
 public class UseOverridePropertiesWithPropertiesComponentTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public UseOverridePropertiesWithPropertiesComponentTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @BeforeEach

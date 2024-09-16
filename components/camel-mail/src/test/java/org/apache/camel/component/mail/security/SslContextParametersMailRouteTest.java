@@ -51,6 +51,12 @@ public class SslContextParametersMailRouteTest extends CamelTestSupport {
     @BindToRegistry("sslContextParameters")
     private SSLContextParameters params = MailTestHelper.createSslContextParameters();
 
+    public SslContextParametersMailRouteTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
+    }
+
     @Test
     public void testSendAndReceiveMails() throws Exception {
 
@@ -109,11 +115,4 @@ public class SslContextParametersMailRouteTest extends CamelTestSupport {
         }
     }
 
-    /**
-     * Stop Camel startup.
-     */
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
-    }
 }

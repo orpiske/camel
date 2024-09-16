@@ -26,15 +26,16 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 public class AdviceWithTransactionIssueIT extends SpringJMSBasic {
 
+    public AdviceWithTransactionIssueIT() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
+    }
+
     @Override
     protected AbstractApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext(
                 "org/apache/camel/component/jms/integration/spring/issues/AdviceWithTransactionIssueIT.xml");
-    }
-
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
     }
 
     @Test

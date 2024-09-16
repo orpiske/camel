@@ -42,15 +42,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tags({ @Tag("not-parallel"), @Tag("spring"), @Tag("tx") })
 public class JMSTransactionIsTransactedRedeliveredIT extends AbstractSpringJMSITSupport {
 
+    public JMSTransactionIsTransactedRedeliveredIT() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
+    }
+
     @Override
     protected ClassPathXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext(
                 "/org/apache/camel/component/jms/integration/spring/tx/error/JMSTransactionIsTransactedRedeliveredIT.xml");
-    }
-
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
     }
 
     protected MBeanServer getMBeanServer() {

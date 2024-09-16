@@ -44,9 +44,10 @@ public class Web3jMockTestSupport extends CamelTestSupport {
     @Mock
     protected Flowable subscription;
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public Web3jMockTestSupport() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     protected String getUrl() {

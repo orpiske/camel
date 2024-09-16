@@ -25,14 +25,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AdviceWithOnCompletionTest extends CamelSpringTestSupport {
 
-    @Override
-    protected AbstractApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("org/apache/camel/test/issues/AdviceWithOnCompletionTest.xml");
+    public AdviceWithOnCompletionTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    protected AbstractApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("org/apache/camel/test/issues/AdviceWithOnCompletionTest.xml");
     }
 
     @Test

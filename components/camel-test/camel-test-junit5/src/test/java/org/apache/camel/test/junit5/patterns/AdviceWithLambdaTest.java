@@ -25,9 +25,10 @@ import org.junit.jupiter.api.Test;
 
 public class AdviceWithLambdaTest extends CamelTestSupport {
 
-    @Override
-    public boolean isUseAdviceWith() {
-        return true;
+    public AdviceWithLambdaTest() {
+        super();
+
+        testConfigurationBuilder.withUseAdviceWith(true);
     }
 
     @Test

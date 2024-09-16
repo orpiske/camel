@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExposedServletEndpointURIToJMXTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ExposedServletEndpointURIToJMXTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

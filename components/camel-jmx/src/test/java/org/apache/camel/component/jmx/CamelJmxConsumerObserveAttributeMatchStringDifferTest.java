@@ -26,9 +26,10 @@ import org.junit.jupiter.api.Test;
 
 public class CamelJmxConsumerObserveAttributeMatchStringDifferTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public CamelJmxConsumerObserveAttributeMatchStringDifferTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

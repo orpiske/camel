@@ -25,9 +25,10 @@ import org.junit.jupiter.api.Test;
 
 public class InOutConsumerTopicTest extends JmsTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public InOutConsumerTopicTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

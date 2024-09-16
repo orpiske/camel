@@ -49,9 +49,10 @@ public class ManagedMessageHistoryTest extends CamelTestSupport {
     @BindToRegistry(MicrometerConstants.METRICS_REGISTRY_NAME)
     private CompositeMeterRegistry meterRegistry;
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedMessageHistoryTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

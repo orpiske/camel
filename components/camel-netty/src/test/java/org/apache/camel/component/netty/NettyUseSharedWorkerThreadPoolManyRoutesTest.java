@@ -37,9 +37,10 @@ public class NettyUseSharedWorkerThreadPoolManyRoutesTest extends BaseNettyTest 
     private int before;
     private AvailablePortFinder.Port[] ports;
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public NettyUseSharedWorkerThreadPoolManyRoutesTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

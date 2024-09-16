@@ -38,9 +38,10 @@ public class ManagedJmsEndpointTest extends AbstractPersistentJMSTest {
 
     private final String uuid = new ShortUuidGenerator().generateUuid();
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedJmsEndpointTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

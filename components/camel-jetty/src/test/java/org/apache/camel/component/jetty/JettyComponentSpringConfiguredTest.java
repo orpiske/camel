@@ -36,9 +36,10 @@ public class JettyComponentSpringConfiguredTest extends CamelSpringTestSupport {
     @RegisterExtension
     protected AvailablePortFinder.Port port = AvailablePortFinder.find();
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public JettyComponentSpringConfiguredTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

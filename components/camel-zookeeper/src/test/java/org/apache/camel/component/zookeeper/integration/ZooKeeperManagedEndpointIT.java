@@ -31,9 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("all")
 public class ZooKeeperManagedEndpointIT extends ZooKeeperITSupport {
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ZooKeeperManagedEndpointIT() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

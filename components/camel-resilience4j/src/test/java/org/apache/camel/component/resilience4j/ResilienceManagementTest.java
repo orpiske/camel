@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResilienceManagementTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ResilienceManagementTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

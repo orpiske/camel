@@ -46,6 +46,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ReactiveStreamsJMXTest extends BaseReactiveTest {
 
+    public ReactiveStreamsJMXTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
+    }
+
     @Test
     public void testJmxExposedService() throws Exception {
         MBeanServer mbeanServer = getMBeanServer();
@@ -104,11 +110,6 @@ public class ReactiveStreamsJMXTest extends BaseReactiveTest {
         Set<ObjectName> names = mbeanServer.queryNames(on, queryExp);
         assertEquals(1, names.size());
         return names.iterator().next();
-    }
-
-    @Override
-    protected boolean useJmx() {
-        return true;
     }
 
     @Override

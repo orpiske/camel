@@ -32,9 +32,10 @@ abstract class AbstractMicrometerEventNotifierTest extends CamelTestSupport {
     @BindToRegistry(MicrometerConstants.METRICS_REGISTRY_NAME)
     protected CompositeMeterRegistry meterRegistry;
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public AbstractMicrometerEventNotifierTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     public void addRegistry() {

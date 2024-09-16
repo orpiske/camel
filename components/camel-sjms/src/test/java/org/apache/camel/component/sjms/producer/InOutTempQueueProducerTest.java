@@ -38,9 +38,10 @@ public class InOutTempQueueProducerTest extends JmsTestSupport {
 
     private static final String QUEUE_NAME = "in.out.queue.producer.test.request.InOutTempQueueProducerTest";
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public InOutTempQueueProducerTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

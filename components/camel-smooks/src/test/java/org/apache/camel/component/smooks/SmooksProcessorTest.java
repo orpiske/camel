@@ -71,12 +71,9 @@ public class SmooksProcessorTest extends CamelTestSupport {
     public SmooksProcessorTest() {
         super();
 
-        testConfigurationBuilder.withUseRouteBuilder(false);
-    }
-
-    @Override
-    protected boolean useJmx() {
-        return true;
+        testConfigurationBuilder
+                .withUseRouteBuilder(false)
+                .withEnableJMX();
     }
 
     private void assertOneProcessedMessage() throws Exception {

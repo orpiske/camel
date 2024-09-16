@@ -32,9 +32,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ResilienceRouteRejectedTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ResilienceRouteRejectedTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

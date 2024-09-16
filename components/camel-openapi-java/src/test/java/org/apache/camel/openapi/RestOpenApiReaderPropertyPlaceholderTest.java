@@ -46,9 +46,10 @@ public class RestOpenApiReaderPropertyPlaceholderTest extends CamelTestSupport {
     @BindToRegistry("dummy-rest-consumer")
     private DummyRestConsumerFactory consumerFactory = new DummyRestConsumerFactory();
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public RestOpenApiReaderPropertyPlaceholderTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

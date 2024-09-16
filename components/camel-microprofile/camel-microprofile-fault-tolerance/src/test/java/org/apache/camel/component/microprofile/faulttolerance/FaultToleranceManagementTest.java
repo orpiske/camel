@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FaultToleranceManagementTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public FaultToleranceManagementTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

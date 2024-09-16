@@ -33,16 +33,17 @@ import org.junit.jupiter.api.Test;
  */
 public class StringTemplateContentCacheTest extends CamelTestSupport {
 
+    public StringTemplateContentCacheTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
+    }
+
     @Override
     public void doPostSetup() {
         // create a tm file in the classpath as this is the tricky reloading stuff
         template.sendBodyAndHeader("file://target/test-classes/org/apache/camel/component/stringtemplate",
                 "Hello <headers.name>", Exchange.FILE_NAME, "hello.tm");
-    }
-
-    @Override
-    public boolean useJmx() {
-        return true;
     }
 
     @Test

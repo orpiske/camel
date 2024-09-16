@@ -23,9 +23,10 @@ import org.junit.jupiter.api.Test;
 
 public class JmsSelectorTest extends JmsTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public JmsSelectorTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

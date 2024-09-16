@@ -34,11 +34,17 @@ public interface LegacyTestSupport {
     /**
      * Disables the JMX agent. Must be called before the setup method.
      */
-    @Deprecated(since = "4.7.0")
     void disableJMX();
 
     /**
      * Enables the JMX agent. Must be called before the setup method.
      */
     void enableJMX();
+
+    /**
+     * Whether JMX should be used during testing.
+     *
+     * @return <tt>false</tt> by default.
+     */
+    boolean useJmx();
 }

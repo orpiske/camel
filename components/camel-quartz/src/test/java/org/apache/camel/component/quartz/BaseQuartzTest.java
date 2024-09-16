@@ -22,16 +22,11 @@ import org.apache.camel.test.junit5.CamelTestSupport;
 public abstract class BaseQuartzTest extends CamelTestSupport {
 
     @Override
-    protected boolean useJmx() {
-        return true;
-    }
-
-    @Override
     protected CamelContext createCamelContext() throws Exception {
         CamelContext context = super.createCamelContext();
 
         QuartzComponent quartz = context.getComponent("quartz", QuartzComponent.class);
-        quartz.setEnableJmx(useJmx());
+        quartz.setEnableJmx(testConfigurationBuilder.isJmxEnabled());
 
         return context;
     }

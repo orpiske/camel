@@ -28,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Disabled("Does not run well on CI due test uses JMX mbeans")
 public class RestApiOverrideHostJettyTest extends BaseJettyTest {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public RestApiOverrideHostJettyTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

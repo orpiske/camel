@@ -43,9 +43,10 @@ public class ManagedMetricsRoutePolicyTest extends CamelTestSupport {
     @BindToRegistry(MetricsComponent.METRIC_REGISTRY_NAME)
     private MetricRegistry metricRegistry = new MetricRegistry();
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedMetricsRoutePolicyTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

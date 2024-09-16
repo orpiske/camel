@@ -265,17 +265,6 @@ public abstract class AbstractTestSupport implements CommonTestSupport {
     }
 
     /**
-     * Whether JMX should be used during testing.
-     *
-     * @deprecated Use the methods {@link #testConfiguration()} to enable, disable or check JMX state.
-     * @return     <tt>false</tt> by default.
-     */
-    @Deprecated(since = "4.7.0")
-    protected boolean useJmx() {
-        return testConfigurationBuilder.isJmxEnabled();
-    }
-
-    /**
      * Override this method to include and override properties with the Camel {@link PropertiesComponent}.
      *
      * @deprecated Use the accessors from {@link #camelContextConfiguration()} method

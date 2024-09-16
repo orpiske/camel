@@ -33,9 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ManagedMicrometerRoutePolicyTest extends AbstractMicrometerRoutePolicyTest {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedMicrometerRoutePolicyTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

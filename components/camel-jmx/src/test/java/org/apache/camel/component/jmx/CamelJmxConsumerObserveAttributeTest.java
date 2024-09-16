@@ -26,9 +26,10 @@ import org.junit.jupiter.api.Test;
 
 public class CamelJmxConsumerObserveAttributeTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public CamelJmxConsumerObserveAttributeTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

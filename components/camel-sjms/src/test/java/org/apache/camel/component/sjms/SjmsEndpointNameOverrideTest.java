@@ -31,9 +31,10 @@ public class SjmsEndpointNameOverrideTest extends CamelTestSupport {
 
     private static final String BEAN_NAME = "not-sjms";
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public SjmsEndpointNameOverrideTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

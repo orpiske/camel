@@ -29,14 +29,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 class WithUseJMXTest extends CamelMainTestSupport {
 
-    @Override
-    protected Class<?> getMainClass() {
-        return MyMainClass.class;
+    public WithUseJMXTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override
-    protected boolean useJmx() {
-        return true;
+    protected Class<?> getMainClass() {
+        return MyMainClass.class;
     }
 
     @Test

@@ -34,10 +34,10 @@ import static java.util.Map.entry;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class ThymeleafContentCacheTest extends ThymeleafAbstractBaseTest {
 
-    @Override
-    public boolean useJmx() {
+    public ThymeleafContentCacheTest() {
+        super();
 
-        return true;
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

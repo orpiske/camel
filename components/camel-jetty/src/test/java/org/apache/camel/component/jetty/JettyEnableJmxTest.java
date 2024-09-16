@@ -47,6 +47,12 @@ public class JettyEnableJmxTest extends BaseJettyTest {
     private String serverUri3;
     private MBeanServerConnection mbsc;
 
+    public JettyEnableJmxTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
+    }
+
     @Override
     public void doPostTearDown() throws Exception {
         releaseMBeanServers();
@@ -115,11 +121,6 @@ public class JettyEnableJmxTest extends BaseJettyTest {
 
         s = mbsc.queryNames(new ObjectName("org.eclipse.jetty.server:type=server,*"), null);
         assertEquals(0, s.size(), "Could not find 0 Jetty Server: " + s);
-    }
-
-    @Override
-    protected boolean useJmx() {
-        return true;
     }
 
     @Override

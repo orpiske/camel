@@ -34,9 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisabledOnOs(OS.AIX)
 public class ManagedNettyEndpointTest extends BaseNettyTest {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedNettyEndpointTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

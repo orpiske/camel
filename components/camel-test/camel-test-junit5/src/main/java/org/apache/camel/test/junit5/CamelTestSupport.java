@@ -71,7 +71,7 @@ public abstract class CamelTestSupport extends AbstractTestSupport
     protected CamelTestSupport() {
         super(new TestExecutionConfiguration(), new CamelContextConfiguration());
 
-        testConfigurationBuilder.withJMX(useJmx())
+        testConfigurationBuilder
                 .withUseAdviceWith(isUseAdviceWith())
                 .withDumpRouteCoverage(isDumpRouteCoverage());
 

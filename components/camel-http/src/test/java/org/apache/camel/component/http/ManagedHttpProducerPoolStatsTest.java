@@ -36,9 +36,10 @@ public class ManagedHttpProducerPoolStatsTest extends BaseHttpTest {
 
     private HttpServer localServer;
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedHttpProducerPoolStatsTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

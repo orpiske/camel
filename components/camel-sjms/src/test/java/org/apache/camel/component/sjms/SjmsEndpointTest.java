@@ -33,9 +33,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class SjmsEndpointTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public SjmsEndpointTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

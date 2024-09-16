@@ -33,9 +33,10 @@ import org.junit.jupiter.api.Test;
  */
 public class FreemarkerContentCacheTest extends CamelTestSupport {
 
-    @Override
-    public boolean useJmx() {
-        return true;
+    public FreemarkerContentCacheTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

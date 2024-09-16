@@ -29,9 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RestManagementTest extends BaseUndertowTest {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public RestManagementTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

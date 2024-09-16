@@ -32,9 +32,10 @@ public class RestApiNettyTest extends BaseNettyTest {
 
     protected final Logger log = LoggerFactory.getLogger(RestApiNettyTest.class);
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public RestApiNettyTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

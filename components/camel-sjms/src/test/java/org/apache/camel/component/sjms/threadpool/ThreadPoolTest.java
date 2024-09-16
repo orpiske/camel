@@ -44,9 +44,10 @@ public class ThreadPoolTest extends JmsTestSupport {
     private static final String FROM_ROUTE = "from";
     private static final String TO_ROUTE = "to";
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ThreadPoolTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Override

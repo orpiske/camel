@@ -36,9 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ManagedKameletRouteEnabledTest extends CamelTestSupport {
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public ManagedKameletRouteEnabledTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     protected MBeanServer getMBeanServer() {

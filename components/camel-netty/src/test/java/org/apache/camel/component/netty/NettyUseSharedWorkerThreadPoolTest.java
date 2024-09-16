@@ -39,9 +39,10 @@ public class NettyUseSharedWorkerThreadPoolTest extends BaseNettyTest {
     private EventLoopGroup sharedWorkerClientGroup
             = new NettyWorkerPoolBuilder().withWorkerCount(3).withName("NettyClient").build();
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public NettyUseSharedWorkerThreadPoolTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

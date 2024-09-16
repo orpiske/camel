@@ -33,16 +33,17 @@ import org.junit.jupiter.api.Test;
  */
 public class VelocityContentCacheTest extends CamelTestSupport {
 
+    public VelocityContentCacheTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
+    }
+
     @Override
     public void doPostSetup() {
         // create a vm file in the classpath as this is the tricky reloading stuff
         template.sendBodyAndHeader("file://target/test-classes/org/apache/camel/component/velocity?fileExist=Override",
                 "Hello $headers.name", Exchange.FILE_NAME, "hello.vm");
-    }
-
-    @Override
-    public boolean useJmx() {
-        return true;
     }
 
     @Test

@@ -37,9 +37,10 @@ public class Sjms2EndpointTest extends CamelTestSupport {
     @RegisterExtension
     public static ArtemisService service = ArtemisServiceFactory.createVMService();
 
-    @Override
-    protected boolean useJmx() {
-        return true;
+    public Sjms2EndpointTest() {
+        super();
+
+        testConfigurationBuilder.withEnableJMX();
     }
 
     @Test

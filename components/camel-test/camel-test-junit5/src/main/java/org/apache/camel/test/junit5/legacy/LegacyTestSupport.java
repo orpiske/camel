@@ -30,4 +30,15 @@ public interface LegacyTestSupport {
      *         will <b>not</b> be auto started (you will have to start it manually)
      */
     boolean isUseRouteBuilder();
+
+    /**
+     * Disables the JMX agent. Must be called before the setup method.
+     */
+    @Deprecated(since = "4.7.0")
+    void disableJMX();
+
+    /**
+     * Enables the JMX agent. Must be called before the setup method.
+     */
+    void enableJMX();
 }

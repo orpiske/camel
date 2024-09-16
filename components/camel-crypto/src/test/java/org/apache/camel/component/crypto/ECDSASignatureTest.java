@@ -128,7 +128,7 @@ public class ECDSASignatureTest extends CamelTestSupport {
 
     @Override
     public void doPreSetup() {
-        disableJMX();
+        testConfigurationBuilder.withDisableJMX();
     }
 
 }

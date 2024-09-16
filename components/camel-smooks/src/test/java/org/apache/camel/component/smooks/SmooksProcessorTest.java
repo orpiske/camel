@@ -144,7 +144,7 @@ public class SmooksProcessorTest extends CamelTestSupport {
             }
 
         });
-        enableJMX();
+        testConfigurationBuilder.withEnableJMX();
         context.start();
         Exchange response = template.request("direct:a", new Processor() {
             public void process(Exchange exchange) {
@@ -189,7 +189,7 @@ public class SmooksProcessorTest extends CamelTestSupport {
                                         "x", "/coord/@x", Integer.class, smooks.getApplicationContext().getRegistry())));
             }
         });
-        enableJMX();
+        testConfigurationBuilder.withEnableJMX();
         context.start();
         Exchange response
                 = template.request("direct:a", exchange -> exchange.getIn().setBody(new StringSource("<coord x='1234' />")));

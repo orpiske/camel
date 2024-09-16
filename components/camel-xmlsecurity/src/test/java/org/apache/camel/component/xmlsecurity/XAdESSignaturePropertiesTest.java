@@ -92,7 +92,7 @@ public class XAdESSignaturePropertiesTest extends CamelTestSupport {
 
     @Override
     public void doPreSetup() {
-        disableJMX();
+        testConfigurationBuilder.withDisableJMX();
     }
 
     @Override

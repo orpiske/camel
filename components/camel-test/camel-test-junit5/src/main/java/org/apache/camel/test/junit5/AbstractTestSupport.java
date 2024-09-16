@@ -320,26 +320,6 @@ public abstract class AbstractTestSupport implements CommonTestSupport {
     }
 
     /**
-     * Disables the JMX agent. Must be called before the setup method.
-     *
-     * @deprecated Use the methods {@link #testConfiguration()} to enable, disable or check JMX state.
-     */
-    @Deprecated(since = "4.7.0")
-    protected void disableJMX() {
-        testConfigurationBuilder.withDisableJMX();
-    }
-
-    /**
-     * Enables the JMX agent. Must be called before the setup method.
-     *
-     * @deprecated Use the methods {@link #testConfiguration()} to enable, disable or check JMX state.
-     */
-    @Deprecated(since = "4.7.0")
-    protected void enableJMX() {
-        testConfigurationBuilder.withEnableJMX();
-    }
-
-    /**
      * Whether route coverage is enabled
      *
      * @deprecated Use the methods {@link #testConfiguration()} to enable or disable the route converage dumper

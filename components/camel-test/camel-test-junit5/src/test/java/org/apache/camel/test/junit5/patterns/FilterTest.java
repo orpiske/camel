@@ -37,9 +37,10 @@ public class FilterTest extends CamelTestSupport {
     @Produce("direct:start")
     protected ProducerTemplate template;
 
-    @Override
-    public boolean isDumpRouteCoverage() {
-        return true;
+    public FilterTest() {
+        super();
+
+        testConfigurationBuilder.withDumpRouteCoverage(true);
     }
 
     @Test

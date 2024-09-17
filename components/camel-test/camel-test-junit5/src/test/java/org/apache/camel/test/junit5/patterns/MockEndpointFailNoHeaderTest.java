@@ -32,9 +32,10 @@ public class MockEndpointFailNoHeaderTest extends CamelTestSupport {
     @Produce("direct:start")
     protected ProducerTemplate template;
 
-    @Override
-    public boolean isDumpRouteCoverage() {
-        return true;
+    public MockEndpointFailNoHeaderTest() {
+        super();
+
+        testConfigurationBuilder.withDumpRouteCoverage(true);
     }
 
     @Test

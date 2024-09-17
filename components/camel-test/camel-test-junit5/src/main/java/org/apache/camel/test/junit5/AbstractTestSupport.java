@@ -72,24 +72,6 @@ public abstract class AbstractTestSupport implements CommonTestSupport {
     }
 
     /**
-     * Whether to dump route coverage stats at the end of the test.
-     * <p/>
-     * This allows tooling or manual inspection of the stats, so you can generate a route trace diagram of which EIPs
-     * have been in use and which have not. Similar concepts as a code coverage report.
-     * <p/>
-     * You can also turn on route coverage globally via setting JVM system property
-     * <tt>CamelTestRouteCoverage=true</tt>.
-     *
-     * @deprecated Use the accessors from {@link #testConfiguration()} method
-     * @return     <tt>true</tt> to write route coverage status in an xml file in the
-     *             <tt>target/camel-route-coverage</tt> directory after the test has finished.
-     */
-    @Deprecated(since = "4.7.0")
-    public boolean isDumpRouteCoverage() {
-        return testConfigurationBuilder.isDumpRouteCoverage();
-    }
-
-    /**
      * Tells whether {@link CamelContext} should be setup per test or per class. DO NOT USE.
      * <p/>
      * By default it will be setup/teardown per test method. This method returns <code>true</code> when the camel test

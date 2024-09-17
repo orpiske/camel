@@ -71,9 +71,6 @@ public abstract class CamelTestSupport extends AbstractTestSupport
     protected CamelTestSupport() {
         super(new TestExecutionConfiguration(), new CamelContextConfiguration());
 
-        testConfigurationBuilder
-                .withDumpRouteCoverage(isDumpRouteCoverage());
-
         camelContextConfiguration
                 .withCamelContextSupplier(this::createCamelContext)
                 .withRegistryBinder(this::bindToRegistry)

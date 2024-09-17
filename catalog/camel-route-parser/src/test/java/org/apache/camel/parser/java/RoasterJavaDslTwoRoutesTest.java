@@ -36,9 +36,10 @@ public class RoasterJavaDslTwoRoutesTest extends CamelTestSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(RoasterJavaDslTwoRoutesTest.class);
 
-    @Override
-    public boolean isDumpRouteCoverage() {
-        return true;
+    public RoasterJavaDslTwoRoutesTest() {
+        super();
+
+        testConfigurationBuilder.withDumpRouteCoverage(true);
     }
 
     @Test

@@ -60,4 +60,18 @@ public interface LegacyTestSupport {
      * @return <tt>true</tt> if you use advice with in your unit tests.
      */
     boolean isUseAdviceWith();
+
+    /**
+     * Whether to dump route coverage stats at the end of the test.
+     * <p/>
+     * This allows tooling or manual inspection of the stats, so you can generate a route trace diagram of which EIPs
+     * have been in use and which have not. Similar concepts as a code coverage report.
+     * <p/>
+     * You can also turn on route coverage globally via setting JVM system property
+     * <tt>CamelTestRouteCoverage=true</tt>.
+     *
+     * @return <tt>true</tt> to write route coverage status in an xml file in the <tt>target/camel-route-coverage</tt>
+     *         directory after the test has finished.
+     */
+    boolean isDumpRouteCoverage();
 }

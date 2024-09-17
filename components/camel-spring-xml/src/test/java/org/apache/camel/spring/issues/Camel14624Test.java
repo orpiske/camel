@@ -30,6 +30,12 @@ import org.springframework.transaction.TransactionStatus;
 
 public class Camel14624Test extends CamelTestSupport {
 
+    public Camel14624Test() {
+        super();
+
+        testConfigurationBuilder.withDumpRouteCoverage(true);
+    }
+
     @Override
     protected void bindToRegistry(Registry registry) throws Exception {
         TransactedPolicy required = new SpringTransactionPolicy(new MockTransactionManager());
@@ -55,11 +61,6 @@ public class Camel14624Test extends CamelTestSupport {
         template.sendBody("direct:test", "Hello World");
 
         MockEndpoint.assertIsSatisfied(context);
-    }
-
-    @Override
-    public boolean isDumpRouteCoverage() {
-        return true;
     }
 
     class MockTransactionManager implements PlatformTransactionManager {

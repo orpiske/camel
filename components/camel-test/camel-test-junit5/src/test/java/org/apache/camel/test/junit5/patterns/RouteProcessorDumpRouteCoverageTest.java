@@ -30,9 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouteProcessorDumpRouteCoverageTest extends CamelTestSupport {
 
-    @Override
-    public boolean isDumpRouteCoverage() {
-        return true;
+    public RouteProcessorDumpRouteCoverageTest() {
+        super();
+
+        testConfigurationBuilder.withDumpRouteCoverage(true);
     }
 
     @Test

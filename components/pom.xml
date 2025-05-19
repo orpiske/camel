@@ -370,6 +370,13 @@
             <version>${awaitility-version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.tabaqui</groupId>
+            <artifactId>annotation-api</artifactId>
+            <version>${tabaqui-api-version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

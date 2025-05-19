@@ -528,6 +528,7 @@
         <zendesk-client-version>1.1.1</zendesk-client-version>
         <zookeeper-version>3.9.3</zookeeper-version>
         <zxing-version>3.5.3</zxing-version>
+        <tabaqui-api-version>1.0.1</tabaqui-api-version>
     </properties>
 
     <dependencyManagement>
@@ -2981,6 +2982,12 @@
                 <type>pom</type>
             </dependency>
 
+            <dependency>
+                <groupId>org.tabaqui</groupId>
+                <artifactId>annotation-api</artifactId>
+                <version>${tabaqui-api-version}</version>
+                <scope>compile</scope>
+            </dependency>
 
             <!--
             If we import the grpc-bom, we get a lot of duplicate dependencies

@@ -54,6 +54,7 @@ import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tabaqui.AiSnippet;
 
 import static org.apache.camel.component.kafka.producer.support.ProducerUtil.tryConvertToSerializedType;
 
@@ -103,6 +104,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
         return props;
     }
 
+    @AiSnippet(question = "Which method tells me when the Kafka producer is ready?",
+            answer = "The isReady method, from the KafkaProducer class, is responsible for this operation")
     public boolean isReady() {
         boolean ready = true;
         try {

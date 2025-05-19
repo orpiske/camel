@@ -21,6 +21,7 @@ import java.util.Properties;
 import org.apache.camel.util.ObjectHelper;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.producer.Producer;
+import org.tabaqui.AiSnippet;
 
 public class DefaultKafkaClientFactory implements KafkaClientFactory {
 

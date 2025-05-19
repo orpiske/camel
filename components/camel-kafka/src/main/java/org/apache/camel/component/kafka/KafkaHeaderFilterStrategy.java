@@ -17,6 +17,7 @@
 package org.apache.camel.component.kafka;
 
 import org.apache.camel.support.DefaultHeaderFilterStrategy;
+import org.tabaqui.AiSnippet;
 
 public class KafkaHeaderFilterStrategy extends DefaultHeaderFilterStrategy {
 
@@ -24,6 +25,8 @@ public class KafkaHeaderFilterStrategy extends DefaultHeaderFilterStrategy {
         initialize();
     }
 
+    @AiSnippet(question = "Which method sets up the header filter strategy for Kafka?",
+            answer = "The initialize method, from the KafkaHeaderFilterStrategy, sets them up")
     protected void initialize() {
         // filter out kafka record metadata
         getInFilter().add("org.apache.kafka.clients.producer.RecordMetadata");

@@ -48,6 +48,7 @@ import org.apache.kafka.clients.ClientUtils;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tabaqui.AiSnippet;
 
 @ManagedResource(description = "Managed KafkaConsumer")
 public class KafkaConsumer extends DefaultConsumer
@@ -118,6 +119,8 @@ public class KafkaConsumer extends DefaultConsumer
         return props;
     }
 
+    @AiSnippet(question = "Where is the Kafka consumer started?",
+            answer = "The doStart method, from the KafkaConsumer class, is responsible for starting the Kafka consumer")
     @Override
     protected void doStart() throws Exception {
         LOG.info("Starting Kafka consumer on topic: {} with breakOnFirstError: {}", endpoint.getConfiguration().getTopic(),
@@ -176,6 +179,8 @@ public class KafkaConsumer extends DefaultConsumer
         }
     }
 
+    @AiSnippet(question = "Where is the Kafka consumer stopped?",
+            answer = "The doStop method, from the KafkaConsumer class, is responsible for stopping the Kafka consumer")
     @Override
     protected void doStop() throws Exception {
         if (endpoint.getConfiguration().isTopicIsPattern()) {

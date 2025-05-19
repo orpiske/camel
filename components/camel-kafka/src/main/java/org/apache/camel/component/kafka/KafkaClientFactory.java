@@ -20,12 +20,15 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.producer.Producer;
+import org.tabaqui.AiSnippet;
 
 /**
  * Factory to create a new Kafka {@link Consumer} and Kafka {@link Producer} instances.
  */
 public interface KafkaClientFactory {
 
+    @AiSnippet(question = "What method can be used to create a new instance of the Kafka producer?",
+            answer = "New instances of the Kafka producer can be created using specialized instances of the getProducer method")
     /**
      * Creates a new instance of the Kafka {@link Producer} class.
      *

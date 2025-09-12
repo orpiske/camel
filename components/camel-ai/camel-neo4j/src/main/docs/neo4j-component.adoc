@@ -255,9 +255,10 @@ The URI endpoint should also specify the label, the alias and the vector index n
 ----
 
 == Generate Embeddings with Langchain4j-embeddings
-You can generate embeddings with an Embedding Models using the camel Lancghain4j Embeddings components. Camel Neo4j introduces a DataType `neo4j:embeddings` that automates the transformations of the Lancghain4j embeddings to Neo4j vectors.
+You can generate embeddings with an Embedding Models using the camel LangChain4j Embeddings component.
+Camel Neo4j introduces a DataType `neo4j:embeddings` that automates the transformations of the LangChain4j embeddings to Neo4j vectors.
 
-.Example of a camel Route that create embeddings with Camel Langchain4j Embeddings, and ingest them into Neo4j database.
+.Example of a camel Route that creates embeddings with Camel Langchain4j Embeddings, and ingest them into Neo4j database.
 [source,java]
 ----
          from("direct:in")

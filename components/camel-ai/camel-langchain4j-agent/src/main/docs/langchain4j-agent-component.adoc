@@ -199,7 +199,7 @@ from("direct:chat")
     .to("langchain4j-agent:simple?agent=#simpleAgent")
 ----
 
-The body can either contain the user prompt as a String and specifying the *CamelLangChain4jAgentSystemMessage* header for the system prompt, or you can create an object of type *org.apache.camel.component.langchain4j.agent.api.AiAgentBody* containing both *userMessage* and *systemMessage*.
+The body can either contain the user prompt as a String along with the *CamelLangChain4jAgentSystemMessage* header for the system prompt, or you can create an object of type *org.apache.camel.component.langchain4j.agent.api.AiAgentBody* containing both *userMessage* and *systemMessage*.
 
 .Usage example with a body as String:
 [source, java]
@@ -313,8 +313,8 @@ Memory functionality is supported by using `AgentWithMemory` and configuring a `
 The component requires using a Chat Memory Provider that uses a https://docs.langchain4j.dev/tutorials/chat-memory#persistence[persistent memory store].
 ====
 
-The memory works for multiple users/sessions. For each context window, the users needs to set the memory ID:
-- By setting the Header CamelLangChain4jAgentMemoryId. This supposes that user is using a body as String.
+The memory works for multiple users/sessions. For each context window, the users need to set the memory ID:
+- By setting the Header CamelLangChain4jAgentMemoryId. This supposes that a user is using the body as String.
 - By setting the AiAgentBody.memoryId field. This supposes that that user is using a body as AiAgentBody.
 
 .Example of Route with Memory Agent

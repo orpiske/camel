@@ -69,7 +69,7 @@ include::spring-boot:partial$starter.adoc[]
 This component helps to use function-calling features from LLMs so that models can decide what functions (routes, in case of Camel)
 can be called (i.e.; routed).
 
-Consider, for instance, two consumer routes capable of query an user database by user ID or by social security number (SSN).
+Consider, for instance, two consumer routes capable of querying a user database by user ID or by social security number (SSN).
 
 .Queries user by ID
 [source, java]
@@ -87,7 +87,7 @@ from("langchain4j-tools:userInfo?tags=users&description=Query database by user s
 
 Now, consider a producer route that receives unstructured data as input. Such a route could consume
 this data, pass it to a LLM with function-calling capabilities (such as https://huggingface.co/meta-llama/Meta-Llama-3.1-8B[llama3.1],
-https://huggingface.co/ibm-granite/granite-20b-functioncalling[Granite Code 20b function calling, etc]) and have
+https://huggingface.co/ibm-granite/granite-20b-functioncalling[Granite Code 20b function calling, etc.]) and have
 the model decide which route to call.
 
 Such a route could receive questions in english such as:
@@ -104,8 +104,9 @@ from(source)
 
 === Tool Tags
 
-Consumer routes must define tags that groups https://en.wikipedia.org/wiki/Set_theory[together]. The aforementioned routes would be
-part have the `users` tag. The `users` tag has two routes: `queryById` and `queryBySSN`
+Consumer routes must define tags that group https://en.wikipedia.org/wiki/Set_theory[together].
+The aforementioned routes would be part have the `users` tag.
+The `users` tag has two routes: `queryById` and `queryBySSN`
 
 === Parameters
 

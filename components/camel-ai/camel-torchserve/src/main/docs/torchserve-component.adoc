@@ -99,7 +99,7 @@ torchserve:management/<operation>[?options]
 | `String`
 
 | `scale-worker`
-| Configure number of workers for a model. This is an asynchronous call by default.
+| Configure the number of workers for a model. This is an asynchronous call by default.
 Caller need to call `describe` to check if the model workers has been changed. |
 `modelName` +
 `modelVersion` +
@@ -126,7 +126,7 @@ Caller can call `list` to confirm the model is unregistered. |
 `listNextPageToken`
 | `ModelList` footnote:[`org.apache.camel.component.torchserve.client.model.ModelList`]
 
-| `set-default` | Set default version of a model. |
+| `set-default` | Set the default version of a model. |
 `modelName` +
 `modelVersion`
 | `String`

@@ -138,6 +138,38 @@ public class FileUtilTest extends TestSupport {
     }
 
     @Test
+    public void testOnlyExtSingleMode() {
+        assertNull(FileUtil.onlyExt(null, true));
+        assertNull(FileUtil.onlyExt("foo", true));
+        assertEquals("xml", FileUtil.onlyExt("foo.xml", true));
+        assertEquals("xml", FileUtil.onlyExt("/foo/bar.xml", true));
+        assertEquals("gz", FileUtil.onlyExt("/foo/bigfile.tar.gz", true));
+        assertEquals("gz", FileUtil.onlyExt("/foo.bar/bigfile.tar.gz", true));
+    }
+
+    @Test
+    public void testOnlyExtEdgeCases() {
+        assertEquals("gitignore", FileUtil.onlyExt(".gitignore"));
+        assertEquals("gitignore", FileUtil.onlyExt("/foo/bar/.gitignore"));
+        assertEquals("", FileUtil.onlyExt("foo."));
+        assertEquals("b.c", FileUtil.onlyExt("a.b.c"));
+        assertEquals("b.c", FileUtil.onlyExt("a.b.c", false));
+        assertEquals("c", FileUtil.onlyExt("a.b.c", true));
+        assertEquals("foo", FileUtil.onlyExt("..foo", true));
+        assertEquals(".foo", FileUtil.onlyExt("..foo", false));
+        assertEquals("", FileUtil.onlyExt("."));
+        assertEquals("", FileUtil.onlyExt(".", true));
+        assertEquals(".", FileUtil.onlyExt(".."));
+        assertEquals("", FileUtil.onlyExt("..", true));
+    }
+
+    @Test
+    public void testOnlyExtMixedSeparators() {
+        assertEquals("xml", FileUtil.onlyExt("/foo\\bar.xml"));
+        assertEquals("xml", FileUtil.onlyExt("\\foo/bar.xml"));
+    }
+
+    @Test
     public void testOnlyPath() {
         assertNull(FileUtil.onlyPath(null));
         assertNull(FileUtil.onlyPath("foo"));

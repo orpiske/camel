@@ -29,7 +29,7 @@ public abstract class AbstractBaseProcessor extends BaseService implements Zeebe
     protected final ZeebeEndpoint endpoint;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    public AbstractBaseProcessor(ZeebeEndpoint endpoint) {
+    protected AbstractBaseProcessor(ZeebeEndpoint endpoint) {
         this.endpoint = endpoint;
     }
 

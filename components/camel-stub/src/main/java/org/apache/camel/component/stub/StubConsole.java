@@ -70,7 +70,7 @@ public class StubConsole extends AbstractDevConsole {
 
         List<StubEndpoint> list = getCamelContext().getEndpoints()
                 .stream()
-                .filter(e -> e instanceof StubEndpoint)
+                .filter(StubEndpoint.class::isInstance)
                 .map(StubEndpoint.class::cast)
                 .filter(e -> accept(e.getName(), filter))
                 .toList();
@@ -130,7 +130,7 @@ public class StubConsole extends AbstractDevConsole {
         JsonArray queues = new JsonArray();
 
         List<StubEndpoint> list = getCamelContext().getEndpoints()
-                .stream().filter(e -> e instanceof StubEndpoint)
+                .stream().filter(StubEndpoint.class::isInstance)
                 .map(StubEndpoint.class::cast)
                 .filter(e -> accept(e.getName(), filter))
                 .toList();

@@ -142,9 +142,7 @@ class KafkaBreakOnFirstErrorReleaseResourcesIT extends BaseKafkaTestSupport {
             public void configure() {
                 onException(RuntimeException.class)
                         .handled(false)
-                        .process(exchange -> {
-                            doCommitOffset(exchange);
-                        })
+                        .process(KafkaBreakOnFirstErrorReleaseResourcesIT.this::doCommitOffset)
                         .end();
 
                 from("kafka:" + TOPIC
@@ -166,12 +164,8 @@ class KafkaBreakOnFirstErrorReleaseResourcesIT extends BaseKafkaTestSupport {
                         })
                         // capturing all of the payloads
                         .to(to)
-                        .process(exchange -> {
-                            ifIsPayloadWithErrorThrowException(exchange);
-                        })
-                        .process(exchange -> {
-                            doCommitOffset(exchange);
-                        })
+                        .process(KafkaBreakOnFirstErrorReleaseResourcesIT.this::ifIsPayloadWithErrorThrowException)
+                        .process(KafkaBreakOnFirstErrorReleaseResourcesIT.this::doCommitOffset)
                         .end();
             }
         };

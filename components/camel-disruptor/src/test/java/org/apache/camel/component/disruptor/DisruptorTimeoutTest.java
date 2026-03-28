@@ -52,9 +52,7 @@ public class DisruptorTimeoutTest extends CamelTestSupport {
 
         final Future<String> out = template
                 .asyncRequestBody("disruptor:foo?timeout=" + timeout, "World", String.class);
-        ExecutionException e = assertThrows(ExecutionException.class, () -> {
-            out.get();
-        });
+        ExecutionException e = assertThrows(ExecutionException.class, out::get);
         assertIsInstanceOf(CamelExecutionException.class, e.getCause());
         assertIsInstanceOf(ExchangeTimedOutException.class, e.getCause().getCause());
 

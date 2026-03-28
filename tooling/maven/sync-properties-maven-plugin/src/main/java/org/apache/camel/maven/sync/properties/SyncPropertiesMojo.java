@@ -25,6 +25,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -179,7 +180,7 @@ public class SyncPropertiesMojo extends AbstractMojo {
                     camelPomXmlModel.getProperties().entrySet().stream()
                             .filter(property -> !(property.getKey().equals("jdk.version"))))
                     .filter(property -> invalids.test((String) property.getKey()) && !excludes.test((String) property.getKey()))
-                    .map(property -> property.getKey())
+                    .map(Entry::getKey)
                     .sorted()
                     .collect(Collectors.toList());
 

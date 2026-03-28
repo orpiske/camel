@@ -508,8 +508,9 @@ public class GenerateExecution extends AbstractSalesforceExecution {
         }
 
         getLog().info("Generating Java Classes...");
-        Set<String> sObjectNames = StreamSupport.stream(descriptions.fetched().spliterator(), false).map(d -> d.getName())
-                .collect(Collectors.toSet());
+        Set<String> sObjectNames
+                = StreamSupport.stream(descriptions.fetched().spliterator(), false).map(SObjectDescription::getName)
+                        .collect(Collectors.toSet());
         // generate POJOs for every object description
         final GeneratorUtility utility = new GeneratorUtility();
         for (final SObjectDescription description : descriptions.fetched()) {

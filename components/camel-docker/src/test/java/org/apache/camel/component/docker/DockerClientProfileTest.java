@@ -76,7 +76,7 @@ public class DockerClientProfileTest {
         DockerClientProfile profile = new DockerClientProfile();
         profile.setHost("localhost");
 
-        IllegalArgumentException iaex = assertThrows(IllegalArgumentException.class, () -> profile.toUrl());
+        IllegalArgumentException iaex = assertThrows(IllegalArgumentException.class, profile::toUrl);
         assertEquals("port must be specified", iaex.getMessage());
     }
 

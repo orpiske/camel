@@ -337,7 +337,7 @@ class CurrentSpanTest extends CamelOpenTelemetryTestSupport {
                     }
                     CompletableFuture.runAsync(() -> {
                     }, DELAYED)
-                            .thenRun(() -> callback.run());
+                            .thenRun(callback::run);
 
                     return false;
                 }

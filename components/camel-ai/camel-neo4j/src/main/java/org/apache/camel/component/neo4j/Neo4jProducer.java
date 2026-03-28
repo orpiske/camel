@@ -36,6 +36,7 @@ import org.neo4j.driver.QueryConfig;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Values;
 import org.neo4j.driver.summary.ResultSummary;
+import org.neo4j.driver.types.MapAccessor;
 
 import static org.apache.camel.component.neo4j.Neo4Operation.RETRIEVE_NODES;
 import static org.apache.camel.component.neo4j.Neo4Operation.RETRIEVE_NODES_AND_UPDATE_WITH_CYPHER_QUERY;
@@ -226,7 +227,7 @@ public class Neo4jProducer extends DefaultProducer {
     private List nodeProperties(List<Record> result) {
         return result.stream()
                 .map(record -> record.get(0).asNode())
-                .map(node -> node.asMap())
+                .map(MapAccessor::asMap)
                 .collect(Collectors.toList());
     }
 
@@ -354,7 +355,7 @@ public class Neo4jProducer extends DefaultProducer {
             text = neo4jEmbed.getText();
             vectors = neo4jEmbed.getVectors();
         } else {
-            id = exchange.getMessage().getHeader(Neo4jHeaders.VECTOR_ID, () -> UUID.randomUUID(), String.class);
+            id = exchange.getMessage().getHeader(Neo4jHeaders.VECTOR_ID, UUID::randomUUID, String.class);
             vectors = exchange.getMessage().getHeader(CamelLangchain4jAttributes.CAMEL_LANGCHAIN4J_EMBEDDING_VECTOR,
                     float[].class);
             text = exchange.getMessage().getBody(String.class);

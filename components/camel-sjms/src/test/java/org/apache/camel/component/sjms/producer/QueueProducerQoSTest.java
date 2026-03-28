@@ -50,7 +50,7 @@ public class QueueProducerQoSTest extends CamelTestSupport {
     @RegisterExtension
     public static ArtemisService service = new ArtemisEmbeddedServiceBuilder()
             .withPersistent(true)
-            .withCustomConfiguration(configuration -> configureArtemis(configuration))
+            .withCustomConfiguration(QueueProducerQoSTest::configureArtemis)
             .build();
 
     protected ActiveMQConnectionFactory connectionFactory;

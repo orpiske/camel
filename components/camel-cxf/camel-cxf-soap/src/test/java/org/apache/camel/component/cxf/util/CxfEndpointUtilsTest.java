@@ -118,7 +118,7 @@ public class CxfEndpointUtilsTest {
                 }
             });
 
-            Exception ex = assertThrows(IllegalArgumentException.class, () -> cxfConsumer.start());
+            Exception ex = assertThrows(IllegalArgumentException.class, cxfConsumer::start);
             assertNotNull(ex, "Should get a CamelException here");
             assertTrue(ex.getMessage().startsWith("serviceClass must be specified"));
         }

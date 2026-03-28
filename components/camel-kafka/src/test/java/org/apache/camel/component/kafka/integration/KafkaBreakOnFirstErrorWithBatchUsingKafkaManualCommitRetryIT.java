@@ -144,13 +144,10 @@ class KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitRetryIT extends BaseK
                         .process(exchange -> {
                             LOG.debug(CamelKafkaUtil.buildKafkaLogMessage("Consuming", exchange, true));
                         })
-                        .process(exchange -> {
-                            ifIsPayloadWithErrorThrowException(exchange);
-                        })
+                        .process(
+                                KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitRetryIT.this::ifIsPayloadWithErrorThrowException)
                         .to(to)
-                        .process(exchange -> {
-                            doCommitOffset(exchange);
-                        });
+                        .process(KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitRetryIT.this::doCommitOffset);
             }
         };
     }

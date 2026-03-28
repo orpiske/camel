@@ -43,10 +43,10 @@ public class FluentProducerTemplateTest extends ContextTestSupport {
         FluentProducerTemplate fluent = context.createFluentProducerTemplate();
 
         FluentProducerTemplate helloWorld = fluent.withBody("Hello World");
-        assertThrows(IllegalArgumentException.class, () -> helloWorld.send(),
+        assertThrows(IllegalArgumentException.class, helloWorld::send,
                 "Should have thrown exception");
 
-        assertThrows(IllegalArgumentException.class, () -> helloWorld.request(),
+        assertThrows(IllegalArgumentException.class, helloWorld::request,
                 "Should have thrown exception");
     }
 

@@ -57,7 +57,7 @@ public class XChange implements Exchange {
 
     public List<CurrencyPair> getCurrencyPairs() {
         return delegate.getExchangeInstruments().stream()
-                .filter(it -> it instanceof CurrencyPair)
+                .filter(CurrencyPair.class::isInstance)
                 .map(it -> (CurrencyPair) it)
                 .collect(Collectors.toList());
     }

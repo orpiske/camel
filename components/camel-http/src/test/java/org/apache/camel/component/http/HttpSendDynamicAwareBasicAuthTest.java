@@ -85,7 +85,7 @@ public class HttpSendDynamicAwareBasicAuthTest extends BaseHttpTest {
         assertEquals("Drinking wine", out);
 
         // and there should be one http endpoint
-        long count = context.getEndpoints().stream().filter(e -> e instanceof HttpEndpoint).count();
+        long count = context.getEndpoints().stream().filter(HttpEndpoint.class::isInstance).count();
         assertEquals(1, count);
 
         // we only have one direct and one http

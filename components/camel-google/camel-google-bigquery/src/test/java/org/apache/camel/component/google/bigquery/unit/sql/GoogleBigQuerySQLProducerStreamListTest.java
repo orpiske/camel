@@ -98,7 +98,7 @@ public class GoogleBigQuerySQLProducerStreamListTest extends GoogleBigQuerySQLPr
         assertNotNull(iterator);
 
         List<Map<String, Object>> rows = new ArrayList<>();
-        iterator.forEachRemaining(row -> rows.add(row));
+        iterator.forEachRemaining(rows::add);
 
         assertEquals(3, rows.size());
 
@@ -141,7 +141,7 @@ public class GoogleBigQuerySQLProducerStreamListTest extends GoogleBigQuerySQLPr
         Iterator<Map<String, Object>> iterator = (Iterator<Map<String, Object>>) message.getBody();
 
         List<Map<String, Object>> rows = new ArrayList<>();
-        iterator.forEachRemaining(row -> rows.add(row));
+        iterator.forEachRemaining(rows::add);
 
         assertEquals(3, rows.size());
 

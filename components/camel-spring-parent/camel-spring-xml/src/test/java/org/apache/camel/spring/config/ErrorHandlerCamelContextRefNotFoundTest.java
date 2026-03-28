@@ -32,9 +32,7 @@ public class ErrorHandlerCamelContextRefNotFoundTest extends SpringTestSupport {
     @Override
     @BeforeEach
     public void setUp() throws Exception {
-        Exception e = assertThrows(Exception.class, () -> {
-            super.setUp();
-        });
+        Exception e = assertThrows(Exception.class, super::setUp);
         FailedToCreateRouteException cause = assertIsInstanceOf(FailedToCreateRouteException.class, e);
         NoSuchBeanException nsbe = assertIsInstanceOf(NoSuchBeanException.class, cause.getCause());
         assertEquals(

@@ -49,7 +49,7 @@ public class BonitaAuthFilterAlreadyConnectedTest {
 
     @Test
     public void testAlreadyConnected() {
-        assertDoesNotThrow(() -> runAlreadyConnectedTest());
+        assertDoesNotThrow(this::runAlreadyConnectedTest);
     }
 
     private void runAlreadyConnectedTest() throws IOException {

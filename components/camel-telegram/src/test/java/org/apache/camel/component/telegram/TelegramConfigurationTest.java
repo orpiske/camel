@@ -31,7 +31,7 @@ public class TelegramConfigurationTest extends TelegramTestSupport {
     @Test
     public void testChatBotResult() {
         TelegramEndpoint endpoint = (TelegramEndpoint) context().getEndpoints().stream()
-                .filter(e -> e instanceof TelegramEndpoint).findAny().get();
+                .filter(TelegramEndpoint.class::isInstance).findAny().get();
         TelegramConfiguration config = endpoint.getConfiguration();
 
         assertEquals("bots", config.getType());

@@ -33,7 +33,7 @@ public class InvalidConfigurationTest extends CamelTestSupport {
         Endpoint endpoint = context.getEndpoint("smtp://localhost?username=james");
         PollingConsumer consumer = endpoint.createPollingConsumer();
         assertThrows(IllegalArgumentException.class,
-                () -> consumer.start(),
+                consumer::start,
                 "Should have thrown NoSuchProviderException as smtp protocol cannot be used for consuming mails");
     }
 
@@ -42,7 +42,7 @@ public class InvalidConfigurationTest extends CamelTestSupport {
         Endpoint endpoint = context.getEndpoint("smtps://localhost?username=james");
         PollingConsumer consumer = endpoint.createPollingConsumer();
         assertThrows(IllegalArgumentException.class,
-                () -> consumer.start(),
+                consumer::start,
                 "Should have thrown NoSuchProviderException as smtp protocol cannot be used for consuming mails");
     }
 

@@ -132,7 +132,7 @@ public class ProducerTest extends SplunkMockTestSupport {
 
             DataWriter dw = ((SplunkProducer) tcpProducer).getDataWriter();
             //connection is created to socket localhost:-1, which has to fail
-            Assertions.assertThrows(Exception.class, () -> dw.start());
+            Assertions.assertThrows(Exception.class, dw::start);
         } finally {
             tcpEndpoint.getConfiguration().setTcpReceiverLocalPort(null);
         }
@@ -147,7 +147,7 @@ public class ProducerTest extends SplunkMockTestSupport {
 
             DataWriter dw = ((SplunkProducer) tcpProducer).getDataWriter();
             //connection is created to socket foo:2222, which has to fail
-            Assertions.assertThrows(RuntimeException.class, () -> dw.start());
+            Assertions.assertThrows(RuntimeException.class, dw::start);
         } finally {
             tcpEndpoint.getConfiguration().setHost(host);
         }

@@ -173,9 +173,7 @@ class KafkaBreakOnFirstErrorSeekIssueIT extends BaseKafkaTestSupport {
                         .process(exchange -> {
                             LOG.debug(CamelKafkaUtil.buildKafkaLogMessage("Consuming", exchange, true));
                         })
-                        .process(exchange -> {
-                            ifIsFifthRecordThrowException(exchange);
-                        })
+                        .process(KafkaBreakOnFirstErrorSeekIssueIT.this::ifIsFifthRecordThrowException)
                         .to(to)
                         .end();
             }

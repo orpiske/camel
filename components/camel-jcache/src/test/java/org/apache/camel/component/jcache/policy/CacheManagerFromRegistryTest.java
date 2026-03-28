@@ -73,7 +73,7 @@ public class CacheManagerFromRegistryTest extends JCachePolicyTestBase {
     public void after() {
         super.after();
         CacheManager cacheManager = Caching.getCachingProvider().getCacheManager(URI.create("hzsecond"), null);
-        cacheManager.getCacheNames().forEach(s -> cacheManager.destroyCache(s));
+        cacheManager.getCacheNames().forEach(cacheManager::destroyCache);
         Caching.getCachingProvider().close(URI.create("hzsecond"), null);
     }
 

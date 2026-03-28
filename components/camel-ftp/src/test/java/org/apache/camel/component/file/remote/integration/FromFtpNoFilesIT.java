@@ -43,7 +43,7 @@ public class FromFtpNoFilesIT extends FtpServerTestSupport {
         mock.expectedMessageCount(0);
 
         await().atMost(3, TimeUnit.SECONDS)
-                .untilAsserted(() -> mock.assertIsSatisfied());
+                .untilAsserted(mock::assertIsSatisfied);
     }
 
     @Override

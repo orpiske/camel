@@ -40,7 +40,7 @@ public class DirectNoMultipleConsumersTest extends TestSupport {
             }
         });
 
-        Assertions.assertThrows(FailedToStartRouteException.class, () -> container.start(),
+        Assertions.assertThrows(FailedToStartRouteException.class, container::start,
                 "Should have thrown an FailedToStartRouteException");
 
         container.stop();

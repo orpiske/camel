@@ -62,7 +62,7 @@ public class SftpConsumerAutoCreateIT extends SftpServerTestSupport {
         SftpEndpoint endpoint = (SftpEndpoint) this.getMandatoryEndpoint(getFtpUrl() + "&autoCreate=false");
         endpoint.start();
 
-        assertThrows(GenericFileOperationFailedException.class, () -> endpoint.getExchanges(),
+        assertThrows(GenericFileOperationFailedException.class, endpoint::getExchanges,
                 "Should fail with 550 No such directory.");
     }
 

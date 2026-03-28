@@ -120,10 +120,7 @@ public class ElasticsearchRestClientComponentIT extends ElasticsearchRestClientI
         mockErrorHandler.expectedMessageCount(1);
 
         template.asyncRequestBody("direct:get-by-id", "nothingspecial");
-        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
-            // Assert that the direct:get-by-id endpoint received the exception
-            mockErrorHandler.assertIsSatisfied();
-        });
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(mockErrorHandler::assertIsSatisfied);
 
         // perform a request to fecth all documents without any criteria
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
@@ -236,10 +233,7 @@ public class ElasticsearchRestClientComponentIT extends ElasticsearchRestClientI
         mockErrorHandler.expectedMessageCount(1);
 
         template.asyncRequestBody("direct:delete", "nothingspecial");
-        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
-            // Assert that the direct-delete endpoint received the exception
-            mockErrorHandler.assertIsSatisfied();
-        });
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(mockErrorHandler::assertIsSatisfied);
 
         // Create an index with settings and Mappings
         var indexSettings

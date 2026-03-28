@@ -49,9 +49,7 @@ public class GuavaEventBusConsumerConfigurationTest extends CamelTestSupport {
             }
         });
 
-        Exception e = assertThrows(Exception.class, () -> {
-            context.start();
-        });
+        Exception e = assertThrows(Exception.class, context::start);
         IllegalStateException ise = assertIsInstanceOf(IllegalStateException.class, e.getCause());
         assertEquals("You cannot set both 'eventClass' and 'listenerInterface' parameters.", ise.getMessage());
     }

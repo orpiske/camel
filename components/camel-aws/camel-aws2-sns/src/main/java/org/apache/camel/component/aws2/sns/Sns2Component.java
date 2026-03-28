@@ -17,6 +17,7 @@
 package org.apache.camel.component.aws2.sns;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.camel.CamelContext;
@@ -97,12 +98,12 @@ public class Sns2Component extends HealthCheckComponent {
 
     private Map<String, Object> getNonTransientParameters(Map<String, Object> parameters) {
         return parameters.entrySet().stream().filter(k -> !k.getKey().equals("configuration"))
-                .collect(Collectors.toMap(k -> k.getKey(), k -> k.getValue()));
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     private Map<String, Object> getTransientParameters(Map<String, Object> parameters) {
         return parameters.entrySet().stream().filter(k -> k.getKey().equals("configuration"))
-                .collect(Collectors.toMap(k -> k.getKey(), k -> k.getValue()));
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     @Override

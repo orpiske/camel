@@ -586,7 +586,7 @@ public class AWS2S3StreamUploadProducer extends DefaultProducer {
             ListObjectsV2Iterable listRes = getEndpoint().getS3Client().listObjectsV2Paginator(request);
             listRes.stream()
                     .flatMap(r -> r.contents().stream())
-                    .forEach(content -> list.add(content));
+                    .forEach(list::add);
             if (!list.isEmpty()) {
                 list.sort(Comparator.comparing(S3Object::lastModified));
                 int listSize = list.size();

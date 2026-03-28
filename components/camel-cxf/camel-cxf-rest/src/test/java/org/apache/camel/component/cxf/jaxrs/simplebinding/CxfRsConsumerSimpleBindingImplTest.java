@@ -35,6 +35,7 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.Test;
@@ -115,7 +116,7 @@ public class CxfRsConsumerSimpleBindingImplTest extends CamelTestSupport {
         post.setEntity(new StringEntity(sw.toString()));
         post.addHeader("Content-Type", "text/xml");
         post.addHeader("Accept", "text/xml");
-        Integer status = httpclient.execute(post, response -> response.getCode());
+        Integer status = httpclient.execute(post, HttpResponse::getCode);
         assertEquals(200, status);
     }
 }

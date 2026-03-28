@@ -50,7 +50,7 @@ public class TelegramConsumerFallbackConversionTest extends TelegramTestSupport 
                 .until(() -> getMockRoutes().getMock("sendMessage").getRecordedMessages(),
                         rawMessages -> rawMessages.size() == 1)
                 .stream()
-                .map(message -> (OutgoingTextMessage) message)
+                .map(OutgoingTextMessage.class::cast)
                 .toList();
 
         assertCollectionSize(msgs, 1);

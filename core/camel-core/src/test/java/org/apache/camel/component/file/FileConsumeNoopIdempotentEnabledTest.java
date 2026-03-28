@@ -36,9 +36,7 @@ public class FileConsumeNoopIdempotentEnabledTest extends ContextTestSupport {
         template.sendBodyAndHeader(fileUri(), "Hello World", Exchange.FILE_NAME, "hello.txt");
 
         // give some time to let consumer try to read the file multiple times
-        Awaitility.await().pollDelay(50, TimeUnit.MILLISECONDS).untilAsserted(() -> {
-            assertMockEndpointsSatisfied();
-        });
+        Awaitility.await().pollDelay(50, TimeUnit.MILLISECONDS).untilAsserted(this::assertMockEndpointsSatisfied);
     }
 
     @Override

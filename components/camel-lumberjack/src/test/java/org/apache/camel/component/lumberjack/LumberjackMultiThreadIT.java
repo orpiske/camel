@@ -71,7 +71,7 @@ public class LumberjackMultiThreadIT extends CamelTestSupport {
         }
 
         // sending messages on all parallel sessions
-        threads.stream().forEach(thread -> thread.start());
+        threads.stream().forEach(Thread::start);
     }
 
     @Test

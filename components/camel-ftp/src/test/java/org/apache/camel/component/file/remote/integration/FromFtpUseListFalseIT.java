@@ -62,7 +62,7 @@ public class FromFtpUseListFalseIT extends FtpServerTestSupport {
         // just allow to poll a few more times, but we should only get the file
         // once
         await().atMost(2, TimeUnit.SECONDS)
-                .untilAsserted(() -> mock.assertIsSatisfied());
+                .untilAsserted(mock::assertIsSatisfied);
     }
 
     @Override

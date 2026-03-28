@@ -75,7 +75,7 @@ public class XsltCustomErrorListenerTest extends TestSupport {
         CamelContext context = new DefaultCamelContext();
         context.getRegistry().bind("myListener", listener);
         context.addRoutes(builder);
-        assertThrows(RuntimeCamelException.class, () -> context.start());
+        assertThrows(RuntimeCamelException.class, context::start);
 
         assertFalse(listener.isWarning());
         assertTrue(listener.isError(), "My error listener should been invoked");

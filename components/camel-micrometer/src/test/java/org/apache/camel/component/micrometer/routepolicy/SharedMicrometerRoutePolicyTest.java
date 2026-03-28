@@ -44,7 +44,7 @@ public class SharedMicrometerRoutePolicyTest extends CamelTestSupport {
         });
         List<Meter> meters = meterRegistry.getMeters();
         long timers = meters.stream()
-                .filter(it -> it instanceof Timer)
+                .filter(Timer.class::isInstance)
                 .count();
         assertEquals(2L, timers, "timers count incorrect");
     }

@@ -231,7 +231,7 @@ public final class UniVocityFixedDataFormatTest {
     @Test
     public void shouldNotAllowNoFieldLengths() {
         UniVocityFixedDataFormat dataFormat = new UniVocityFixedDataFormat();
-        assertThrows(IllegalArgumentException.class, () -> dataFormat.createAndConfigureWriterSettings());
+        assertThrows(IllegalArgumentException.class, dataFormat::createAndConfigureWriterSettings);
     }
 
     @Test
@@ -243,7 +243,7 @@ public final class UniVocityFixedDataFormatTest {
         assertEquals("1,2,3,4", dataFormat.getFieldLengths());
         assertEquals("A,B,C", dataFormat.getHeaders());
 
-        assertThrows(IllegalArgumentException.class, () -> dataFormat.createAndConfigureWriterSettings());
+        assertThrows(IllegalArgumentException.class, dataFormat::createAndConfigureWriterSettings);
     }
 
     @Test
@@ -255,6 +255,6 @@ public final class UniVocityFixedDataFormatTest {
         assertEquals("1,2,3", dataFormat.getFieldLengths());
         assertEquals("A,B,A", dataFormat.getHeaders());
 
-        assertThrows(IllegalArgumentException.class, () -> dataFormat.createAndConfigureWriterSettings());
+        assertThrows(IllegalArgumentException.class, dataFormat::createAndConfigureWriterSettings);
     }
 }

@@ -118,12 +118,7 @@ class KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT extends BaseKafkaT
                         // adding error message to end
                         // so we can account for it
                         .to(to)
-                        .process(exchange -> {
-                            // if we don't commit
-                            // camel will continuously
-                            // retry the message with an error
-                            doCommitOffset(exchange);
-                        });
+                        .process(KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT.this::doCommitOffset);
 
                 from("kafka:" + TOPIC
                      + "?groupId=" + ROUTE_ID
@@ -140,13 +135,10 @@ class KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT extends BaseKafkaT
                         .process(exchange -> {
                             LOG.debug(CamelKafkaUtil.buildKafkaLogMessage("Consuming", exchange, true));
                         })
-                        .process(exchange -> {
-                            ifIsPayloadWithErrorThrowException(exchange);
-                        })
+                        .process(
+                                KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT.this::ifIsPayloadWithErrorThrowException)
                         .to(to)
-                        .process(exchange -> {
-                            doCommitOffset(exchange);
-                        });
+                        .process(KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT.this::doCommitOffset);
             }
         };
     }

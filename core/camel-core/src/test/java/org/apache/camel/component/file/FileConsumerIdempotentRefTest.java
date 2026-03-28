@@ -77,9 +77,7 @@ public class FileConsumerIdempotentRefTest extends ContextTestSupport {
         Files.move(testFile("done/report.txt"), testFile("report.txt"));
 
         // should NOT consume the file again, let a bit time go
-        Awaitility.await().pollDelay(100, TimeUnit.MILLISECONDS).untilAsserted(() -> {
-            assertMockEndpointsSatisfied();
-        });
+        Awaitility.await().pollDelay(100, TimeUnit.MILLISECONDS).untilAsserted(this::assertMockEndpointsSatisfied);
 
         assertTrue(invoked, "MyIdempotentRepository should have been invoked");
     }

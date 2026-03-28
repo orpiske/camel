@@ -82,11 +82,11 @@ public class MailConsumerAuthenticatorTest {
 
         MailConsumer consumer = new MailConsumer(endpoint, processor, sender);
         try {
-            Assertions.assertThatThrownBy(() -> consumer.poll())
+            Assertions.assertThatThrownBy(consumer::poll)
                     .isInstanceOf(MessagingException.class)
                     .message().matches(actualMessage -> Stream.of("LOGIN failed. Invalid login/password for user id",
                             "Authentication failed: com.icegreen.greenmail.user.UserException: Invalid password")
-                            .anyMatch(expectedSubstring -> actualMessage.contains(expectedSubstring)));
+                            .anyMatch(actualMessage::contains));
 
             // poll a second time, this time there should be no exception, because we now provide the correct password
             authenticator.setPassword(user1.getPassword());

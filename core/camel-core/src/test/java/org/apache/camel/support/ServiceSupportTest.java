@@ -108,7 +108,7 @@ public class ServiceSupportTest extends TestSupport {
         // forced not being stopped at start
         assertFalse(service.isStopped());
 
-        assertThrows(RuntimeException.class, () -> service.start(), "RuntimeException expected");
+        assertThrows(RuntimeException.class, service::start, "RuntimeException expected");
 
         assertTrue(service.isStopped());
         assertFalse(service.isStopping());

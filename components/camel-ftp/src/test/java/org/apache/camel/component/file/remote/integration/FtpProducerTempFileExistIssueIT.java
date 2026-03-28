@@ -42,7 +42,7 @@ public class FtpProducerTempFileExistIssueIT extends FtpServerTestSupport {
         String uri = getFtpUrl() + "&fileExist=Append&tempPrefix=foo";
         Endpoint endpoint = context.getEndpoint(uri);
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> endpoint.createProducer());
+        Exception ex = assertThrows(IllegalArgumentException.class, endpoint::createProducer);
         assertEquals("You cannot set both fileExist=Append and tempPrefix/tempFileName options",
                 ex.getMessage());
     }

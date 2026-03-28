@@ -164,7 +164,7 @@ public class OpenTelemetryTracer extends org.apache.camel.telemetry.Tracer {
                 ctx = ctx.with(otelSpan.getBaggage());
             }
             contextPropagators.getTextMapPropagator().inject(ctx, injector,
-                    (carrier, key, value) -> carrier.put(key, value));
+                    SpanContextPropagationInjector::put);
             if (includeTracing) {
                 injector.put(org.apache.camel.telemetry.Tracer.TRACE_HEADER, otelSpan.getSpan().getSpanContext().getTraceId());
                 injector.put(org.apache.camel.telemetry.Tracer.SPAN_HEADER, otelSpan.getSpan().getSpanContext().getSpanId());

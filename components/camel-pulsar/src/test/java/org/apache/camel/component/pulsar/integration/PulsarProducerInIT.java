@@ -108,7 +108,7 @@ public class PulsarProducerInIT extends PulsarITSupport {
     public void testLargeMessageWithChunkingDisabled() {
         Throwable e = assertThrows(CamelExecutionException.class,
                 () -> producerTemplate.sendBody(new byte[10 * 1024 * 1024]));
-        assertTrue(ExceptionUtils.getThrowableList(e).stream().anyMatch(ex -> ex instanceof PulsarClientException));
+        assertTrue(ExceptionUtils.getThrowableList(e).stream().anyMatch(PulsarClientException.class::isInstance));
     }
 
     @Test

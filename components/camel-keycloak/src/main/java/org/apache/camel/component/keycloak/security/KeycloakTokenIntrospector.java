@@ -149,9 +149,7 @@ public class KeycloakTokenIntrospector {
 
         // Execute request
         try {
-            IntrospectionResult result = httpClient.execute(request, response -> {
-                return parseIntrospectionResponse(response);
-            });
+            IntrospectionResult result = httpClient.execute(request, this::parseIntrospectionResponse);
 
             // Cache the result
             if (cache != null && result != null) {

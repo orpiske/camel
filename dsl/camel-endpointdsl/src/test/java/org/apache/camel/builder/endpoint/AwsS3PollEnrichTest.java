@@ -28,7 +28,7 @@ public class AwsS3PollEnrichTest extends BaseEndpointDslTest {
 
     @Test
     public void test() throws Exception {
-        Assertions.assertDoesNotThrow(() -> doRun());
+        Assertions.assertDoesNotThrow(this::doRun);
     }
 
     private void doRun() throws Exception {

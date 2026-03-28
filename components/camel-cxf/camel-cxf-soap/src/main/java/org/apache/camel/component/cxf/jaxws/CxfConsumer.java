@@ -88,9 +88,7 @@ public class CxfConsumer extends DefaultConsumer implements Suspendable {
         }
 
         final MessageObserver originalOutFaultObserver = ret.getEndpoint().getOutFaultObserver();
-        ret.getEndpoint().setOutFaultObserver(message -> {
-            originalOutFaultObserver.onMessage(message);
-        });
+        ret.getEndpoint().setOutFaultObserver(originalOutFaultObserver::onMessage);
 
         // setup the UnitOfWorkCloserInterceptor for OneWayMessageProcessor
         ret.getEndpoint().getInInterceptors().add(new UnitOfWorkCloserInterceptor(Phase.POST_INVOKE, true));

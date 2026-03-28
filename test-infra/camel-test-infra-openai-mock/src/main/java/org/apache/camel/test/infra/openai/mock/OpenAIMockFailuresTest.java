@@ -67,7 +67,7 @@ public class OpenAIMockFailuresTest {
         assertThrows(IllegalStateException.class, () -> builder.invokeTool("test"));
         assertThrows(IllegalStateException.class, () -> builder.withParam("key", "value"));
         assertThrows(IllegalStateException.class, () -> builder.thenRespondWith((req, in) -> null));
-        assertThrows(IllegalStateException.class, () -> builder.end());
+        assertThrows(IllegalStateException.class, builder::end);
 
         builder.when("sentence");
         assertThrows(IllegalStateException.class, () -> builder.withParam("key", "value"));

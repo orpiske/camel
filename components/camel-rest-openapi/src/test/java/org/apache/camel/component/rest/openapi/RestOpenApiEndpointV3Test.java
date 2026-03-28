@@ -66,7 +66,7 @@ public class RestOpenApiEndpointV3Test {
                 Collections.emptyMap());
 
         assertThrows(IllegalArgumentException.class,
-                () -> endpoint.createProducer());
+                endpoint::createProducer);
     }
 
     @Test

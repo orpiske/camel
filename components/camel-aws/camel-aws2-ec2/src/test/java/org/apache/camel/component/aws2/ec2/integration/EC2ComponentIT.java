@@ -31,7 +31,7 @@ public class EC2ComponentIT extends Aws2EC2Base {
 
     @Test
     public void createAndRunInstancesTest() {
-        assertDoesNotThrow(() -> execCreateAndRun());
+        assertDoesNotThrow(this::execCreateAndRun);
     }
 
     private void execCreateAndRun() {
@@ -45,7 +45,7 @@ public class EC2ComponentIT extends Aws2EC2Base {
 
     @Test
     public void createAndRunInstancesWithSecurityGroupsTest() {
-        assertDoesNotThrow(() -> execCreateAndRunWithSecurityGroups());
+        assertDoesNotThrow(this::execCreateAndRunWithSecurityGroups);
     }
 
     private void execCreateAndRunWithSecurityGroups() {
@@ -63,7 +63,7 @@ public class EC2ComponentIT extends Aws2EC2Base {
 
     @Test
     public void ec2CreateAndRunTestWithKeyPair() {
-        assertDoesNotThrow(() -> execCreateAndRunWithKeyPair());
+        assertDoesNotThrow(this::execCreateAndRunWithKeyPair);
     }
 
     private void execCreateAndRunWithKeyPair() {

@@ -129,13 +129,9 @@ class KafkaBreakOnFirstErrorOffUsingKafkaManualCommitIT extends BaseKafkaTestSup
                         .process(exchange -> {
                             LOG.debug(CamelKafkaUtil.buildKafkaLogMessage("Consuming", exchange, true));
                         })
-                        .process(exchange -> {
-                            ifIsPayloadWithErrorThrowException(exchange);
-                        })
+                        .process(KafkaBreakOnFirstErrorOffUsingKafkaManualCommitIT.this::ifIsPayloadWithErrorThrowException)
                         .to(to)
-                        .process(exchange -> {
-                            doCommitOffset(exchange);
-                        });
+                        .process(KafkaBreakOnFirstErrorOffUsingKafkaManualCommitIT.this::doCommitOffset);
             }
         };
     }

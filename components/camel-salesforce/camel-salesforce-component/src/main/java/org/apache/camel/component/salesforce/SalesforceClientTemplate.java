@@ -36,7 +36,7 @@ final class SalesforceClientTemplate {
     }
 
     static RestClientSupplier restClientSupplier
-            = (camelContext, parameters) -> SalesforceComponent.createRestClient(camelContext, parameters);
+            = SalesforceComponent::createRestClient;
 
     private SalesforceClientTemplate() {
         // utility class

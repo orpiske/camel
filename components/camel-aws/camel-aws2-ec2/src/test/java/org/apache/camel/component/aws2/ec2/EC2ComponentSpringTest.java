@@ -180,7 +180,7 @@ public class EC2ComponentSpringTest extends CamelSpringTestSupport {
 
     @Test
     public void ec2RebootInstancesTest() {
-        assertDoesNotThrow(() -> issueReboot());
+        assertDoesNotThrow(this::issueReboot);
     }
 
     private void issueReboot() {

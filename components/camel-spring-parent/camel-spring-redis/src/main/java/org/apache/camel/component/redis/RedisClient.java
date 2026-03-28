@@ -27,6 +27,7 @@ import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
+import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.connection.RedisGeoCommands.GeoLocation;
 import org.springframework.data.redis.connection.RedisGeoCommands.GeoRadiusCommandArgs;
 import org.springframework.data.redis.core.RedisCallback;
@@ -256,9 +257,7 @@ public class RedisClient {
     }
 
     public String ping() {
-        return redisTemplate.execute((RedisCallback<String>) connection -> {
-            return connection.ping();
-        });
+        return redisTemplate.execute((RedisCallback<String>) RedisConnectionCommands::ping);
     }
 
     public void publish(String channel, Object message) {

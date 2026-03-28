@@ -123,7 +123,7 @@ public class XChangeEndpoint extends DefaultEndpoint {
     public List<CurrencyPair> getCurrencyPairs() {
         ExchangeMetaData metaData = xchange.getExchangeMetaData();
         return metaData.getInstruments().keySet().stream()
-                .filter(it -> it instanceof CurrencyPair)
+                .filter(CurrencyPair.class::isInstance)
                 .map(it -> (CurrencyPair) it)
                 .sorted().collect(Collectors.toList());
     }

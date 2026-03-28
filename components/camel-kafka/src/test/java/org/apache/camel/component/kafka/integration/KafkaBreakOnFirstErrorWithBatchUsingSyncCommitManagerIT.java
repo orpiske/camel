@@ -131,9 +131,8 @@ class KafkaBreakOnFirstErrorWithBatchUsingSyncCommitManagerIT extends BaseKafkaT
                         .process(exchange -> {
                             LOG.debug(CamelKafkaUtil.buildKafkaLogMessage("Consuming", exchange, true));
                         })
-                        .process(exchange -> {
-                            ifIsPayloadWithErrorThrowException(exchange);
-                        })
+                        .process(
+                                KafkaBreakOnFirstErrorWithBatchUsingSyncCommitManagerIT.this::ifIsPayloadWithErrorThrowException)
                         .to(to)
                         .end();
             }

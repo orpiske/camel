@@ -55,7 +55,7 @@ class ShardTreeTest {
         Shard selfParentingShard = Shard.builder().shardId("SHARD_X").parentShardId("SHARD_X").build();
         underTest.populate(Arrays.asList(selfParentingShard));
 
-        assertThrows(IllegalStateException.class, () -> underTest.getRoots());
+        assertThrows(IllegalStateException.class, underTest::getRoots);
     }
 
     @Test

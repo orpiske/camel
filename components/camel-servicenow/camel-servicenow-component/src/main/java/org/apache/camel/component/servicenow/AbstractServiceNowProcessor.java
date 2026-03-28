@@ -81,7 +81,7 @@ public abstract class AbstractServiceNowProcessor implements Processor {
 
     protected AbstractServiceNowProcessor setHeaders(Message message, Class<?> responseModel, Response response)
             throws Exception {
-        ServiceNowHelper.findOffsets(response, (k, v) -> message.setHeader(k, v));
+        ServiceNowHelper.findOffsets(response, message::setHeader);
 
         String attachmentMeta = response.getHeaderString(ServiceNowConstants.ATTACHMENT_META_HEADER);
         if (ObjectHelper.isNotEmpty(attachmentMeta)) {

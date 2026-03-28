@@ -361,7 +361,7 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
 
         //securityProvider could add its own header into result exchange
         if (getEndpoint().getSecurityProvider() != null) {
-            getEndpoint().getSecurityProvider().addHeader((key, value) -> in.setHeader(key, value), httpExchange);
+            getEndpoint().getSecurityProvider().addHeader(in::setHeader, httpExchange);
         }
 
         exchange.setProperty(ExchangePropertyKey.CHARSET_NAME, httpExchange.getRequestCharset());

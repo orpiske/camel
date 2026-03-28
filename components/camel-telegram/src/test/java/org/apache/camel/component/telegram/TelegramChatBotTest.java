@@ -45,7 +45,7 @@ public class TelegramChatBotTest extends TelegramTestSupport {
                 .until(() -> getMockRoutes().getMock("sendMessage").getRecordedMessages(),
                         rawMessages -> rawMessages.size() >= 2)
                 .stream()
-                .map(message -> (OutgoingTextMessage) message)
+                .map(OutgoingTextMessage.class::cast)
                 .toList();
 
         assertCollectionSize(msgs, 2);

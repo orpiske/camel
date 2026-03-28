@@ -32,13 +32,9 @@ public final class ResultSetConversionStrategies {
 
     private static final Pattern LIMIT_NAME_PATTERN = Pattern.compile("^LIMIT_(\\d+)$", Pattern.CASE_INSENSITIVE);
 
-    private static final ResultSetConversionStrategy ALL = (ResultSet resultSet) -> {
-        return resultSet.all();
-    };
+    private static final ResultSetConversionStrategy ALL = ResultSet::all;
 
-    private static final ResultSetConversionStrategy ONE = (ResultSet resultSet) -> {
-        return resultSet.one();
-    };
+    private static final ResultSetConversionStrategy ONE = ResultSet::one;
 
     private ResultSetConversionStrategies() {
     }

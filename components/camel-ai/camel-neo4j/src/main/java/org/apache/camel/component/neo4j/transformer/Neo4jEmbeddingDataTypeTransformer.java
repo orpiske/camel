@@ -38,7 +38,7 @@ public class Neo4jEmbeddingDataTypeTransformer extends Transformer {
 
         final TextSegment text = message.getBody(TextSegment.class);
 
-        final String id = message.getHeader(Neo4jHeaders.VECTOR_ID, () -> UUID.randomUUID(), String.class);
+        final String id = message.getHeader(Neo4jHeaders.VECTOR_ID, UUID::randomUUID, String.class);
 
         Neo4jEmbedding neo4jEmbedding = new Neo4jEmbedding(id, text.text(), embedding.vector());
 

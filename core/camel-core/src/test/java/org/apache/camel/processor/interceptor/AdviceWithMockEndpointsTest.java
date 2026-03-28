@@ -18,6 +18,7 @@ package org.apache.camel.processor.interceptor;
 
 import org.apache.camel.ContextTestSupport;
 import org.apache.camel.builder.AdviceWith;
+import org.apache.camel.builder.AdviceWithRouteBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -41,9 +42,9 @@ public class AdviceWithMockEndpointsTest extends ContextTestSupport {
     public void testAdvisedMockEndpoints() throws Exception {
         // advice the start route using the inlined AdviceWith lambda style route builder
         // which has extended capabilities than the regular route builder
-        AdviceWith.adviceWith(context, "start", a ->
-        // mock all endpoints
-        a.mockEndpoints());
+        AdviceWith.adviceWith(context, "start",
+                // mock all endpoints
+                AdviceWithRouteBuilder::mockEndpoints);
 
         getMockEndpoint("mock:direct:start").expectedBodiesReceived("Hello World");
         getMockEndpoint("mock:direct:foo").expectedBodiesReceived("Hello World");

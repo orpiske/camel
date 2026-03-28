@@ -190,11 +190,11 @@ public class UpdateList extends CamelCommand {
                     new Column().header("VERSION").minWidth(10).dataAlign(HorizontalAlign.LEFT)
                             .with(r -> r.version().toString()),
                     new Column().header("RUNTIME")
-                            .dataAlign(HorizontalAlign.LEFT).with(r -> r.runtime()),
+                            .dataAlign(HorizontalAlign.LEFT).with(Row::runtime),
                     new Column().header("RUNTIME VERSION")
-                            .dataAlign(HorizontalAlign.LEFT).with(r -> r.runtimeVersion()),
+                            .dataAlign(HorizontalAlign.LEFT).with(Row::runtimeVersion),
                     new Column().header("DESCRIPTION").maxWidth(descWidth)
-                            .dataAlign(HorizontalAlign.LEFT).with(r -> r.description()))));
+                            .dataAlign(HorizontalAlign.LEFT).with(Row::description))));
         }
 
         return 0;

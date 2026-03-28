@@ -189,7 +189,7 @@ public class MainTest {
         ManagementStrategy strategy = camelContext.getManagementStrategy();
 
         assertEquals(1, durationMaxMessages.get(), "DurationMaxMessages should be set to 1");
-        assertTrue(strategy.getEventNotifiers().stream().anyMatch(n -> n instanceof MainDurationEventNotifier));
+        assertTrue(strategy.getEventNotifiers().stream().anyMatch(MainDurationEventNotifier.class::isInstance));
 
         main.stop();
     }

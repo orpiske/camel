@@ -45,7 +45,7 @@ public class MainSupervisingRouteControllerFilterFailToStartRouteTest {
         main.configure().routeControllerConfig().setThreadPoolSize(2);
         main.configure().routeControllerConfig().setExcludeRoutes("inbox");
 
-        FailedToStartRouteException e = assertThrows(FailedToStartRouteException.class, () -> main.start());
+        FailedToStartRouteException e = assertThrows(FailedToStartRouteException.class, main::start);
         assertEquals("inbox", e.getRouteId());
 
         main.stop();

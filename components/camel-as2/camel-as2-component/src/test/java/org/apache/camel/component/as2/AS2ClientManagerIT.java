@@ -844,7 +844,7 @@ public class AS2ClientManagerIT extends AbstractAS2ITSupport {
 
     @Test
     public void asyncMDNTest() {
-        assertDoesNotThrow(() -> runAsyncMDNTest());
+        assertDoesNotThrow(this::runAsyncMDNTest);
 
     }
 

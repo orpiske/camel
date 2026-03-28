@@ -238,7 +238,7 @@ public class SpringBatchEndpointTest extends CamelTestSupport {
 
         // When
         assertThrows(FailedToStartRouteException.class,
-                () -> camelContext.start());
+                camelContext::start);
     }
 
     @Test

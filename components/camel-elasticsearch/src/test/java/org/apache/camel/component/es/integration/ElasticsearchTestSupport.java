@@ -69,9 +69,7 @@ public class ElasticsearchTestSupport extends CamelTestSupport {
         builder.setHttpClientConfigCallback(
                 httpClientBuilder -> {
                     httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-                    service.getSslContext().ifPresent(sslContext -> {
-                        httpClientBuilder.setSSLContext(sslContext);
-                    });
+                    service.getSslContext().ifPresent(httpClientBuilder::setSSLContext);
                     return httpClientBuilder;
                 });
         restClient = builder.build();

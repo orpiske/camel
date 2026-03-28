@@ -100,7 +100,7 @@ public class FileWatchComponentTest extends FileWatchComponentTestBase {
         As such, we have to be lenient checking for the expected number of exchanges received.
          */
         all.expectedMinimumMessageCount(8); // 2 directories, 6 files
-        Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> all.assertIsSatisfied());
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(all::assertIsSatisfied);
 
         onlyTxtAnywhere.expectedMessageCount(3); // 3 txt files
         onlyTxtAnywhere.assertIsSatisfied();

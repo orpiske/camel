@@ -48,7 +48,7 @@ public class DataFormatConcurrentTest extends CamelTestSupport {
 
     @Test
     public void testUnmarshalConcurrent() {
-        assertDoesNotThrow(() -> runUnmarshalConcurrent());
+        assertDoesNotThrow(this::runUnmarshalConcurrent);
     }
 
     private void runUnmarshalConcurrent() throws Exception {
@@ -69,7 +69,7 @@ public class DataFormatConcurrentTest extends CamelTestSupport {
 
     @Test
     public void testUnmarshalFallbackConcurrent() {
-        assertDoesNotThrow(() -> runUnmarshallFallbackConcurrent());
+        assertDoesNotThrow(this::runUnmarshallFallbackConcurrent);
     }
 
     private void runUnmarshallFallbackConcurrent() throws Exception {
@@ -90,7 +90,7 @@ public class DataFormatConcurrentTest extends CamelTestSupport {
 
     @Test
     public void testMarshallConcurrent() {
-        assertDoesNotThrow(() -> runMarshallConcurrent());
+        assertDoesNotThrow(this::runMarshallConcurrent);
     }
 
     private void runMarshallConcurrent() throws Exception {
@@ -111,7 +111,7 @@ public class DataFormatConcurrentTest extends CamelTestSupport {
 
     @Test
     public void testMarshallFallbackConcurrent() {
-        assertDoesNotThrow(() -> runMarshallFallbackConcurrent());
+        assertDoesNotThrow(this::runMarshallFallbackConcurrent);
     }
 
     private void runMarshallFallbackConcurrent() throws Exception {

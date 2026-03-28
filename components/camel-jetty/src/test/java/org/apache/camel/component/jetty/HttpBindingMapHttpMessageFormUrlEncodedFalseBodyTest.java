@@ -33,7 +33,7 @@ public class HttpBindingMapHttpMessageFormUrlEncodedFalseBodyTest extends BaseJe
 
     @Test
     public void testSendToJetty() {
-        assertDoesNotThrow(() -> doSendToJetty());
+        assertDoesNotThrow(this::doSendToJetty);
     }
 
     private void doSendToJetty() {

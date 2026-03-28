@@ -76,7 +76,7 @@ public class MongoDbTailableCursorConsumerIT extends AbstractMongoDbITSupport im
         assertEquals(0, cappedTestCollection.countDocuments());
 
         context.getRouteController().startRoute("tailableCursorConsumer1");
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).untilAsserted(() -> mock.assertIsSatisfied());
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).untilAsserted(mock::assertIsSatisfied);
         context.getRouteController().stopRoute("tailableCursorConsumer1");
 
     }
@@ -345,7 +345,7 @@ public class MongoDbTailableCursorConsumerIT extends AbstractMongoDbITSupport im
         }
         assertEquals(1000, cappedTestCollection.countDocuments());
         context.getRouteController().startRoute(routeId);
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).untilAsserted(() -> mock.assertIsSatisfied());
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).untilAsserted(mock::assertIsSatisfied);
         context.getRouteController().stopRoute(routeId);
     }
 

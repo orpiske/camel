@@ -32,7 +32,7 @@ public class MisspelledRouteRefTest {
         Main main = new Main();
         main.setApplicationContextUri("org/apache/camel/spring/MisspelledRouteRefTest.xml");
 
-        Exception ex = assertThrows(RuntimeCamelException.class, () -> main.start());
+        Exception ex = assertThrows(RuntimeCamelException.class, main::start);
 
         CamelException ce = ObjectHelper.getException(CamelException.class, ex);
         assertNotNull(ce, "Expected a CamelException in the cause chain");

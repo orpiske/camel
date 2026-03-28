@@ -61,7 +61,7 @@ public class WordpressUserConsumer extends AbstractWordpressConsumer {
 
     private int pollForList() {
         final List<User> users = this.serviceUsers.list((UserSearchCriteria) getConfiguration().getSearchCriteria());
-        users.stream().forEach(p -> this.process(p));
+        users.stream().forEach(this::process);
         LOG.trace("returned users is {}", users);
         return users.size();
     }

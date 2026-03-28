@@ -816,7 +816,7 @@ public abstract class ContextTestSupport extends TestSupport
 
         // lookup endpoints in registry and try to find it
         MockEndpoint found = (MockEndpoint) context.getEndpointRegistry().values().stream()
-                .filter(e -> e instanceof MockEndpoint).filter(e -> {
+                .filter(MockEndpoint.class::isInstance).filter(e -> {
                     String t = e.getEndpointUri();
                     // strip query
                     int idx2 = t.indexOf('?');

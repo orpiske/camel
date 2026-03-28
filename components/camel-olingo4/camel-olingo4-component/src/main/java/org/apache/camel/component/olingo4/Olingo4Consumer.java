@@ -164,9 +164,7 @@ public class Olingo4Consumer extends AbstractApiConsumer<Olingo4ApiName, Olingo4
         } else if (result instanceof ClientValue && ((ClientValue) result).isCollection()) {
             ClientValue value = (ClientValue) result;
             ClientCollectionValue<ClientValue> collection = value.asCollection();
-            collection.forEach(v -> {
-                splitResult.add(v);
-            });
+            collection.forEach(splitResult::add);
         } else {
             splitResult.add(result);
         }

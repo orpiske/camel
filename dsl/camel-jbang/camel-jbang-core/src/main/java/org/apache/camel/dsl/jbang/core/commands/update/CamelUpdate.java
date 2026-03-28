@@ -65,11 +65,11 @@ public final class CamelUpdate implements Update {
             // The recipe named latest.yaml contains all the recipe for the update up to the selected version
             if (recipe.name().contains("latest")) {
                 activeRecipes.clear();
-                recipe.recipeName().ifPresent(name -> activeRecipes.add(name));
+                recipe.recipeName().ifPresent(activeRecipes::add);
                 break;
             }
 
-            recipe.recipeName().ifPresent(name -> activeRecipes.add(name));
+            recipe.recipeName().ifPresent(activeRecipes::add);
         }
 
         return activeRecipes;

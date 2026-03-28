@@ -31,6 +31,7 @@ import org.apache.camel.impl.health.AbstractHealthCheck;
 import org.apache.camel.impl.health.ContextHealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponse.Status;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -436,13 +437,9 @@ public class CamelMicroProfileHealthCheckTest extends CamelMicroProfileHealthTes
         assertEquals(2, checks.size());
 
         JsonObject livenessCheck = checks.getJsonObject(0);
-        assertHealthCheckOutput("liveness-1", HealthCheckResponse.Status.UP, livenessCheck, result -> {
-            assertNull(result);
-        });
+        assertHealthCheckOutput("liveness-1", HealthCheckResponse.Status.UP, livenessCheck, Assertions::assertNull);
 
         JsonObject failedCheck = checks.getJsonObject(1);
-        assertHealthCheckOutput("failing-check", HealthCheckResponse.Status.DOWN, failedCheck, result -> {
-            assertNull(result);
-        });
+        assertHealthCheckOutput("failing-check", HealthCheckResponse.Status.DOWN, failedCheck, Assertions::assertNull);
     }
 }

@@ -62,7 +62,7 @@ public class SftpConsumerAutoCreateIT extends SftpServerTestSupport {
         MinaSftpEndpoint endpoint = (MinaSftpEndpoint) this.getMandatoryEndpoint(getFtpUrl() + "&autoCreate=false");
         endpoint.start();
 
-        assertThrows(RuntimeCamelException.class, () -> endpoint.getExchanges(),
+        assertThrows(RuntimeCamelException.class, endpoint::getExchanges,
                 "Should fail with 550 No such directory.");
     }
 

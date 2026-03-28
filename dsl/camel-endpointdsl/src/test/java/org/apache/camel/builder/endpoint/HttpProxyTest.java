@@ -49,7 +49,7 @@ public class HttpProxyTest extends BaseEndpointDslTest {
             }
         });
 
-        HttpEndpoint he = (HttpEndpoint) context.getEndpoints().stream().filter(e -> e instanceof HttpEndpoint).findFirst()
+        HttpEndpoint he = (HttpEndpoint) context.getEndpoints().stream().filter(HttpEndpoint.class::isInstance).findFirst()
                 .orElse(null);
         assertEquals("myproxy", he.getProxyHost());
         assertEquals(3280, he.getProxyPort());
@@ -76,7 +76,7 @@ public class HttpProxyTest extends BaseEndpointDslTest {
             }
         });
 
-        HttpEndpoint he = (HttpEndpoint) context.getEndpoints().stream().filter(e -> e instanceof HttpEndpoint).findFirst()
+        HttpEndpoint he = (HttpEndpoint) context.getEndpoints().stream().filter(HttpEndpoint.class::isInstance).findFirst()
                 .orElse(null);
         assertEquals("myproxy", he.getProxyHost());
         assertEquals(0, he.getProxyPort());

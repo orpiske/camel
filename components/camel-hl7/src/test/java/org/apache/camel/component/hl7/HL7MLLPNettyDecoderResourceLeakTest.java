@@ -59,7 +59,7 @@ public class HL7MLLPNettyDecoderResourceLeakTest extends HL7TestSupport {
 
     @Test
     public void testSendHL7Message() {
-        assertDoesNotThrow(() -> sendHL7Message());
+        assertDoesNotThrow(this::sendHL7Message);
     }
 
     private void sendHL7Message() {

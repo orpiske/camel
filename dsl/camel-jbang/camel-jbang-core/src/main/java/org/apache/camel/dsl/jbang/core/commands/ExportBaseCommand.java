@@ -1291,7 +1291,7 @@ public abstract class ExportBaseCommand extends CamelCommand {
 
     protected void copyApplicationPropertiesFiles(Path srcResourcesDir) throws Exception {
         try (Stream<Path> files = Files.list(exportBaseDir)) {
-            files.filter(p -> Files.isRegularFile(p))
+            files.filter(Files::isRegularFile)
                     .filter(p -> {
                         String fileName = p.getFileName().toString();
                         String ext = FileUtil.onlyExt(fileName);

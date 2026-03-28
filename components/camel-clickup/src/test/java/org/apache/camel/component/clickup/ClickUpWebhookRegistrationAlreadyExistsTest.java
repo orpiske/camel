@@ -171,7 +171,7 @@ public class ClickUpWebhookRegistrationAlreadyExistsTest extends ClickUpTestSupp
                     String webhookExternalUrl;
                     try {
                         Optional<Endpoint> optionalEndpoint = context().getEndpoints().stream()
-                                .filter(endpoint -> endpoint instanceof WebhookEndpoint)
+                                .filter(WebhookEndpoint.class::isInstance)
                                 .findFirst();
 
                         if (optionalEndpoint.isEmpty()) {

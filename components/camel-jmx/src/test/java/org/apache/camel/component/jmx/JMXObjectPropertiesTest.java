@@ -33,7 +33,7 @@ public class JMXObjectPropertiesTest extends SimpleBeanFixture {
 
     @Test
     public void testObjectProperties() {
-        assertDoesNotThrow(() -> doTestObjectProperties());
+        assertDoesNotThrow(this::doTestObjectProperties);
     }
 
     private void doTestObjectProperties() throws MalformedObjectNameException, InterruptedException {

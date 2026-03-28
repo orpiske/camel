@@ -111,6 +111,6 @@ class StitchClientImplIT {
                 .build();
 
         final Mono<StitchResponse> batch = client.batch(body);
-        assertThrows(StitchException.class, () -> batch.block());
+        assertThrows(StitchException.class, batch::block);
     }
 }

@@ -148,7 +148,7 @@ public class InfinispanRemoteTestSupport extends InfinispanTestSupport {
         Awaitility.await()
                 .atMost(Duration.ofMillis(timeoutMs))
                 .pollInterval(Duration.ofMillis(250))
-                .ignoreExceptionsMatching(e -> e instanceof RemoteIllegalLifecycleStateException)
+                .ignoreExceptionsMatching(RemoteIllegalLifecycleStateException.class::isInstance)
                 .until(() -> {
                     // Attempt to create/get the cache
                     manager.administration()

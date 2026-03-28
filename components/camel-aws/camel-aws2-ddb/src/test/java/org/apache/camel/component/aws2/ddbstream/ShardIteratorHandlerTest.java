@@ -155,7 +155,7 @@ class ShardIteratorHandlerTest extends CamelTestSupport {
         ShardIteratorHandler underTest = new ShardIteratorHandler(endpoint);
         endpoint.doStart();
 
-        assertThrows(IllegalArgumentException.class, () -> underTest.getShardIterators());
+        assertThrows(IllegalArgumentException.class, underTest::getShardIterators);
     }
 
 }

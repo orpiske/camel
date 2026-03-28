@@ -38,9 +38,7 @@ public class SpringDeadLetterChannelInvalidDeadLetterUriTest extends SpringTestS
     @Override
     @BeforeEach
     public void setUp() throws Exception {
-        Exception e = assertThrows(Exception.class, () -> {
-            super.setUp();
-        });
+        Exception e = assertThrows(Exception.class, super::setUp);
         FailedToCreateRouteException ftcre = assertIsInstanceOf(FailedToCreateRouteException.class, e);
         NoSuchEndpointException cause = assertIsInstanceOf(NoSuchEndpointException.class, ftcre.getCause());
         assertEquals(

@@ -65,7 +65,7 @@ public class HazelcastAggregationRepositoryConstructorsTest extends CamelTestSup
 
     @Test
     public void locallyInitializedHazelcastInstanceAdd() {
-        assertDoesNotThrow(() -> runLocallyInitializedHazelcastInstanceAdd());
+        assertDoesNotThrow(this::runLocallyInitializedHazelcastInstanceAdd);
     }
 
     private void runLocallyInitializedHazelcastInstanceAdd() throws Exception {

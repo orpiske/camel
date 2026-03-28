@@ -369,7 +369,7 @@ public class PropertiesComponent extends ServiceSupport
         this.locations = Collections.unmodifiableList(locations);
 
         // we need to re-create the property sources which may have already been created from locations
-        this.sources.removeIf(s -> s instanceof LocationPropertiesSource);
+        this.sources.removeIf(LocationPropertiesSource.class::isInstance);
         // ensure the locations are in the same order as here, and therefore we provide the order number
         int order = 100;
         for (PropertiesLocation loc : locations) {

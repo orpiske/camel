@@ -205,7 +205,7 @@ public class EC2ProducerTest extends CamelTestSupport {
 
     @Test
     public void ec2RebootInstancesTest() {
-        assertDoesNotThrow(() -> issueReboot());
+        assertDoesNotThrow(this::issueReboot);
     }
 
     private void issueReboot() {

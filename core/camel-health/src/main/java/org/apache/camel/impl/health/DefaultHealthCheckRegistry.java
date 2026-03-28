@@ -121,7 +121,7 @@ public class DefaultHealthCheckRegistry extends ServiceSupport implements Health
         super.doInit();
 
         Optional<HealthCheckRepository> hcr = repositories.stream()
-                .filter(repository -> repository instanceof HealthCheckRegistryRepository)
+                .filter(HealthCheckRegistryRepository.class::isInstance)
                 .findFirst();
 
         if (hcr.isEmpty()) {

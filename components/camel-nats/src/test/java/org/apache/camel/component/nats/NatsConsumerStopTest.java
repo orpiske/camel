@@ -30,6 +30,6 @@ public class NatsConsumerStopTest extends CamelTestSupport {
     public void testConsumerStop() throws Exception {
         NatsEndpoint endpoint = context.getEndpoint("nats:test?flushConnection=true", NatsEndpoint.class);
         Consumer consumer = endpoint.createConsumer(null);
-        assertDoesNotThrow(() -> consumer.stop());
+        assertDoesNotThrow(consumer::stop);
     }
 }

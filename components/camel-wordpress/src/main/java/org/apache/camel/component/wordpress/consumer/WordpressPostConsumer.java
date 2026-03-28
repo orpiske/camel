@@ -55,7 +55,7 @@ public class WordpressPostConsumer extends AbstractWordpressConsumer {
 
     private int pollForPostList() {
         final List<Post> posts = this.servicePosts.list((PostSearchCriteria) getConfiguration().getSearchCriteria());
-        posts.stream().forEach(p -> this.process(p));
+        posts.stream().forEach(this::process);
         return posts.size();
     }
 

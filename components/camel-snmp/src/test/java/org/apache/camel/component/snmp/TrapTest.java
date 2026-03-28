@@ -71,7 +71,7 @@ public class TrapTest extends SnmpTestSupport {
 
         // wait a bit
         Awaitility.await().atMost(2, TimeUnit.SECONDS)
-                .untilAsserted(() -> mock.assertIsSatisfied());
+                .untilAsserted(mock::assertIsSatisfied);
 
         Message in = mock.getReceivedExchanges().get(0).getIn();
         Assertions.assertTrue(in instanceof SnmpMessage, "Expected received object 'SnmpMessage.class'. Got: " + in.getClass());

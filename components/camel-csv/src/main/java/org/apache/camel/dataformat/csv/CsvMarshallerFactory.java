@@ -23,9 +23,7 @@ import org.apache.commons.csv.CSVFormat;
  */
 public interface CsvMarshallerFactory {
 
-    CsvMarshallerFactory DEFAULT = (CSVFormat format, CsvDataFormat dataFormat) -> {
-        return CsvMarshaller.create(format, dataFormat);
-    };
+    CsvMarshallerFactory DEFAULT = CsvMarshaller::create;
 
     /**
      * Creates and returns a new {@link CsvMarshaller}.

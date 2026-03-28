@@ -28,7 +28,7 @@ public class MainScan3Test {
     public void testScan3() {
         Main main = new Main();
         main.configure().withBasePackageScan("org.apache.camel.main.scan3");
-        FailedToCreateRouteException e = assertThrows(FailedToCreateRouteException.class, () -> main.start());
+        FailedToCreateRouteException e = assertThrows(FailedToCreateRouteException.class, main::start);
         assertEquals(
                 "Failed to create route because: Duplicate route ids detected: foo2. Please correct ids to be unique among all your routes.",
                 e.getMessage());

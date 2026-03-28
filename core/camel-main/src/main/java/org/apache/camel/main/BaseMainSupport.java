@@ -928,7 +928,7 @@ public abstract class BaseMainSupport extends BaseService {
         final OrderedLocationProperties propertyPlaceholders = new OrderedLocationProperties();
 
         // use the main autowired lifecycle strategy instead of the default
-        camelContext.getLifecycleStrategies().removeIf(s -> s instanceof AutowiredLifecycleStrategy);
+        camelContext.getLifecycleStrategies().removeIf(AutowiredLifecycleStrategy.class::isInstance);
         camelContext.addLifecycleStrategy(createLifecycleStrategy(camelContext));
 
         // setup properties

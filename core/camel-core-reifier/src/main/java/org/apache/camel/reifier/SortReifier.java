@@ -43,7 +43,7 @@ public class SortReifier<T, U extends SortDefinition<T>> extends ExpressionReifi
 
         // if no comparator then default on to string representation
         if (comp == null) {
-            comp = (Comparator<T>) (o1, o2) -> ObjectHelper.compare(o1, o2);
+            comp = (Comparator<T>) ObjectHelper::compare;
         }
 
         // if no expression provided then default to body expression

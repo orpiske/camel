@@ -38,9 +38,7 @@ public class SpringDeadLetterChannelInvalidOptionDeadLetterUriTest extends Sprin
     @Override
     @BeforeEach
     public void setUp() throws Exception {
-        Exception e = assertThrows(Exception.class, () -> {
-            super.setUp();
-        });
+        Exception e = assertThrows(Exception.class, super::setUp);
         FailedToCreateRouteException ftcre = assertIsInstanceOf(FailedToCreateRouteException.class, e);
         ResolveEndpointFailedException cause = assertIsInstanceOf(ResolveEndpointFailedException.class, ftcre.getCause());
         assertTrue(cause.getMessage().endsWith("Unknown parameters=[{foo=bar}]"));

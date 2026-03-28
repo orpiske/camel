@@ -29,9 +29,7 @@ public class OnExceptionNoExceptionConfiguredTest extends SpringTestSupport {
     @Override
     @BeforeEach
     public void setUp() throws Exception {
-        assertThrows(Exception.class, () -> {
-            super.setUp();
-        });
+        assertThrows(Exception.class, super::setUp);
     }
 
     @Override

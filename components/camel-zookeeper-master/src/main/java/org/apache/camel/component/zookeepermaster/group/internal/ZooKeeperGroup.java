@@ -468,7 +468,7 @@ public class ZooKeeperGroup<T extends NodeState> implements Group<T> {
         try {
             ensurePath.ensure(client.getZookeeperClient());
             List<String> children = client.getChildren().usingWatcher(childrenWatcher).forPath(path);
-            children.sort((String left, String right) -> left.compareTo(right));
+            children.sort(Comparable::compareTo);
             processChildren(children, mode);
         } catch (Exception e) {
             handleException(e);

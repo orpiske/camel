@@ -38,7 +38,7 @@ public class QdrantReverseEmbeddingsDataTypeTransformer extends Transformer {
         List<Points.ScoredPoint> embeddings = message.getBody(List.class);
 
         List<String> result = embeddings.stream()
-                .map(embedding -> embedding.getPayloadMap())
+                .map(Points.ScoredPointOrBuilder::getPayloadMap)
                 .map(payloadMap -> payloadMap.getOrDefault("text_segment", ValueFactory.value("")))
                 .map(JsonWithInt.Value::getStringValue)
                 .collect(Collectors.toList());

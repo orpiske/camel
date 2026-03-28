@@ -103,7 +103,7 @@ public class CliBuiltContainer extends GenericContainer<CliBuiltContainer> {
         }
         withExposedPorts(DEV_CONSOLE_PORT, SSH_PORT);
         if (Objects.nonNull(params.getExtraHosts())) {
-            params.getExtraHosts().forEach((host, ip) -> withExtraHost(host, ip));
+            params.getExtraHosts().forEach(this::withExtraHost);
         }
         if (Objects.nonNull(params.getTrustedCertPaths())) {
             params.getTrustedCertPaths().forEach(t -> {

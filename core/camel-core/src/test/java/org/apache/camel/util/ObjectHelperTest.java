@@ -325,9 +325,7 @@ public class ObjectHelperTest {
         Iterator<?> it = ObjectHelper.createIterator(s, ",", true);
         assertEquals("", it.next());
         assertFalse(it.hasNext());
-        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, it::next);
         assertEquals("no more element available for '' at the index 1", nsee.getMessage());
     }
 
@@ -368,18 +366,14 @@ public class ObjectHelperTest {
         assertEquals(Byte.MIN_VALUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it1 = it;
-        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, () -> {
-            it1.next();
-        });
+        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, it1::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[B@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 4"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new byte[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it2 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it2.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it2::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[B@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -394,18 +388,14 @@ public class ObjectHelperTest {
         assertEquals(Short.MIN_VALUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it3 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it3.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it3::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[S@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 4"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new short[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it4 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it4.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it4::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[S@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -420,18 +410,14 @@ public class ObjectHelperTest {
         assertEquals(Integer.MIN_VALUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it5 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it5.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it5::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[I@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 4"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new int[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it6 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it6.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it6::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[I@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -446,18 +432,14 @@ public class ObjectHelperTest {
         assertEquals(Long.MIN_VALUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it7 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it7.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it7::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[J@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 4"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new long[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it8 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it8.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it8::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[J@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -472,18 +454,14 @@ public class ObjectHelperTest {
         assertEquals(Float.MIN_VALUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it9 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it9.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it9::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[F@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 4"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new float[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it10 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it10.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it10::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[F@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -498,18 +476,14 @@ public class ObjectHelperTest {
         assertEquals(Double.MIN_VALUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it11 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it11.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it11::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[D@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 4"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new double[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it12 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it12.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it12::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[D@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -526,18 +500,14 @@ public class ObjectHelperTest {
         assertEquals('l', it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it13 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it13.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it13::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[C@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 5"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new char[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it14 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it14.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it14::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[C@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
 
@@ -554,18 +524,14 @@ public class ObjectHelperTest {
         assertEquals(Boolean.TRUE, it.next());
         assertFalse(it.hasNext());
         final Iterator<?> it15 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it15.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it15::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[Z@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 5"), nsee.getMessage());
 
         it = ObjectHelper.createIterator(new boolean[] {}, null);
         assertFalse(it.hasNext());
         final Iterator<?> it16 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it16.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it16::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for '[Z@"), nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 0"), nsee.getMessage());
     }
@@ -627,25 +593,19 @@ public class ObjectHelperTest {
         Iterator<?> it = ObjectHelper.createIterator("");
         assertFalse(it.hasNext());
         final Iterator<?> it17 = it;
-        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, () -> {
-            it17.next();
-        });
+        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, it17::next);
         assertEquals("no more element available for '' at the index 0", nsee.getMessage());
 
         it = ObjectHelper.createIterator("    ");
         assertFalse(it.hasNext());
         final Iterator<?> it18 = it;
-        nsee = assertThrows(NoSuchElementException.class, () -> {
-            it18.next();
-        });
+        nsee = assertThrows(NoSuchElementException.class, it18::next);
         assertEquals("no more element available for '    ' at the index 0", nsee.getMessage());
 
         it = ObjectHelper.createIterator(null);
         assertFalse(it.hasNext());
         final Iterator<?> it19 = it;
-        assertThrows(NoSuchElementException.class, () -> {
-            it19.next();
-        });
+        assertThrows(NoSuchElementException.class, it19::next);
     }
 
     @Test
@@ -655,9 +615,7 @@ public class ObjectHelperTest {
         assertTrue(it.hasNext());
         it.next();
         assertFalse(it.hasNext());
-        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, it::next);
         assertEquals("no more element available for 'a' at the index 1", nsee.getMessage());
     }
 
@@ -679,9 +637,7 @@ public class ObjectHelperTest {
         assertTrue(it.hasNext());
         it.next();
         assertFalse(it.hasNext());
-        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, it::next);
         assertTrue(nsee.getMessage().startsWith("no more element available for 'org.apache.camel.util.ObjectHelperTest$"),
                 nsee.getMessage());
         assertTrue(nsee.getMessage().endsWith("at the index 1"), nsee.getMessage());
@@ -838,9 +794,7 @@ public class ObjectHelperTest {
         assertEquals("b", it.next());
         assertEquals("c", it.next());
         assertFalse(it.hasNext());
-        assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        assertThrows(NoSuchElementException.class, it::next);
     }
 
     @Test
@@ -850,9 +804,7 @@ public class ObjectHelperTest {
 
         Iterator<?> it = ObjectHelper.createIterator(msg);
         assertFalse(it.hasNext());
-        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        NoSuchElementException nsee = assertThrows(NoSuchElementException.class, it::next);
         assertEquals("no more element available for '' at the index 0", nsee.getMessage());
     }
 
@@ -863,9 +815,7 @@ public class ObjectHelperTest {
 
         Iterator<?> it = ObjectHelper.createIterator(msg);
         assertFalse(it.hasNext());
-        assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        assertThrows(NoSuchElementException.class, it::next);
     }
 
     @Test
@@ -885,9 +835,7 @@ public class ObjectHelperTest {
         assertEquals("B", it.next());
         assertEquals("C", it.next());
         assertFalse(it.hasNext());
-        assertThrows(NoSuchElementException.class, () -> {
-            it.next();
-        });
+        assertThrows(NoSuchElementException.class, it::next);
     }
 
     @Test

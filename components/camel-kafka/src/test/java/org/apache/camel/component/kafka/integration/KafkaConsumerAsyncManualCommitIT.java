@@ -127,7 +127,7 @@ public class KafkaConsumerAsyncManualCommitIT extends BaseKafkaTestSupport {
             producer.send(data);
         }
 
-        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> to.assertIsSatisfied()); // changed to 10 sec for CAMEL-20722
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(to::assertIsSatisfied); // changed to 10 sec for CAMEL-20722
 
         List<Exchange> exchangeList = to.getExchanges();
         assertEquals(5, exchangeList.size());
@@ -166,7 +166,7 @@ public class KafkaConsumerAsyncManualCommitIT extends BaseKafkaTestSupport {
         to.expectedBodiesReceivedInAnyOrder("message-5", "message-6", "message-7");
 
         Awaitility.await().atMost(5, TimeUnit.SECONDS)
-                .untilAsserted(() -> to.assertIsSatisfied());
+                .untilAsserted(to::assertIsSatisfied);
 
         assertEquals(0, failCount, "There should have been 0 commit failures");
     }

@@ -20,6 +20,7 @@ package org.apache.camel.component.langchain4j.agent.api;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiPredicate;
 
 import dev.langchain4j.agent.tool.ToolSpecification;
@@ -270,7 +271,7 @@ public class AgentConfiguration {
                 .map(String::trim)
                 .filter(name -> !name.isEmpty())
                 .map(AgentConfiguration::loadGuardrailClass)
-                .filter(clazz -> clazz != null)
+                .filter(Objects::nonNull)
                 .collect(java.util.stream.Collectors.toList());
     }
 

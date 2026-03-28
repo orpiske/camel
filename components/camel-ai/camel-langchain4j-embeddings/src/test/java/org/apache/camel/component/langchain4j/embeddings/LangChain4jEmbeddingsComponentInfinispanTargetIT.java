@@ -102,7 +102,7 @@ public class LangChain4jEmbeddingsComponentInfinispanTargetIT extends CamelTestS
         Optional<InfinispanRemoteEmbedding> original = cacheContainer.getCache(CACHE_NAME)
                 .values()
                 .stream()
-                .map(obj -> (InfinispanRemoteEmbedding) obj)
+                .map(InfinispanRemoteEmbedding.class::cast)
                 .filter(embedding -> embedding.getText().equals(TEXT_EMBEDDING_3))
                 .findFirst();
 

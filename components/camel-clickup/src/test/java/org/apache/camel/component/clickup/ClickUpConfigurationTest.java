@@ -37,7 +37,7 @@ public class ClickUpConfigurationTest extends ClickUpTestSupport {
     @Test
     public void testClickUpConfiguration() {
         ClickUpEndpoint endpoint = (ClickUpEndpoint) context().getEndpoints().stream()
-                .filter(e -> e instanceof ClickUpEndpoint).findAny().get();
+                .filter(ClickUpEndpoint.class::isInstance).findAny().get();
         ClickUpConfiguration config = endpoint.getConfiguration();
 
         assertEquals(WORKSPACE_ID, config.getWorkspaceId());

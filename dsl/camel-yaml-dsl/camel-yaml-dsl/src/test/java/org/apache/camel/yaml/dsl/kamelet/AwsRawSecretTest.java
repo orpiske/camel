@@ -43,7 +43,7 @@ public class AwsRawSecretTest extends CamelTestSupport {
         context.setRouteController(new DefaultSupervisingRouteController());
         context.start();
 
-        Endpoint e = context.getEndpoints().stream().filter(p -> p instanceof AWS2S3Endpoint).findFirst().orElse(null);
+        Endpoint e = context.getEndpoints().stream().filter(AWS2S3Endpoint.class::isInstance).findFirst().orElse(null);
         AWS2S3Endpoint a = Assertions.assertInstanceOf(AWS2S3Endpoint.class, e);
         Assertions.assertEquals(KEY_1, a.getConfiguration().getAccessKey());
         Assertions.assertEquals(KEY_2, a.getConfiguration().getSecretKey());

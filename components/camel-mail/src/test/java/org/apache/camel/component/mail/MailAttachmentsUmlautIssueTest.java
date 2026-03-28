@@ -77,9 +77,7 @@ public class MailAttachmentsUmlautIssueTest extends CamelTestSupport {
         mock.expectedMessageCount(1);
         Exchange out = mock.assertExchangeReceived(0);
 
-        Awaitility.await().pollDelay(2, TimeUnit.SECONDS).untilAsserted(() -> {
-            mock.assertIsSatisfied();
-        });
+        Awaitility.await().pollDelay(2, TimeUnit.SECONDS).untilAsserted(mock::assertIsSatisfied);
 
         // plain text
         assertEquals("Hello World", out.getIn().getBody(String.class));

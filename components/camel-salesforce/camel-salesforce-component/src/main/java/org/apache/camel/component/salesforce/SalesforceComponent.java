@@ -437,7 +437,7 @@ public class SalesforceComponent extends DefaultComponent implements SSLContextP
             } else {
                 final SSLContextParameters contextParameters = Optional.ofNullable(sslContextParameters)
                         .orElseGet(() -> Optional.ofNullable(retrieveGlobalSslContextParameters())
-                                .orElseGet(() -> new SSLContextParameters()));
+                                .orElseGet(SSLContextParameters::new));
 
                 final SslContextFactory.Client sslContextFactory = new SslContextFactory.Client();
                 sslContextFactory.setSslContext(contextParameters.createSSLContext(getCamelContext()));
@@ -918,7 +918,7 @@ public class SalesforceComponent extends DefaultComponent implements SSLContextP
 
     RestClient createRestClient(final Map<String, Object> properties) throws Exception {
         final SalesforceEndpointConfig modifiedConfig = Optional.ofNullable(config).map(SalesforceEndpointConfig::copy)
-                .orElseGet(() -> new SalesforceEndpointConfig());
+                .orElseGet(SalesforceEndpointConfig::new);
         final CamelContext camelContext = getCamelContext();
 
         PropertyBindingSupport.bindProperties(camelContext, modifiedConfig, properties);
@@ -937,7 +937,7 @@ public class SalesforceComponent extends DefaultComponent implements SSLContextP
         PropertyBindingSupport.bindProperties(camelContext, loginConfig, new HashMap<>(properties));
 
         final SSLContextParameters sslContextParameters
-                = Optional.ofNullable(camelContext.getSSLContextParameters()).orElseGet(() -> new SSLContextParameters());
+                = Optional.ofNullable(camelContext.getSSLContextParameters()).orElseGet(SSLContextParameters::new);
         // let's work with a copy so original properties are intact
         PropertyBindingSupport.bindProperties(camelContext, sslContextParameters, new HashMap<>(properties));
 

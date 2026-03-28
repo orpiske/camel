@@ -47,6 +47,7 @@ import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
@@ -218,7 +219,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
     public void testGetCustomerHttp404CustomStatus() throws Exception {
         HttpGet get = new HttpGet("http://localhost:" + PORT_PATH + "/rest/customerservice/customers/456");
         get.addHeader("Accept", "text/xml");
-        Integer status = httpclient.execute(get, response -> response.getCode());
+        Integer status = httpclient.execute(get, HttpResponse::getCode);
         assertEquals(404, status);
     }
 
@@ -230,7 +231,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         put.setEntity(new StringEntity(sw.toString()));
         put.addHeader("Content-Type", "text/xml");
         put.addHeader("Accept", "text/xml");
-        Integer status = httpclient.execute(put, response -> response.getCode());
+        Integer status = httpclient.execute(put, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -242,7 +243,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         post.setEntity(new StringEntity(sw.toString()));
         post.addHeader("Content-Type", "text/xml");
         post.addHeader("Accept", "text/xml");
-        Integer status = httpclient.execute(post, response -> response.getCode());
+        Integer status = httpclient.execute(post, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -271,7 +272,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         put.setEntity(new StringEntity(sw.toString()));
         put.addHeader("Content-Type", "text/xml");
         put.addHeader("Accept", "text/xml");
-        Integer status = httpclient.execute(put, response -> response.getCode());
+        Integer status = httpclient.execute(put, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -279,7 +280,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
     public void testDeleteVipCustomer() throws Exception {
         HttpDelete delete = new HttpDelete("http://localhost:" + PORT_PATH + "/rest/customerservice/customers/vip/gold/123");
         delete.addHeader("Accept", "text/xml");
-        Integer status = httpclient.execute(delete, response -> response.getCode());
+        Integer status = httpclient.execute(delete, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -289,7 +290,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         post.addHeader("Content-Type", "image/jpeg");
         post.addHeader("Accept", "text/xml");
         post.setEntity(new InputStreamEntity(this.getClass().getClassLoader().getResourceAsStream("java.jpg"), 100, null));
-        Integer status = httpclient.execute(post, response -> response.getCode());
+        Integer status = httpclient.execute(post, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -299,7 +300,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         post.addHeader("Content-Type", "image/jpeg");
         post.addHeader("Accept", "text/xml");
         post.setEntity(new InputStreamEntity(this.getClass().getClassLoader().getResourceAsStream("java.jpg"), 100, null));
-        Integer status = httpclient.execute(post, response -> response.getCode());
+        Integer status = httpclient.execute(post, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -316,7 +317,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         jaxb.createMarshaller().marshal(new Customer(123, "Raul"), sw);
         builder.addTextBody("body", sw.toString(), ContentType.TEXT_XML);
         post.setEntity(builder.build());
-        Integer status = httpclient.execute(post, response -> response.getCode());
+        Integer status = httpclient.execute(post, HttpResponse::getCode);
         assertEquals(200, status);
     }
 
@@ -333,7 +334,7 @@ public class CxfRsConsumerSimpleBindingTest extends CamelTestSupport {
         jaxb.createMarshaller().marshal(new Customer(123, "Raul"), sw);
         builder.addTextBody("body", sw.toString(), ContentType.TEXT_XML);
         post.setEntity(builder.build());
-        Integer status = httpclient.execute(post, response -> response.getCode());
+        Integer status = httpclient.execute(post, HttpResponse::getCode);
         assertEquals(200, status);
     }
 

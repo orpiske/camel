@@ -318,7 +318,7 @@ class CurrentSpanTest extends CamelMicrometerObservationTestSupport {
                     }
                     CompletableFuture.runAsync(() -> {
                     }, DELAYED)
-                            .thenRun(() -> callback.run());
+                            .thenRun(callback::run);
 
                     return false;
                 }

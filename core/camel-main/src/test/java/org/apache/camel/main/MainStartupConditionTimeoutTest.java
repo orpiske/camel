@@ -34,7 +34,7 @@ public class MainStartupConditionTimeoutTest {
                     .withOnTimeout("fail")
                     .withTimeout(250)
                     .withCustomClassNames("org.apache.camel.main.MainStartupConditionTimeoutTest$MyEnvCondition");
-            Exception e = assertThrows(Exception.class, () -> main.start());
+            Exception e = assertThrows(Exception.class, main::start);
             Assertions.assertEquals(
                     "Startup condition: ENV cannot continue due to: OS Environment Variable: MY_ENV does not exist",
                     e.getCause().getMessage());

@@ -31,9 +31,7 @@ public class SpringDoubleLoadBalancerMisconfigurationTest extends ContextTestSup
     @Override
     @BeforeEach
     public void setUp() throws Exception {
-        Exception e = assertThrows(Exception.class, () -> {
-            super.setUp();
-        });
+        Exception e = assertThrows(Exception.class, super::setUp);
         FailedToCreateRouteException fe = assertIsInstanceOf(FailedToCreateRouteException.class, e);
         IllegalArgumentException ie = assertIsInstanceOf(IllegalArgumentException.class, fe.getCause());
         assertTrue(ie.getMessage().startsWith(

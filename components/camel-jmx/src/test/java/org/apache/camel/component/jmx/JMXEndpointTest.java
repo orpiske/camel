@@ -117,7 +117,7 @@ public class JMXEndpointTest {
     public void noProducer() throws Exception {
         JMXEndpoint ep = context.getEndpoint("jmx:platform?objectDomain=FooDomain&key.name=theObjectName", JMXEndpoint.class);
         assertThrows(UnsupportedOperationException.class,
-                () -> ep.createProducer(),
+                ep::createProducer,
                 "producer pattern is not supported");
     }
 

@@ -56,7 +56,7 @@ public class JmxManagementStrategyFactory implements ManagementStrategyFactory {
             // and therefore will be in use
             List<java.util.function.Consumer<JmxManagementLifecycleStrategy>> preServices = null;
             JmxManagementLifecycleStrategy jmx = camelContext.getLifecycleStrategies().stream()
-                    .filter(s -> s instanceof JmxManagementLifecycleStrategy)
+                    .filter(JmxManagementLifecycleStrategy.class::isInstance)
                     .map(JmxManagementLifecycleStrategy.class::cast)
                     .findFirst().orElse(null);
             if (jmx != null) {
@@ -70,7 +70,7 @@ public class JmxManagementStrategyFactory implements ManagementStrategyFactory {
             }
 
             // camel-spring may re-initialize JMX during startup, so remove any previous
-            camelContext.getLifecycleStrategies().removeIf(s -> s instanceof JmxManagementLifecycleStrategy);
+            camelContext.getLifecycleStrategies().removeIf(JmxManagementLifecycleStrategy.class::isInstance);
         }
         camelContext.getLifecycleStrategies().add(0, lifecycle);
     }

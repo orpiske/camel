@@ -57,7 +57,7 @@ public class LeaderRecorder implements CamelClusterEventListener.Leadership {
     }
 
     public void waitForAnyLeader(long time, TimeUnit unit) {
-        waitForLeader(leader -> leader != null, time, unit);
+        waitForLeader(Objects::nonNull, time, unit);
     }
 
     public void waitForALeaderChange(long time, TimeUnit unit) {

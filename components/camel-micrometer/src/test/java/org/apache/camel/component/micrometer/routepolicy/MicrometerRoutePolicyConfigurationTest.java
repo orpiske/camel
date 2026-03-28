@@ -62,7 +62,7 @@ public class MicrometerRoutePolicyConfigurationTest extends AbstractMicrometerRo
         });
         List<Meter> meters = meterRegistry.getMeters();
         assertEquals(3, meters.size(), "additional counters does not disable");
-        Timer timer = (Timer) meters.stream().filter(it -> it instanceof Timer)
+        Timer timer = (Timer) meters.stream().filter(Timer.class::isInstance)
                 .findFirst().orElse(null);
 
         assertNotNull(timer, "timer is null");
@@ -71,7 +71,7 @@ public class MicrometerRoutePolicyConfigurationTest extends AbstractMicrometerRo
         assertEquals("hello", id.getTag("firstTag"), "firstTag not setted");
         assertEquals("world", id.getTag("secondTag"), "secondTag not setted");
 
-        LongTaskTimer longTaskTimer = (LongTaskTimer) meters.stream().filter(it -> it instanceof LongTaskTimer)
+        LongTaskTimer longTaskTimer = (LongTaskTimer) meters.stream().filter(LongTaskTimer.class::isInstance)
                 .findFirst().orElse(null);
         assertNotNull(longTaskTimer, "LongTaskTimer is null");
         id = longTaskTimer.getId();

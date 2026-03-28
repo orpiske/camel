@@ -44,7 +44,7 @@ public class LevelDBAggregateDiscardOnTimeoutTest extends LevelDBTestSupport {
         template.sendBodyAndHeader("direct:start", "B", "id", 123);
 
         // wait at most 3 seconds
-        Awaitility.await().atMost(3, TimeUnit.SECONDS).untilAsserted(() -> mock.assertIsSatisfied());
+        Awaitility.await().atMost(3, TimeUnit.SECONDS).untilAsserted(mock::assertIsSatisfied);
 
         mock.assertIsSatisfied();
 

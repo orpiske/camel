@@ -43,8 +43,6 @@ public class JCacheManagerTest extends JCacheComponentTestSupport {
         final JCacheManager<Object, Object> objectObjectJCacheManager = new JCacheManager<>(conf);
 
         assertThrows(IllegalStateException.class,
-                () -> {
-                    objectObjectJCacheManager.getCache();
-                });
+                objectObjectJCacheManager::getCache);
     }
 }

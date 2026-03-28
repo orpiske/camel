@@ -111,7 +111,7 @@ public class CMTest extends CamelTestConfiguration {
                 = "cm-sms://dummy.sgw01.cm.nl/gateway.ashx?defaultFrom=MyBusiness&defaultMaxNumberOfParts=8&productToken=ea723fd7-da81-4826-89bc-fa7144e71c40&testConnectionOnStartup=true";
         Service service = context.getEndpoint(schemedUri).createProducer();
         assertThrows(HostUnavailableException.class,
-                () -> service.start());
+                service::start);
     }
 
     @Test

@@ -308,7 +308,7 @@ public abstract class ExportBaseCommand extends CamelCommand {
     protected boolean javaLiveReload; // reload java codes in dev
     public String pomTemplateName;   // support for specialised pom templates
 
-    public ExportBaseCommand(CamelJBangMain main) {
+    protected ExportBaseCommand(CamelJBangMain main) {
         super(main);
     }
 

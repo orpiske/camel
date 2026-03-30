@@ -96,6 +96,7 @@ public class KafkaBatchingProcessingBreakOnFirstErrorManualCommitIT extends Batc
                         }
                     }
                 }).to(KafkaTestUtil.MOCK_RESULT)
+                        // Manual commit on success
                         .process(KafkaBatchingProcessingBreakOnFirstErrorManualCommitIT.this::doCommitOffset);
             }
         };

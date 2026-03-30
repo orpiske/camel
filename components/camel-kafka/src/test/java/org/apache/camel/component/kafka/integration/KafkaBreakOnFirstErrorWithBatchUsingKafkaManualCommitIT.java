@@ -118,6 +118,7 @@ class KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT extends BaseKafkaT
                         // adding error message to end
                         // so we can account for it
                         .to(to)
+                        // if we don't commit, camel will continuously retry the message with an error
                         .process(KafkaBreakOnFirstErrorWithBatchUsingKafkaManualCommitIT.this::doCommitOffset);
 
                 from("kafka:" + TOPIC

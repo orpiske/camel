@@ -61,7 +61,8 @@ public final class MailConverters {
     @Converter
     public static String toString(Message message) throws MessagingException, IOException {
         Object content = message.getContent();
-        while (content instanceof MimeMultipart multipart) {
+        while (content instanceof MimeMultipart) {
+            MimeMultipart multipart = (MimeMultipart) content;
             if (multipart.getCount() > 0) {
                 BodyPart part = multipart.getBodyPart(0);
                 content = part.getContent();
@@ -84,11 +85,11 @@ public final class MailConverters {
             for (int i = 0; i < size; i++) {
                 BodyPart part = multipart.getBodyPart(i);
                 Object content = part.getContent();
-                while (content instanceof MimeMultipart mimeMultipart) {
-                    if (mimeMultipart.getCount() < 1) {
+                while (content instanceof MimeMultipart) {
+                    if (multipart.getCount() < 1) {
                         break;
                     }
-                    part = mimeMultipart.getBodyPart(0);
+                    part = ((MimeMultipart) content).getBodyPart(0);
                     content = part.getContent();
                 }
                 // Perform a case-insensitive "startsWith" check that works for different locales

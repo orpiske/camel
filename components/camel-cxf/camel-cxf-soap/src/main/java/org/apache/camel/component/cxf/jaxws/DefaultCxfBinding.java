@@ -1195,9 +1195,9 @@ public class DefaultCxfBinding implements CxfBinding, HeaderFilterStrategyAware 
                     LOG.trace("Extract body element {}",
                             element == null ? "null" : getXMLString(element));
                 }
-            } else if (part instanceof Element element) {
-                addNamespace(element, nsMap);
-                answer.add(new DOMSource(element));
+            } else if (part instanceof Element elem) {
+                addNamespace(elem, nsMap);
+                answer.add(new DOMSource(elem));
             } else {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Unhandled part type '{}'", part.getClass());

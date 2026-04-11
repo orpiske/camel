@@ -344,12 +344,7 @@ public class Run extends CamelCommand {
         if (exportRun) {
             return false;
         }
-        if (RuntimeType.quarkus == runtime) {
-            return true;
-        } else if (RuntimeType.springBoot == runtime) {
-            return true;
-        }
-        return false;
+        return RuntimeType.quarkus == runtime || RuntimeType.springBoot == runtime;
     }
 
     @Override

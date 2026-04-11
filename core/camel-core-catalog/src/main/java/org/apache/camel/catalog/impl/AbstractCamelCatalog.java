@@ -1281,9 +1281,8 @@ public abstract class AbstractCamelCatalog {
             if (!optionPlaceholder && !lookup && javaType != null
                     && (javaType.startsWith("java.util.Map") || javaType.startsWith("java.util.Properties"))) {
                 // there must be a valid suffix
-                if (isValidSuffix(suffix)) {
-                    result.addInvalidMap(longKey, value);
-                } else if (suffix.startsWith("[") && !suffix.contains("]")) {
+                if (isValidSuffix(suffix)
+                        || (suffix.startsWith("[") && !suffix.contains("]"))) {
                     result.addInvalidMap(longKey, value);
                 }
             }

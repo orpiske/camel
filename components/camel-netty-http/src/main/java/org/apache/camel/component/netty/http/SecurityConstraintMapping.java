@@ -70,11 +70,7 @@ public class SecurityConstraintMapping implements SecurityConstraint {
         if (inclusions != null && !inclusions.isEmpty()) {
             for (String constraint : inclusions.keySet()) {
                 if (PatternHelper.matchPattern(url, constraint)) {
-                    if (candidate == null) {
-                        candidate = constraint;
-                    } else if (constraint.length() > candidate.length()) {
-                        // we want the constraint that has the longest context-path matching as its
-                        // the most explicit for the target url
+                    if (candidate == null || constraint.length() > candidate.length()) {
                         candidate = constraint;
                     }
                 }

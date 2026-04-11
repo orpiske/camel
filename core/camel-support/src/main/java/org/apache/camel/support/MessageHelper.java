@@ -702,11 +702,8 @@ public final class MessageHelper {
             Object value = entry.getValue();
 
             if (target.getHeader(key) == null || override) {
-                if (strategy == null) {
-                    target.setHeader(key, value);
-                } else if (!strategy.applyFilterToExternalHeaders(key, value, target.getExchange())) {
-                    // Just make sure we don't copy the protocol headers to
-                    // target
+                if (strategy == null
+                        || !strategy.applyFilterToExternalHeaders(key, value, target.getExchange())) {
                     target.setHeader(key, value);
                 }
             }

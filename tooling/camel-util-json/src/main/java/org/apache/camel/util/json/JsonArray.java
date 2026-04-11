@@ -394,9 +394,7 @@ public class JsonArray extends ArrayList<Object> implements Jsonable {
      */
     public String getString(final int index) {
         Object returnable = this.get(index);
-        if (returnable instanceof Boolean) {
-            returnable = returnable.toString();
-        } else if (returnable instanceof Number) {
+        if (returnable instanceof Boolean || returnable instanceof Number) {
             returnable = returnable.toString();
         }
         return (String) returnable;

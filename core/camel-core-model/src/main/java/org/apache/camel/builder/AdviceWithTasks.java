@@ -461,13 +461,10 @@ public final class AdviceWithTasks {
         }
         // for intercept/onException/onCompletion then we want to work on the
         // route outputs as they are top-level
-        if (node instanceof InterceptDefinition) {
-            return route.getOutputs();
-        } else if (node instanceof InterceptSendToEndpointDefinition) {
-            return route.getOutputs();
-        } else if (node instanceof OnExceptionDefinition) {
-            return route.getOutputs();
-        } else if (node instanceof OnCompletionDefinition) {
+        if (node instanceof InterceptDefinition
+                || node instanceof InterceptSendToEndpointDefinition
+                || node instanceof OnExceptionDefinition
+                || node instanceof OnCompletionDefinition) {
             return route.getOutputs();
         }
 

@@ -757,17 +757,16 @@ public class RunMojo extends AbstractExecMojo {
         Set<Artifact> artifacts = new HashSet<>(this.pluginDependencies);
         for (Artifact artifact : artifacts) {
             // add these loggers in the beginning so they are first
-            if (artifact.getArtifactId().equals("jansi")) {
-                // jansi for logging in color
-                classpath.add(0, artifact);
-            } else if (artifact.getGroupId().equals("org.apache.logging.log4j")) {
-                // add log4j as this is needed
-                classpath.add(0, artifact);
-            } else if (artifact.getArtifactId().equals("camel-maven-plugin")) {
-                // add ourselves
+            if (isConsoleLogDependency(artifact)) {
                 classpath.add(0, artifact);
             }
         }
+    }
+
+    private static boolean isConsoleLogDependency(Artifact artifact) {
+        return artifact.getArtifactId().equals("jansi")
+                || artifact.getGroupId().equals("org.apache.logging.log4j")
+                || artifact.getArtifactId().equals("camel-maven-plugin");
     }
 
     /**

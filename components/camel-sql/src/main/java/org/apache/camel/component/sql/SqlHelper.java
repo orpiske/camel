@@ -98,17 +98,16 @@ public final class SqlHelper {
         Map<?, ?> headersMap = safeMap(exchange.getIn().getHeaders());
         Map<?, ?> variablesMap = safeMap(exchange.getVariables());
 
-        if ((nextParam.startsWith("$simple{") || nextParam.startsWith("${")) && nextParam.endsWith("}")) {
-            return true;
-        } else if (bodyMap.containsKey(nextParam)) {
-            return true;
-        } else if (headersMap.containsKey(nextParam)) {
-            return true;
-        } else if (variablesMap.containsKey(nextParam)) {
+        if (isSimpleExpression(nextParam)) {
             return true;
         }
+        return bodyMap.containsKey(nextParam)
+                || headersMap.containsKey(nextParam)
+                || variablesMap.containsKey(nextParam);
+    }
 
-        return false;
+    private static boolean isSimpleExpression(String param) {
+        return (param.startsWith("$simple{") || param.startsWith("${")) && param.endsWith("}");
     }
 
     private static Map<?, ?> safeMap(Map<?, ?> map) {

@@ -1085,9 +1085,7 @@ public final class StringHelper {
         for (int i = 0; i < newLines.length; i++) {
             String newLine = newLines[i];
             String oldLine = i < oldLines.length ? oldLines[i] : null;
-            if (oldLine == null) {
-                changed.add(i);
-            } else if (!newLine.equals(oldLine)) {
+            if (oldLine == null || !newLine.equals(oldLine)) {
                 changed.add(i);
             }
         }

@@ -195,11 +195,9 @@ public final class ModelPredictorProducer {
             return new CustomNlpPredictor<Classifications>(endpoint);
         } else if (WORD_EMBEDDING.getPath().equals(applicationPath)) {
             return new CustomWordEmbeddingPredictor(endpoint);
-        } else if (TEXT_GENERATION.getPath().equals(applicationPath)) {
-            return new CustomNlpPredictor<String>(endpoint);
-        } else if (MACHINE_TRANSLATION.getPath().equals(applicationPath)) {
-            return new CustomNlpPredictor<String>(endpoint);
-        } else if (MULTIPLE_CHOICE.getPath().equals(applicationPath)) {
+        } else if (TEXT_GENERATION.getPath().equals(applicationPath)
+                || MACHINE_TRANSLATION.getPath().equals(applicationPath)
+                || MULTIPLE_CHOICE.getPath().equals(applicationPath)) {
             return new CustomNlpPredictor<String>(endpoint);
         } else if (TEXT_EMBEDDING.getPath().equals(applicationPath)) {
             return new CustomNlpPredictor<NDArray>(endpoint);

@@ -99,14 +99,10 @@ class MethodBodySourceCodeEmitter implements CodeEmitter<MethodSpec> {
             case "options":
                 return 1;
             case "param":
-                indentIntentStack.push(3);
-                return 2;
-            case "endParam":
-                indentIntentStack.pop();
-                return 2;
             case "route":
                 indentIntentStack.push(3);
                 return 2;
+            case "endParam":
             case "endRest":
                 indentIntentStack.pop();
                 return 2;

@@ -277,13 +277,8 @@ public class DefaultStreamCachingStrategy extends ServiceSupport implements Came
         // try convert to stream cache
         if (body != null) {
             // fast skip some common types that should never be converted
-            if (body instanceof String) {
-                return null;
-            } else if (body instanceof byte[]) {
-                return null;
-            } else if (body instanceof Boolean) {
-                return null;
-            } else if (body instanceof Number) {
+            if (body instanceof String || body instanceof byte[]
+                    || body instanceof Boolean || body instanceof Number) {
                 return null;
             }
             Class<?> type = body.getClass();

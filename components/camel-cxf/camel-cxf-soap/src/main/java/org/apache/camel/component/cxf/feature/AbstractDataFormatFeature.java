@@ -76,10 +76,7 @@ public abstract class AbstractDataFormatFeature extends AbstractFeature {
             List<Interceptor<? extends Message>> interceptors, Set<String> needToBeKept,
             PhaseInterceptor<? extends Message> p) {
         // To support the old API
-        if (needToBeKept == null) {
-            getLogger().info("removing the interceptor {}", p);
-            interceptors.remove(p);
-        } else if (!needToBeKept.contains(p.getClass().getName())) {
+        if (needToBeKept == null || !needToBeKept.contains(p.getClass().getName())) {
             getLogger().info("removing the interceptor {}", p);
             interceptors.remove(p);
         }

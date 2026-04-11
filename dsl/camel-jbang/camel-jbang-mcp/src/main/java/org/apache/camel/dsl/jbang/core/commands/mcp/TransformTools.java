@@ -320,9 +320,8 @@ public class TransformTools {
                     String key = line.substring(0, colonPos).trim();
                     String value = line.substring(colonPos + 1).trim();
 
-                    if (value.startsWith("\"") && value.endsWith("\"")) {
-                        value = value.substring(1, value.length() - 1);
-                    } else if (value.startsWith("'") && value.endsWith("'")) {
+                    if ((value.startsWith("\"") && value.endsWith("\""))
+                            || (value.startsWith("'") && value.endsWith("'"))) {
                         value = value.substring(1, value.length() - 1);
                     }
 

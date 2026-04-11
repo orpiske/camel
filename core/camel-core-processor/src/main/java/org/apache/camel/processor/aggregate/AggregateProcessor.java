@@ -814,12 +814,9 @@ public class AggregateProcessor extends BaseProcessorSupport
         }
 
         Exchange answer;
-        if (fromTimeout && isDiscardOnCompletionTimeout()) {
+        if ((fromTimeout && isDiscardOnCompletionTimeout())
+                || (aggregateFailed && isDiscardOnAggregationFailure())) {
             discard(key, aggregated);
-            answer = null;
-        } else if (aggregateFailed && isDiscardOnAggregationFailure()) {
-            discard(key, aggregated);
-            // the completion was failed during aggregation and we should just discard it
             answer = null;
         } else {
             // the aggregated exchange should be published (sent out)

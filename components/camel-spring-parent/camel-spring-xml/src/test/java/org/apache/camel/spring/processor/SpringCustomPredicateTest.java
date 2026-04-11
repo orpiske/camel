@@ -47,13 +47,7 @@ public class SpringCustomPredicateTest extends SpringTestSupport {
         @Override
         public boolean matches(Exchange exchange) {
             String body = exchange.getIn().getBody(String.class);
-            if (body.contains("Camel")) {
-                return true;
-            } else if (body.startsWith("Secret")) {
-                return true;
-            }
-
-            return false;
+            return body.contains("Camel") || body.startsWith("Secret");
         }
     }
 }

@@ -1075,9 +1075,8 @@ public class EndpointSchemaGeneratorMojo extends AbstractGeneratorMojo {
                         componentModel.isProducerOnly());
                 // filter out consumer/producer only
                 boolean accept = !excludes.contains(name);
-                if (componentModel.isConsumerOnly() && "producer".equals(group)) {
-                    accept = false;
-                } else if (componentModel.isProducerOnly() && "consumer".equals(group)) {
+                if ((componentModel.isConsumerOnly() && "producer".equals(group))
+                        || (componentModel.isProducerOnly() && "consumer".equals(group))) {
                     accept = false;
                 }
                 if (accept) {

@@ -590,13 +590,7 @@ public class DefaultModel implements Model {
             final String key = entry.getKey();
             final String templateId = target.getId();
 
-            if ("*".equals(key) || templateId.equals(key)) {
-                converter = entry.getValue();
-                break;
-            } else if (AntPathMatcher.INSTANCE.match(key, templateId)) {
-                converter = entry.getValue();
-                break;
-            } else if (templateId.matches(key)) {
+            if (matchesTemplateKey(key, templateId)) {
                 converter = entry.getValue();
                 break;
             }
@@ -652,6 +646,12 @@ public class DefaultModel implements Model {
         // add route and return the id it was assigned
         addRouteDefinition(def);
         return def.getId();
+    }
+
+    private static boolean matchesTemplateKey(String key, String templateId) {
+        return "*".equals(key) || templateId.equals(key)
+                || AntPathMatcher.INSTANCE.match(key, templateId)
+                || templateId.matches(key);
     }
 
     private static void addProperty(Map<String, Object> prop, String key, Object value) {

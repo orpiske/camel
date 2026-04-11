@@ -241,10 +241,8 @@ public final class BackOffTimerTask implements BackOffTimer.Task, Runnable {
 
             currentAttempts++;
 
-            if (currentAttempts > backOff.getMaxAttempts()) {
-                currentDelay = BackOff.NEVER;
-                status = Status.Exhausted;
-            } else if (currentElapsedTime > backOff.getMaxElapsedTime().toMillis()) {
+            if (currentAttempts > backOff.getMaxAttempts()
+                    || currentElapsedTime > backOff.getMaxElapsedTime().toMillis()) {
                 currentDelay = BackOff.NEVER;
                 status = Status.Exhausted;
             } else {

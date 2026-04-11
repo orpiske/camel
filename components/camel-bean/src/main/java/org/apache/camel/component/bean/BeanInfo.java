@@ -1096,11 +1096,7 @@ public class BeanInfo {
         Iterator<MethodInfo> it = methods.iterator();
         while (it.hasNext()) {
             MethodInfo info = it.next();
-            if (isGetter(info.getMethod())) {
-                // skip getters
-                it.remove();
-            } else if (isSetter(info.getMethod())) {
-                // skip setters
+            if (isGetter(info.getMethod()) || isSetter(info.getMethod())) {
                 it.remove();
             }
         }

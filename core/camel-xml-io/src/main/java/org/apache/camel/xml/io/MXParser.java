@@ -780,10 +780,7 @@ public class MXParser implements XmlPullParser {
     }
 
     public String getNamespace() {
-        if (eventType == START_TAG) {
-            // return processNamespaces ? elUri[ depth - 1 ] : NO_NAMESPACE;
-            return processNamespaces ? elUri[depth] : NO_NAMESPACE;
-        } else if (eventType == END_TAG) {
+        if (eventType == START_TAG || eventType == END_TAG) {
             return processNamespaces ? elUri[depth] : NO_NAMESPACE;
         }
         return null;
@@ -827,10 +824,7 @@ public class MXParser implements XmlPullParser {
     }
 
     public String getPrefix() {
-        if (eventType == START_TAG) {
-            // return elPrefix[ depth - 1 ] ;
-            return elPrefix[depth];
-        } else if (eventType == END_TAG) {
+        if (eventType == START_TAG || eventType == END_TAG) {
             return elPrefix[depth];
         }
         return null;

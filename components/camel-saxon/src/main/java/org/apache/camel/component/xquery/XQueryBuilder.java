@@ -593,13 +593,8 @@ public abstract class XQueryBuilder implements Expression, Predicate, NamespaceA
             return false;
         }
 
-        if (payload instanceof Source) {
-            return false;
-        } else if (payload instanceof String) {
-            return false;
-        } else if (payload instanceof byte[]) {
-            return false;
-        } else if (payload instanceof Node) {
+        if (payload instanceof Source || payload instanceof String
+                || payload instanceof byte[] || payload instanceof Node) {
             return false;
         }
 

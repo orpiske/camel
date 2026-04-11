@@ -76,9 +76,7 @@ public class JsonObject extends LinkedHashMap<String, Object> implements Jsonabl
      */
     public String pathString(final String path) {
         Object returnable = path(path);
-        if (returnable instanceof Boolean) {
-            returnable = returnable.toString();
-        } else if (returnable instanceof Number) {
+        if (returnable instanceof Boolean || returnable instanceof Number) {
             returnable = returnable.toString();
         }
         return (String) returnable;
@@ -966,9 +964,7 @@ public class JsonObject extends LinkedHashMap<String, Object> implements Jsonabl
      */
     public String getString(final String key) {
         Object returnable = this.get(key);
-        if (returnable instanceof Boolean) {
-            returnable = returnable.toString();
-        } else if (returnable instanceof Number) {
+        if (returnable instanceof Boolean || returnable instanceof Number) {
             returnable = returnable.toString();
         }
         return (String) returnable;
@@ -989,9 +985,7 @@ public class JsonObject extends LinkedHashMap<String, Object> implements Jsonabl
         } else {
             return defaultValue;
         }
-        if (returnable instanceof Boolean) {
-            returnable = returnable.toString();
-        } else if (returnable instanceof Number) {
+        if (returnable instanceof Boolean || returnable instanceof Number) {
             returnable = returnable.toString();
         }
         return (String) returnable;

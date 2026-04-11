@@ -29,9 +29,7 @@ public class SocketOutputStreamStub extends OutputStream {
 
     @Override
     public void write(int b) throws IOException {
-        if (failOnWrite) {
-            throw new IOException("Faking write failure");
-        } else if (writeFailOn != null && writeFailOn == b) {
+        if (failOnWrite || (writeFailOn != null && writeFailOn == b)) {
             throw new IOException("Faking write failure");
         }
 

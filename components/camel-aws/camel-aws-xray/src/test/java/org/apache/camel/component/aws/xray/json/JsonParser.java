@@ -114,9 +114,8 @@ public final class JsonParser {
                     if ('"' == c && (curToken.isEmpty() || curToken.charAt(curToken.length() - 1) != '\\')) {
                         inWord = !inWord;
                     }
-                    if (!inWord && !doNotIncludeSymbols.contains(String.valueOf(c))) {
-                        curToken.append(c);
-                    } else if ('"' != c || (!curToken.isEmpty() && curToken.charAt(curToken.length() - 1) == '\\')) {
+                    if ((!inWord && !doNotIncludeSymbols.contains(String.valueOf(c)))
+                            || ('"' != c || (!curToken.isEmpty() && curToken.charAt(curToken.length() - 1) == '\\'))) {
                         curToken.append(c);
                     }
             }

@@ -146,9 +146,8 @@ public abstract class AbstractMiloServerTest extends CamelTestSupport {
             if (dot != -1) {
                 version = version.substring(0, dot);
             }
-            if (version.equalsIgnoreCase("16-ea")) {
-                return true;
-            } else if (Integer.parseInt(version) >= requiredVersion) {
+            if (version.equalsIgnoreCase("16-ea")
+                    || Integer.parseInt(version) >= requiredVersion) {
                 return true;
             }
         }

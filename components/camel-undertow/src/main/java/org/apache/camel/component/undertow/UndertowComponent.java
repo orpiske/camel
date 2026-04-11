@@ -251,11 +251,7 @@ public class UndertowComponent extends DefaultComponent
         boolean explicitOptions = restrict.contains("OPTIONS");
         boolean cors = config.isEnableCORS();
 
-        if (cors) {
-            // allow HTTP Options as we want to handle CORS in rest-dsl
-            map.put("optionsEnabled", "true");
-        } else if (explicitOptions) {
-            // the rest-dsl is using OPTIONS
+        if (cors || explicitOptions) {
             map.put("optionsEnabled", "true");
         }
 

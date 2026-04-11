@@ -61,12 +61,8 @@ class MethodsFilter {
 
                 boolean registeredMethodIsPublic = Modifier.isPublic(alreadyRegistered.getDeclaringClass().getModifiers());
 
-                if (overridden && !registeredMethodIsPublic) {
-                    // Retain the overridden method from a public class
-                    methods.set(i, proposedMethod);
-                    return;
-                } else if (overridding) {
-                    // Retain the override from a public class
+                if ((overridden && !registeredMethodIsPublic) || overridding) {
+                    // Retain the overridden/overriding method from a public class
                     methods.set(i, proposedMethod);
                     return;
                 }

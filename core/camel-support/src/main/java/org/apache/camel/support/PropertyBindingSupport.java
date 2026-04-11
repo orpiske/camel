@@ -2042,9 +2042,8 @@ public final class PropertyBindingSupport {
             // so we can remove the corresponding key from the original map
             Set<String> toBeRemoved = new HashSet<>();
             originalMap.forEach((k, v) -> {
-                if (startsWithIgnoreCase(k, optionPrefix)) {
-                    toBeRemoved.add(k);
-                } else if (startsWithIgnoreCase(k, "?" + optionPrefix)) {
+                if (startsWithIgnoreCase(k, optionPrefix)
+                        || startsWithIgnoreCase(k, "?" + optionPrefix)) {
                     toBeRemoved.add(k);
                 }
             });

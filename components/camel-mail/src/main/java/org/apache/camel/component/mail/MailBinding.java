@@ -917,14 +917,9 @@ public class MailBinding {
      * Is the given key a mime message recipient header (To, CC or BCC)
      */
     private static boolean isRecipientHeader(String key) {
-        if (Message.RecipientType.TO.toString().equalsIgnoreCase(key)) {
-            return true;
-        } else if (Message.RecipientType.CC.toString().equalsIgnoreCase(key)) {
-            return true;
-        } else if (Message.RecipientType.BCC.toString().equalsIgnoreCase(key)) {
-            return true;
-        }
-        return false;
+        return Message.RecipientType.TO.toString().equalsIgnoreCase(key)
+                || Message.RecipientType.CC.toString().equalsIgnoreCase(key)
+                || Message.RecipientType.BCC.toString().equalsIgnoreCase(key);
     }
 
     /**

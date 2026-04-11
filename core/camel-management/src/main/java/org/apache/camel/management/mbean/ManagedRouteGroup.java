@@ -169,9 +169,7 @@ public class ManagedRouteGroup extends ManagedPerformanceCounter implements Time
         for (Route route : context.getRoutesByGroup(group)) {
             var e = route.getLastError();
             if (e != null) {
-                if (last == null) {
-                    last = e;
-                } else if (e.getDate().compareTo(last.getDate()) > 0) {
+                if (last == null || e.getDate().compareTo(last.getDate()) > 0) {
                     last = e;
                 }
             }

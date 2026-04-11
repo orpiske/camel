@@ -494,15 +494,12 @@ public class BindyFixedLengthFactory extends BindyAbstractFactory implements Bin
                                 padChar = padCharField;
                             }
 
-                            if (align.contains("R")) {
+                            if (align.contains("R") || align.contains("B")) {
                                 temp.append(generatePaddingChars(padChar, fieldLength, result.length()));
                                 temp.append(result);
                             } else if (align.contains("L")) {
                                 temp.append(result);
                                 temp.append(generatePaddingChars(padChar, fieldLength, result.length()));
-                            } else if (align.contains("B")) {
-                                temp.append(generatePaddingChars(padChar, fieldLength, result.length()));
-                                temp.append(result);
                             } else {
                                 throw new IllegalArgumentException(
                                         "Alignment for the field: " + field.getName()

@@ -54,9 +54,8 @@ public final class ExtraFilesClassLoader extends ClassLoader {
         for (String f : files) {
             String source = f;
             // deal with adding files to classpath that are in src/main/resources
-            if (source.startsWith("src/main/resources/")) {
-                source = source.substring(19);
-            } else if (source.startsWith("src\\main\\resources\\")) {
+            if (source.startsWith("src/main/resources/")
+                    || source.startsWith("src\\main\\resources\\")) {
                 source = source.substring(19);
             }
             if (name.equals(source)) {

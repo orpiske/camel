@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -337,39 +338,19 @@ public final class HealthCheckHelper {
      * @param  key the key
      * @return     true if reserved, false otherwise
      */
+    private static final Set<String> RESERVED_KEYS = Set.of(
+            HealthCheck.CHECK_ID, HealthCheck.CHECK_GROUP,
+            HealthCheck.CHECK_KIND, HealthCheck.CHECK_ENABLED,
+            HealthCheck.INVOCATION_COUNT, HealthCheck.INVOCATION_TIME,
+            HealthCheck.FAILURE_COUNT, HealthCheck.FAILURE_START_TIME,
+            HealthCheck.FAILURE_TIME, HealthCheck.FAILURE_ERROR_COUNT,
+            HealthCheck.SUCCESS_COUNT, HealthCheck.SUCCESS_START_TIME,
+            HealthCheck.SUCCESS_TIME);
+
     public static boolean isReservedKey(String key) {
         if (key == null) {
             return false;
         }
-
-        if (HealthCheck.CHECK_ID.equals(key)) {
-            return true;
-        } else if (HealthCheck.CHECK_GROUP.equals(key)) {
-            return true;
-        } else if (HealthCheck.CHECK_KIND.equals(key)) {
-            return true;
-        } else if (HealthCheck.CHECK_ENABLED.equals(key)) {
-            return true;
-        } else if (HealthCheck.INVOCATION_COUNT.equals(key)) {
-            return true;
-        } else if (HealthCheck.INVOCATION_TIME.equals(key)) {
-            return true;
-        } else if (HealthCheck.FAILURE_COUNT.equals(key)) {
-            return true;
-        } else if (HealthCheck.FAILURE_START_TIME.equals(key)) {
-            return true;
-        } else if (HealthCheck.FAILURE_TIME.equals(key)) {
-            return true;
-        } else if (HealthCheck.FAILURE_ERROR_COUNT.equals(key)) {
-            return true;
-        } else if (HealthCheck.SUCCESS_COUNT.equals(key)) {
-            return true;
-        } else if (HealthCheck.SUCCESS_START_TIME.equals(key)) {
-            return true;
-        } else if (HealthCheck.SUCCESS_TIME.equals(key)) {
-            return true;
-        }
-
-        return false;
+        return RESERVED_KEYS.contains(key);
     }
 }

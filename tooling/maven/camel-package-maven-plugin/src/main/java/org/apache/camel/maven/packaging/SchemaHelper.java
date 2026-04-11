@@ -87,12 +87,9 @@ public final class SchemaHelper {
             }
             if (ch == '-' || ch == '_') {
                 answer.append("-");
-            } else if (Character.isUpperCase(ch) && prev != null && !Character.isUpperCase(prev)) {
-                if (prev != '-' && prev != '_') {
-                    answer.append("-");
-                }
-                answer.append(ch);
-            } else if (Character.isUpperCase(ch) && prev != null && next != null && Character.isLowerCase(next)) {
+            } else if (Character.isUpperCase(ch) && prev != null
+                    && (!Character.isUpperCase(prev)
+                            || (next != null && Character.isLowerCase(next)))) {
                 if (prev != '-' && prev != '_') {
                     answer.append("-");
                 }

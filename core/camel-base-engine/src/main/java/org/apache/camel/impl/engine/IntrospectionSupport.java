@@ -371,9 +371,8 @@ final class IntrospectionSupport {
             methods.addAll(Arrays.asList(type.getMethods()));
             for (Method m : methods) {
                 if (isGetter(m)) {
-                    if (m.getName().startsWith("is") && m.getName().substring(2).equalsIgnoreCase(propertyName)) {
-                        return m;
-                    } else if (m.getName().startsWith("get") && m.getName().substring(3).equalsIgnoreCase(propertyName)) {
+                    if ((m.getName().startsWith("is") && m.getName().substring(2).equalsIgnoreCase(propertyName))
+                            || (m.getName().startsWith("get") && m.getName().substring(3).equalsIgnoreCase(propertyName))) {
                         return m;
                     }
                 }

@@ -1742,10 +1742,7 @@ public abstract class RedeliveryErrorHandler extends ErrorHandlerSupport
 
             LoggingLevel newLogLevel;
             boolean logStackTrace;
-            if (exchange.isRollbackOnly() || exchange.isRollbackOnlyLast()) {
-                newLogLevel = currentRedeliveryPolicy.getRetriesExhaustedLogLevel();
-                logStackTrace = currentRedeliveryPolicy.isLogStackTrace();
-            } else if (shouldRedeliver) {
+            if (shouldRedeliver && !exchange.isRollbackOnly() && !exchange.isRollbackOnlyLast()) {
                 newLogLevel = currentRedeliveryPolicy.getRetryAttemptedLogLevel();
                 logStackTrace = currentRedeliveryPolicy.isLogRetryStackTrace();
             } else {

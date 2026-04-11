@@ -350,11 +350,9 @@ public class PredicateBuilder {
         return new BinaryPredicateSupport(left, right) {
 
             protected boolean matches(Exchange exchange, Object leftValue, Object rightValue) {
-                if (leftValue == null && rightValue == null) {
-                    // they are equal
-                    return false;
-                } else if (leftValue == null || rightValue == null) {
-                    // only one of them is null so they are not equal
+                if (leftValue == null || rightValue == null) {
+                    // if both are null they are equal (not greater);
+                    // if only one is null they are not equal (not greater)
                     return false;
                 }
 

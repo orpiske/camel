@@ -675,22 +675,13 @@ public class HttpProducer extends DefaultProducer implements LineNumberAware {
     }
 
     private boolean isCreateNewURL(Exchange exchange) {
-        boolean create = false;
         Message in = exchange.getIn();
-        if (in.getHeader(HttpConstants.REST_HTTP_URI) != null) {
-            create = true;
-        } else if (in.getHeader(HttpConstants.HTTP_URI) != null && !getEndpoint().isBridgeEndpoint()) {
-            create = true;
-        } else if (in.getHeader(HttpConstants.HTTP_PATH) != null) {
-            create = true;
-        } else if (in.getHeader(HttpConstants.REST_HTTP_QUERY) != null) {
-            create = true;
-        } else if (in.getHeader(HttpConstants.HTTP_RAW_QUERY) != null) {
-            create = true;
-        } else if (in.getHeader(HttpConstants.HTTP_QUERY) != null) {
-            create = true;
-        }
-        return create;
+        return in.getHeader(HttpConstants.REST_HTTP_URI) != null
+                || (in.getHeader(HttpConstants.HTTP_URI) != null && !getEndpoint().isBridgeEndpoint())
+                || in.getHeader(HttpConstants.HTTP_PATH) != null
+                || in.getHeader(HttpConstants.REST_HTTP_QUERY) != null
+                || in.getHeader(HttpConstants.HTTP_RAW_QUERY) != null
+                || in.getHeader(HttpConstants.HTTP_QUERY) != null;
     }
 
     /**

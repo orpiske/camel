@@ -56,7 +56,6 @@ public class AtomComponent extends FeedComponent {
             } else if (idempotentStrategy != null) {
                 // its not a standard, but a reference - fallback to AtomEndpointConfigurator
                 parameters.put(KEY_FORMAT_STRATEGY_PARAM, idempotentStrategy);
-                //endpoint.setIdempotentStrategy(resolveAndRemoveReferenceParameter(parameters, KEY_FORMAT_STRATEGY_PARAM, AtomIdempotentStrategy.class));
             }
         }
         return endpoint;

@@ -2569,3 +2569,12 @@ With `crossOriginFilterOn=true`, the CORS responses now include `Access-Control-
 has an entry with a wildcard such as `https://*` or an entry `null`, the origin is still allowed, but without credentials. Previously credentials
 were allowed for every origin. A cross-origin client that sends cookies or other credentials must have its origin
 listed in `allowedOrigins`.
+
+=== camel-avro-rpc - the http consumer listens on the host of the endpoint
+
+The `avro:http` consumer now uses the host of the endpoint URI (`avro:http:[host]:[port]`) for its HTTP server, as the `avro:netty` consumer does. 
+
+Use `0.0.0.0` as the host to accept connections on all network interfaces.
+
+`AvroRpcHttpServerFactory` has a new method `create(SpecificResponder, String, int)` that receives the host. A custom factory should implement it.
+
